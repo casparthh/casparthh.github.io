@@ -14,13 +14,13 @@
 <meta property="og:site_name" content="永远晴天的博客">
 <meta property="og:description" content="线程作为一个进程里面最小的执行单元它就叫一个线程，用简单的话讲一个程序里不同的执行路径就叫做一个线程">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://github.com/casparthh/casparthh.github.io/2020/02/16/thread/thread%20status.jpg">
+<meta property="og:image" content="https://github.com/casparthh/casparthh.github/status.jpg">
 <meta property="article:published_time" content="2020-02-16T14:05:29.000Z">
-<meta property="article:modified_time" content="2020-02-16T14:23:33.310Z">
+<meta property="article:modified_time" content="2020-02-16T14:27:16.563Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="Thread">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://github.com/casparthh/casparthh.github.io/2020/02/16/thread/thread%20status.jpg">
+<meta name="twitter:image" content="https://github.com/casparthh/casparthh.github/status.jpg">
   
   
     <link rel="icon" href="/favicon.png">
@@ -122,7 +122,7 @@
 <li>阻塞(BLOCKED)：表示线程阻塞于锁。</li>
 <li>等待(WAITING)：进入该状态的线程需要等待其他线程做出一些特定动作（通知或中断）。</li>
 <li>超时等待(TIMED_WAITING)：该状态不同于WAITING，它可以在指定的时间后自行返回。</li>
-<li>终止(TERMINATED)：表示该线程已经执行完毕。<br><img src="thread%20status.jpg" alt="线程状态转换图"></li>
+<li>终止(TERMINATED)：表示该线程已经执行完毕。<br><img src="/casparthh/casparthh.github/status.jpg" alt="线程状态转换图"></li>
 </ol>
 <p>*线程什么状态时候会被挂起?挂起是否也是一个状态?<br>Running的时候，在一个cpu上会跑很多个线程，cpu会隔一段时间执行这个线程一下，在隔一段时间执行那个线程一下，这个是cpu内部的一个调度，从running扔回去就叫线程被挂起。</p>
 <h4 id="四、synchronized"><a href="#四、synchronized" class="headerlink" title="四、synchronized"></a>四、synchronized</h4><p>多个线程去访问同一个资源的时候对这个资源上锁  </p>
@@ -204,7 +204,7 @@
 <li>比如Object o = new Object()，这就是普通的引用，也就是强引用，只要有一个应用指向这个对象，那么垃圾回收器一定不会回收它。</li>
 <li>软引用 SoftReference&lt;byte[]&gt; m = new SoftReference&lt;&gt;(new byte[1024102410])<br>当有一个对象(字节数组)被一个软引用所指向的时候，只有系统内存不够 用的时候，才会回收它(字节数组)</li>
 <li>弱引用 WeakReference m = new WeakReference&lt;&gt;(new M())<br>只要遭遇到gc就会回收</li>
-<li>虚引用 PhantomReference<M> phantomReference = new PhantomReference&lt;&gt;(new M(), QUEUE);<br>对于虚引用它就干一件事，它就是管理堆外内存的，<br>首先第一点，这个虚引用的构造方法至少都是两个参数的，<br>第二个参数还必须是一个队列，这个虚引用基本没用，就是说不是给你用的，那么它是给谁用的呢?是给写JVM(虚拟机)的人用的  </li>
+<li>虚引用 PhantomReference<M> phantomReference = new PhantomReference&lt;&gt;(new M(), QUEUE);<br>对于虚引用它就干一件事，它就是管理堆外内存的，<br>首先第一点，这个虚引用的构造方法至少都是两个参数的，<br>第二个参数还必须是一个队列，这个虚引用基本没用，就是说不是给你用的，那么它是给谁用的呢?是给写JVM(虚拟机)的人用的  </M></li>
 </ul>
 <h4 id="十二、并发容器"><a href="#十二、并发容器" class="headerlink" title="十二、并发容器"></a>十二、并发容器</h4><p>容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列</p>
 <h6 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h6><p>Set 与List,Queue 的主要区别是不会有重复元素</p>
