@@ -54,7 +54,7 @@
 <li>阻塞(BLOCKED)：表示线程阻塞于锁。</li>
 <li>等待(WAITING)：进入该状态的线程需要等待其他线程做出一些特定动作（通知或中断）。</li>
 <li>超时等待(TIMED_WAITING)：该状态不同于WAITING，它可以在指定的时间后自行返回。</li>
-<li>终止(TERMINATED)：表示该线程已经执行完毕。<br><img src="/casparthh/casparthh.github/02/16/thread/status.jpg" alt="线程状态转换图"></li>
+<li>终止(TERMINATED)：表示该线程已经执行完毕。<br><img src="https://casparthh.github.io/2020/02/16/thread/status.jpg" alt="线程状态转换图"></li>
 </ol>
 <p>*线程什么状态时候会被挂起?挂起是否也是一个状态?<br>Running的时候，在一个cpu上会跑很多个线程，cpu会隔一段时间执行这个线程一下，在隔一段时间执行那个线程一下，这个是cpu内部的一个调度，从running扔回去就叫线程被挂起。</p>
 <h4 id="四、synchronized"><a href="#四、synchronized" class="headerlink" title="四、synchronized"></a>四、synchronized</h4><p>多个线程去访问同一个资源的时候对这个资源上锁  </p>
