@@ -269,7 +269,13 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Benchmark</span><br><span class="line">@Warmup(iteration&#x3D;1, time&#x3D;3)  &#x2F;&#x2F;在专业测试里面首先要进行预热，预热多少次，预热多少时间</span><br><span class="line">@Fork(5)  &#x2F;&#x2F;用多少个线程去执行我们的程序 </span><br><span class="line">@BenchmarkMode(Mode.Throughput)  &#x2F;&#x2F;是对基准测试的一个模式，这个模式用的最多的是 Throughput吞吐量</span><br><span class="line">@Measurement(iteration&#x3D;1, time&#x3D;3) &#x2F;&#x2F;是整个测试要测试多少遍，调用这个方法要调用多少次</span><br><span class="line">public void test() &#123;</span><br><span class="line">    &#x2F;&#x2F;.... 调用测试方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-<h4 id="十四、Disrupter"><a href="#十四、Disrupter" class="headerlink" title="十四、Disrupter"></a>十四、Disrupter</h4><p>参考网站：<a href="http://ifeve.com/disruptor/" target="_blank" rel="noopener">http://ifeve.com/disruptor/</a><br>Disruptor 开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。</p>
+<h4 id="十四、Disrupter"><a href="#十四、Disrupter" class="headerlink" title="十四、Disrupter"></a>十四、Disrupter</h4><p>主页：<a href="http://lmax-exchange.github.io/disruptor/" target="_blank" rel="noopener">http://lmax-exchange.github.io/disruptor/</a></p>
+<p>源码：<a href="https://github.com/LMAX-Exchange/disruptor">https://github.com/LMAX-Exchange/disruptor</a></p>
+<p>GettingStarted: <a href="https://github.com/LMAX-Exchange/disruptor/wiki/Getting-Started">https://github.com/LMAX-Exchange/disruptor/wiki/Getting-Started</a></p>
+<p>api: <a href="http://lmax-exchange.github.io/disruptor/docs/index.html" target="_blank" rel="noopener">http://lmax-exchange.github.io/disruptor/docs/index.html</a></p>
+<p>maven: <a href="https://mvnrepository.com/artifact/com.lmax/disruptor" target="_blank" rel="noopener">https://mvnrepository.com/artifact/com.lmax/disruptor</a></p>
+<p>参考网站：<a href="http://ifeve.com/disruptor/" target="_blank" rel="noopener">http://ifeve.com/disruptor/</a></p>
+<p>Disruptor 开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。</p>
 <ul>
 <li>如果把它用作MQ的话，<strong>单机</strong>最快的MQ，性能非常的高，主要是它里面 用的全都是CAS, 另外把各种各样的性能开发到了极致。</li>
 <li>Disruptor就是在内存里，Disruptor简单理解就是内存里用于存放元素的一个高效率的队列。</li>
