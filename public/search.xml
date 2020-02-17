@@ -274,7 +274,7 @@
 <p>GettingStarted: <a href="https://github.com/LMAX-Exchange/disruptor/wiki/Getting-Started">https://github.com/LMAX-Exchange/disruptor/wiki/Getting-Started</a></p>
 <p>api: <a href="http://lmax-exchange.github.io/disruptor/docs/index.html" target="_blank" rel="noopener">http://lmax-exchange.github.io/disruptor/docs/index.html</a></p>
 <p>maven: <a href="https://mvnrepository.com/artifact/com.lmax/disruptor" target="_blank" rel="noopener">https://mvnrepository.com/artifact/com.lmax/disruptor</a></p>
-<p>参考网站：<a href="http://ifeve.com/disruptor/" target="_blank" rel="noopener">http://ifeve.com/disruptor/</a></p>
+<p>ifeve：<a href="http://ifeve.com/disruptor/" target="_blank" rel="noopener">http://ifeve.com/disruptor/</a></p>
 <p>Disruptor 开源的并发框架，并获得2011 Duke’s 程序框架创新奖，能够在无锁的情况下实现网络的Queue并发操作。</p>
 <ul>
 <li>如果把它用作MQ的话，<strong>单机</strong>最快的MQ，性能非常的高，主要是它里面 用的全都是CAS, 另外把各种各样的性能开发到了极致。</li>
