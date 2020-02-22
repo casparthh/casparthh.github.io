@@ -118,7 +118,7 @@
   </entry>
   <entry>
     <title>GC和GC Tuning</title>
-    <url>/2020/02/22/gc/</url>
+    <url>/2020/02/22/GC/</url>
     <content><![CDATA[<h3 id="GC的基础知识"><a href="#GC的基础知识" class="headerlink" title="GC的基础知识"></a>GC的基础知识</h3><h4 id="什么是垃圾"><a href="#什么是垃圾" class="headerlink" title="什么是垃圾"></a>什么是垃圾</h4><p>没有任何引用指向的一个对象或者多个对象（循环引用）</p>
 <h4 id="如何定位垃圾"><a href="#如何定位垃圾" class="headerlink" title="如何定位垃圾"></a>如何定位垃圾</h4><ol>
 <li>引用计数（ReferenceCount）</li>
@@ -161,7 +161,7 @@
 </ol>
 </li>
 </ol>
-<h3 id="垃圾回收器及调优"><a href="#垃圾回收器及调优" class="headerlink" title="垃圾回收器及调优"></a>垃圾回收器及调优</h3><h4 id="常见的垃圾回收器"><a href="#常见的垃圾回收器" class="headerlink" title="常见的垃圾回收器"></a>常见的垃圾回收器</h4><p><img src="https://casparthh.github.io/2020/02/22/gc/gc.png" alt="常用垃圾回收器"></p>
+<h3 id="垃圾回收器及调优"><a href="#垃圾回收器及调优" class="headerlink" title="垃圾回收器及调优"></a>垃圾回收器及调优</h3><h4 id="常见的垃圾回收器"><a href="#常见的垃圾回收器" class="headerlink" title="常见的垃圾回收器"></a>常见的垃圾回收器</h4><p><img src="https://casparthh.github.io/2020/02/22/GC/gc.png" alt="常用垃圾回收器"></p>
 <ol>
 <li><p>JDK诞生 Serial追随，为提高效率，诞生了PS，为了配合CMS，诞生了PN，CMS是1.4版本后期引入，CMS是里程碑式的GC，它开启了并发回收的过程，并发垃圾回收是因为无法忍受STW。</p>
 </li>
