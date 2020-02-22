@@ -15,7 +15,7 @@
 <meta property="og:description" content="CPU和内存的交互在计算机中，CPU和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。 在多核CPU中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。 越靠近CPU的缓存越快也越小。所以L1缓存(一级缓存)很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍然更大，更">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-22T08:20:37.000Z">
-<meta property="article:modified_time" content="2020-02-22T12:36:05.798Z">
+<meta property="article:modified_time" content="2020-02-22T12:38:01.873Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -91,7 +91,7 @@
           
               <div id="toc" class="toc-article">
                   <strong class="toc-title">文章目录</strong>
-                  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#CPU和内存的交互"><span class="toc-number">1.</span> <span class="toc-text">CPU和内存的交互</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存行"><span class="toc-number">2.</span> <span class="toc-text">缓存行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#伪共享问题-（缓存行对齐提高效率）"><span class="toc-number">3.</span> <span class="toc-text">伪共享问题 （缓存行对齐提高效率）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#乱序问题"><span class="toc-number">4.</span> <span class="toc-text">乱序问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#硬件层数据一致性"><span class="toc-number">5.</span> <span class="toc-text">硬件层数据一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MESI协议中的状态"><span class="toc-number">5.1.</span> <span class="toc-text">MESI协议中的状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内存屏障-Memory-Barrier-保证特定情况下不乱序"><span class="toc-number">5.2.</span> <span class="toc-text">内存屏障(Memory Barrier) 保证特定情况下不乱序</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#硬件内存屏障-X86"><span class="toc-number">5.2.0.1.</span> <span class="toc-text">硬件内存屏障 X86</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#JVM级别如何规范（JSR133）"><span class="toc-number">5.2.0.2.</span> <span class="toc-text">JVM级别如何规范（JSR133）</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#volatile的实现细节"><span class="toc-number">5.2.0.3.</span> <span class="toc-text">volatile的实现细节</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#synchronized实现细节"><span class="toc-number">5.2.0.4.</span> <span class="toc-text">synchronized实现细节</span></a></li></ol></li></ol></li></ol></li></ol>
+                  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#CPU和内存的交互"><span class="toc-number">1.</span> <span class="toc-text">CPU和内存的交互</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存行"><span class="toc-number">2.</span> <span class="toc-text">缓存行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#伪共享问题-（缓存行对齐提高效率）"><span class="toc-number">3.</span> <span class="toc-text">伪共享问题 （缓存行对齐提高效率）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#乱序问题"><span class="toc-number">4.</span> <span class="toc-text">乱序问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#硬件层数据一致性"><span class="toc-number">5.</span> <span class="toc-text">硬件层数据一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MESI协议中的状态"><span class="toc-number">5.1.</span> <span class="toc-text">MESI协议中的状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内存屏障-Memory-Barrier-保证特定情况下不乱序"><span class="toc-number">5.2.</span> <span class="toc-text">内存屏障(Memory Barrier) 保证特定情况下不乱序</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#硬件内存屏障-X86"><span class="toc-number">5.2.1.</span> <span class="toc-text">硬件内存屏障 X86</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#JVM级别如何规范（JSR133）"><span class="toc-number">5.2.2.</span> <span class="toc-text">JVM级别如何规范（JSR133）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#volatile的实现细节"><span class="toc-number">5.2.3.</span> <span class="toc-text">volatile的实现细节</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#synchronized实现细节"><span class="toc-number">5.2.4.</span> <span class="toc-text">synchronized实现细节</span></a></li></ol></li></ol></li></ol>
               </div>
           
         <h3 id="CPU和内存的交互"><a href="#CPU和内存的交互" class="headerlink" title="CPU和内存的交互"></a>CPU和内存的交互</h3><p>在计算机中，CPU和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。</p>
@@ -150,7 +150,7 @@
 <h4 id="内存屏障-Memory-Barrier-保证特定情况下不乱序"><a href="#内存屏障-Memory-Barrier-保证特定情况下不乱序" class="headerlink" title="内存屏障(Memory Barrier) 保证特定情况下不乱序"></a>内存屏障(Memory Barrier) 保证特定情况下不乱序</h4><p>CPU执行指令可能是无序的，内存屏障有两个比较重要的作用</p>
 <ol>
 <li>阻止屏障两侧指令重排序</li>
-<li>强制把写缓冲区/高速缓存中的脏数据等写回主内存，让缓存中相应的数据失效。<h6 id="硬件内存屏障-X86"><a href="#硬件内存屏障-X86" class="headerlink" title="硬件内存屏障 X86"></a>硬件内存屏障 X86</h6></li>
+<li>强制把写缓冲区/高速缓存中的脏数据等写回主内存，让缓存中相应的数据失效。<h5 id="硬件内存屏障-X86"><a href="#硬件内存屏障-X86" class="headerlink" title="硬件内存屏障 X86"></a>硬件内存屏障 X86</h5></li>
 </ol>
 <ul>
 <li>sfence: store| 在sfence指令前的写操作当必须在sfence指令后的写操作前完成。</li>
@@ -158,7 +158,7 @@
 <li>mfence：modify/mix | 在mfence指令前的读写操作当必须在mfence指令后的读写操作前完成。</li>
 <li>原子指令，如x86上的”lock …” 指令是一个Full Barrier，执行时会锁住内存子系统来确保执行顺序，甚至跨多个CPU。Software Locks通常使用了内存屏障或原子指令来实现变量可见性和保持程序顺序</li>
 </ul>
-<h6 id="JVM级别如何规范（JSR133）"><a href="#JVM级别如何规范（JSR133）" class="headerlink" title="JVM级别如何规范（JSR133）"></a>JVM级别如何规范（JSR133）</h6><ul>
+<h5 id="JVM级别如何规范（JSR133）"><a href="#JVM级别如何规范（JSR133）" class="headerlink" title="JVM级别如何规范（JSR133）"></a>JVM级别如何规范（JSR133）</h5><ul>
 <li><p>LoadLoad屏障：<br>在Load2及后续读取操作要读取的数据被访问前，保证Load1要读取的数据被读取完毕。</p>
 </li>
 <li><p>StoreStore屏障：<br>在Store2及后续写入操作执行前，保证Store1的写入操作对其它处理器可见。</p>
@@ -168,15 +168,13 @@
 <li><p>StoreLoad屏障：<br>在Load2及后续所有读取操作执行前，保证Store1的写入对所有处理器可见。</p>
 </li>
 </ul>
-<h6 id="volatile的实现细节"><a href="#volatile的实现细节" class="headerlink" title="volatile的实现细节"></a>volatile的实现细节</h6><ol>
-<li>字节码层面</li>
-</ol>
+<h5 id="volatile的实现细节"><a href="#volatile的实现细节" class="headerlink" title="volatile的实现细节"></a>volatile的实现细节</h5><ol>
+<li><p>字节码层面</p>
 <ul>
 <li>ACC_VOLATILE</li>
 </ul>
-<ol start="2">
-<li>JVM层面, Volatile内存区的读写都加屏障</li>
-</ol>
+</li>
+<li><p>JVM层面, Volatile内存区的读写都加屏障</p>
 <ul>
 <li><p>StoreStoreBarrier</p>
 </li>
@@ -191,19 +189,21 @@
 <li><p>LoadStoreBarrier</p>
 </li>
 </ul>
-<h6 id="synchronized实现细节"><a href="#synchronized实现细节" class="headerlink" title="synchronized实现细节"></a>synchronized实现细节</h6><ol>
-<li>字节码层面</li>
+</li>
 </ol>
+<h5 id="synchronized实现细节"><a href="#synchronized实现细节" class="headerlink" title="synchronized实现细节"></a>synchronized实现细节</h5><ol>
+<li><p>字节码层面</p>
 <ul>
 <li>ACC_SYNCHRONIZED</li>
 <li>monitorenter monitorexit</li>
 </ul>
-<ol start="2">
-<li>JVM层面</li>
-</ol>
+</li>
+<li><p>JVM层面</p>
 <ul>
 <li>C C++ 调用了操作系统提供的同步机制</li>
 </ul>
+</li>
+</ol>
 
       
     </div>
