@@ -87,12 +87,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="GC的基础知识"><a href="#GC的基础知识" class="headerlink" title="GC的基础知识"></a>GC的基础知识</h3><h4 id="1-什么是垃圾"><a href="#1-什么是垃圾" class="headerlink" title="1.什么是垃圾"></a>1.什么是垃圾</h4><p>没有任何引用指向的一个对象或者多个对象（循环引用）</p>
-<h4 id="2-如何定位垃圾"><a href="#2-如何定位垃圾" class="headerlink" title="2.如何定位垃圾"></a>2.如何定位垃圾</h4><ol>
+        <h3 id="GC的基础知识"><a href="#GC的基础知识" class="headerlink" title="GC的基础知识"></a>GC的基础知识</h3><h4 id="什么是垃圾"><a href="#什么是垃圾" class="headerlink" title="什么是垃圾"></a>什么是垃圾</h4><p>没有任何引用指向的一个对象或者多个对象（循环引用）</p>
+<h4 id="如何定位垃圾"><a href="#如何定位垃圾" class="headerlink" title="如何定位垃圾"></a>如何定位垃圾</h4><ol>
 <li>引用计数（ReferenceCount）</li>
 <li>根可达算法(RootSearching)</li>
 </ol>
-<h4 id="3-常见的垃圾回收算法"><a href="#3-常见的垃圾回收算法" class="headerlink" title="3.常见的垃圾回收算法"></a>3.常见的垃圾回收算法</h4><ol>
+<h4 id="常见的垃圾回收算法"><a href="#常见的垃圾回收算法" class="headerlink" title="常见的垃圾回收算法"></a>常见的垃圾回收算法</h4><ol>
 <li>标记清除(mark sweep) - 位置不连续 产生碎片 效率偏低（两遍扫描）</li>
 <li>拷贝算法 (copying) - 没有碎片，浪费空间</li>
 <li>标记压缩(mark compact) - 没有碎片，效率偏低（两遍扫描，指针需要调整）</li></ol>

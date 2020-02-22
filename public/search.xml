@@ -3,19 +3,19 @@
   <entry>
     <title>GC和GC Tuning</title>
     <url>/2020/02/22/GC/</url>
-    <content><![CDATA[<h3 id="GC的基础知识"><a href="#GC的基础知识" class="headerlink" title="GC的基础知识"></a>GC的基础知识</h3><h4 id="1-什么是垃圾"><a href="#1-什么是垃圾" class="headerlink" title="1.什么是垃圾"></a>1.什么是垃圾</h4><p>没有任何引用指向的一个对象或者多个对象（循环引用）</p>
-<h4 id="2-如何定位垃圾"><a href="#2-如何定位垃圾" class="headerlink" title="2.如何定位垃圾"></a>2.如何定位垃圾</h4><ol>
+    <content><![CDATA[<h3 id="GC的基础知识"><a href="#GC的基础知识" class="headerlink" title="GC的基础知识"></a>GC的基础知识</h3><h4 id="什么是垃圾"><a href="#什么是垃圾" class="headerlink" title="什么是垃圾"></a>什么是垃圾</h4><p>没有任何引用指向的一个对象或者多个对象（循环引用）</p>
+<h4 id="如何定位垃圾"><a href="#如何定位垃圾" class="headerlink" title="如何定位垃圾"></a>如何定位垃圾</h4><ol>
 <li>引用计数（ReferenceCount）</li>
 <li>根可达算法(RootSearching)</li>
 </ol>
-<h4 id="3-常见的垃圾回收算法"><a href="#3-常见的垃圾回收算法" class="headerlink" title="3.常见的垃圾回收算法"></a>3.常见的垃圾回收算法</h4><ol>
+<h4 id="常见的垃圾回收算法"><a href="#常见的垃圾回收算法" class="headerlink" title="常见的垃圾回收算法"></a>常见的垃圾回收算法</h4><ol>
 <li>标记清除(mark sweep) - 位置不连续 产生碎片 效率偏低（两遍扫描）</li>
 <li>拷贝算法 (copying) - 没有碎片，浪费空间</li>
 <li>标记压缩(mark compact) - 没有碎片，效率偏低（两遍扫描，指针需要调整）<a id="more"></a>
 
 </li>
 </ol>
-<h4 id="4-JVM内存分代模型（用于分代垃圾回收算法）"><a href="#4-JVM内存分代模型（用于分代垃圾回收算法）" class="headerlink" title="4.JVM内存分代模型（用于分代垃圾回收算法）"></a>4.JVM内存分代模型（用于分代垃圾回收算法）</h4><ol>
+<h4 id="JVM内存分代模型（用于分代垃圾回收算法）"><a href="#JVM内存分代模型（用于分代垃圾回收算法）" class="headerlink" title="JVM内存分代模型（用于分代垃圾回收算法）"></a>JVM内存分代模型（用于分代垃圾回收算法）</h4><ol>
 <li>部分垃圾回收器使用的模型<br>除Epsilon ZGC Shenandoah之外的GC都是使用逻辑分代模型<br>G1是逻辑分代，物理不分代<br>除此之外不仅逻辑分代，而且物理分代  </li>
 <li>新生代 + 老年代 + 永久代（1.7）Perm Generation/ 元数据区(1.8) Metaspace<ol>
 <li>永久代 元数据 - Class</li>
@@ -45,7 +45,7 @@
 </ol>
 </li>
 </ol>
-<h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3><h4 id="1-常见的垃圾回收器"><a href="#1-常见的垃圾回收器" class="headerlink" title="1.常见的垃圾回收器"></a>1.常见的垃圾回收器</h4><p><img src="https://casparthh.github.io/2020/02/22/GC/gc.png" alt="常用垃圾回收器"></p>
+<h3 id="垃圾回收器及调优"><a href="#垃圾回收器及调优" class="headerlink" title="垃圾回收器及调优"></a>垃圾回收器及调优</h3><h4 id="常见的垃圾回收器"><a href="#常见的垃圾回收器" class="headerlink" title="常见的垃圾回收器"></a>常见的垃圾回收器</h4><p><img src="https://casparthh.github.io/2020/02/22/GC/gc.png" alt="常用垃圾回收器"></p>
 <ol>
 <li><p>JDK诞生 Serial追随，为提高效率，诞生了PS，为了配合CMS，诞生了PN，CMS是1.4版本后期引入，CMS是里程碑式的GC，它开启了并发回收的过程，并发垃圾回收是因为无法忍受STW。</p>
 </li>
@@ -81,7 +81,7 @@
 <li><p>1.8默认的垃圾回收：PS + ParallelOld</p>
 </li>
 </ol>
-<h4 id="2-常见垃圾回收器组合参数设定：-1-8"><a href="#2-常见垃圾回收器组合参数设定：-1-8" class="headerlink" title="2.常见垃圾回收器组合参数设定：(1.8)"></a>2.常见垃圾回收器组合参数设定：(1.8)</h4><ul>
+<h4 id="常见垃圾回收器组合参数设定：-1-8"><a href="#常见垃圾回收器组合参数设定：-1-8" class="headerlink" title="常见垃圾回收器组合参数设定：(1.8)"></a>常见垃圾回收器组合参数设定：(1.8)</h4><ul>
 <li>-XX:+UseSerialGC = Serial New (DefNew) + Serial Old<ul>
 <li>小型程序。默认情况下不会是这种选项，HotSpot会根据计算及配置和JDK版本自动选择收集器</li>
 </ul>
@@ -95,7 +95,7 @@
 <li>-XX:+UseParallelOldGC = Parallel Scavenge + Parallel Old</li>
 <li>-XX:+UseG1GC = G1</li>
 </ul>
-<h4 id="3-JVM调优第一步，了解JVM常用命令行参数"><a href="#3-JVM调优第一步，了解JVM常用命令行参数" class="headerlink" title="3.JVM调优第一步，了解JVM常用命令行参数"></a>3.JVM调优第一步，了解JVM常用命令行参数</h4><ul>
+<h4 id="JVM调优第一步，了解JVM常用命令行参数"><a href="#JVM调优第一步，了解JVM常用命令行参数" class="headerlink" title="JVM调优第一步，了解JVM常用命令行参数"></a>JVM调优第一步，了解JVM常用命令行参数</h4><ul>
 <li><p>JVM的命令行参数参考：<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html</a></p>
 </li>
 <li><p>HotSpot参数分类<br>  标准： - 开头，所有的HotSpot都支持<br>  非标准：-X 开头，特定版本HotSpot支持特定命令<br>  不稳定：-XX 开头，下个版本可能取消<br>  java -X  </p>
@@ -109,18 +109,18 @@
 </ol>
 </li>
 </ul>
-<h4 id="4-调优前的基础概念："><a href="#4-调优前的基础概念：" class="headerlink" title="4.调优前的基础概念："></a>4.调优前的基础概念：</h4><ol>
+<h4 id="调优前的基础概念："><a href="#调优前的基础概念：" class="headerlink" title="调优前的基础概念："></a>调优前的基础概念：</h4><ol>
 <li>吞吐量：吞吐量（CPU用于运行用户代码的时间与CPU消耗的总时间的比值）用户代码时间 /（用户代码执行时间 + 垃圾回收时间）</li>
 <li>响应时间：STW越短，响应时间越好</li>
 </ol>
 <p>所谓调优，首先确定，追求啥？吞吐量优先，还是响应时间优先？还是在满足一定的响应时间的情况下，要求达到多大的吞吐量…</p>
 <p>问题：<br>科学计算，吞吐量。数据挖掘，thrput。吞吐量优先的一般：（PS + PO）<br>响应时间：网站 GUI API （1.8 G1）  </p>
-<h4 id="5-什么是调优？"><a href="#5-什么是调优？" class="headerlink" title="5.什么是调优？"></a>5.什么是调优？</h4><ol>
+<h4 id="什么是调优？"><a href="#什么是调优？" class="headerlink" title="什么是调优？"></a>什么是调优？</h4><ol>
 <li>根据需求进行JVM规划和预调优</li>
 <li>优化运行JVM运行环境（慢，卡顿）</li>
 <li>解决JVM运行过程中出现的各种问题(OOM)</li>
 </ol>
-<h4 id="6-调优，从规划开始"><a href="#6-调优，从规划开始" class="headerlink" title="6.调优，从规划开始"></a>6.调优，从规划开始</h4><ul>
+<h4 id="调优，从规划开始"><a href="#调优，从规划开始" class="headerlink" title="调优，从规划开始"></a>调优，从规划开始</h4><ul>
 <li><p>调优，从业务场景开始，没有业务场景的调优都是耍流氓</p>
 </li>
 <li><p>无监控（压力测试，能看到结果），不调优</p>
@@ -145,7 +145,7 @@
 </ol>
 </li>
 </ul>
-<h4 id="7-解决JVM运行中的问题"><a href="#7-解决JVM运行中的问题" class="headerlink" title="7.解决JVM运行中的问题"></a>7.解决JVM运行中的问题</h4><ol start="3">
+<h4 id="解决JVM运行中的问题"><a href="#解决JVM运行中的问题" class="headerlink" title="解决JVM运行中的问题"></a>解决JVM运行中的问题</h4><ol start="3">
 <li><p>一般是运维团队首先受到报警信息（CPU Memory）</p>
 </li>
 <li><p>top命令观察到问题：内存不断增长 CPU占用率居高不下</p>
@@ -167,7 +167,7 @@
 <li><p>使用MAT / jhat /jvisualvm 进行dump文件分析<br>Jhat参考资料：<a href="https://www.cnblogs.com/baihuitestsoftware/articles/6406271.html" target="_blank" rel="noopener">https://www.cnblogs.com/baihuitestsoftware/articles/6406271.html</a><br>jhat -J-mx512M xxx.dump<br><a href="http://192.168.17.11:7000" target="_blank" rel="noopener">http://192.168.17.11:7000</a><br>拉到最后：找到对应链接<br>可以使用OQL查找特定问题对象</p>
 </li>
 </ol>
-<h4 id="8-arthas在线排查工具"><a href="#8-arthas在线排查工具" class="headerlink" title="8.arthas在线排查工具"></a>8.arthas在线排查工具</h4><ul>
+<h4 id="Arthas在线排查工具"><a href="#Arthas在线排查工具" class="headerlink" title="Arthas在线排查工具"></a>Arthas在线排查工具</h4><ul>
 <li>为什么需要在线排查？<br> 在生产上我们经常会碰到一些不好排查的问题，例如线程安全问题，用最简单的threaddump或者heapdump不好查到问题原因。为了排查这些问题，有时我们会临时加一些日志，比如在一些关键的函数里打印出入参，然后重新打包发布，如果打了日志还是没找到问题，继续加日志，重新打包发布。对于上线流程复杂而且审核比较严的公司，从改代码到上线需要层层的流转，会大大影响问题排查的进度。 </li>
 <li>观察jvm信息</li>
 <li>thread定位线程问题</li>
