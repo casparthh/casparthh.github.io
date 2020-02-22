@@ -120,7 +120,7 @@
 <li>优化运行JVM运行环境（慢，卡顿）</li>
 <li>解决JVM运行过程中出现的各种问题(OOM)</li>
 </ol>
-<h3 id="6-调优，从规划开始"><a href="#6-调优，从规划开始" class="headerlink" title="6.调优，从规划开始"></a>6.调优，从规划开始</h3><ul>
+<h4 id="6-调优，从规划开始"><a href="#6-调优，从规划开始" class="headerlink" title="6.调优，从规划开始"></a>6.调优，从规划开始</h4><ul>
 <li><p>调优，从业务场景开始，没有业务场景的调优都是耍流氓</p>
 </li>
 <li><p>无监控（压力测试，能看到结果），不调优</p>
@@ -145,7 +145,7 @@
 </ol>
 </li>
 </ul>
-<h3 id="7-解决JVM运行中的问题"><a href="#7-解决JVM运行中的问题" class="headerlink" title="7.解决JVM运行中的问题"></a>7.解决JVM运行中的问题</h3><ol start="3">
+<h4 id="7-解决JVM运行中的问题"><a href="#7-解决JVM运行中的问题" class="headerlink" title="7.解决JVM运行中的问题"></a>7.解决JVM运行中的问题</h4><ol start="3">
 <li><p>一般是运维团队首先受到报警信息（CPU Memory）</p>
 </li>
 <li><p>top命令观察到问题：内存不断增长 CPU占用率居高不下</p>
