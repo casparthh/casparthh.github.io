@@ -385,7 +385,6 @@
 <h3 id="一、创建线程的几种方式："><a href="#一、创建线程的几种方式：" class="headerlink" title="一、创建线程的几种方式："></a>一、创建线程的几种方式：</h3><ol>
 <li>继承Thread，并重写该类的run方法<a id="more"></a>
 
-
 </li>
 </ol>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName()+<span class="string">" 是继承写法。"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        MyThread thread = <span class="keyword">new</span> MyThread();</span><br><span class="line">        thread.setName(<span class="string">"extends thread"</span>);</span><br><span class="line">        thread.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -553,15 +552,15 @@
     <title>Java 容器</title>
     <url>/2020/02/16/container/</url>
     <content><![CDATA[<h3 id="Java-容器"><a href="#Java-容器" class="headerlink" title="Java 容器"></a>Java 容器</h3><p>容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列</p>
-<a id="more"></a>
-
 <h4 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h4><p>Set 与 List, Queue 的主要区别是不会有重复元素</p>
 <h4 id="ArrayList-amp-LinkedList"><a href="#ArrayList-amp-LinkedList" class="headerlink" title="ArrayList &amp; LinkedList"></a>ArrayList &amp; LinkedList</h4><ul>
 <li>没有加锁，线程不安全。  </li>
 <li>ArrayList是基于数组实现的，LinkedList是基于双链表实现的。</li>
 <li>LinkedList还实现了Deque接口，Deque接口是Queue接口的子接口，它代表一个双向队列，因此LinkedList可以作为双向对列。</li>
 <li>因为Array是基于索引(index)的数据结构，它使用索引在数组中搜索和读取数据是很快的，可以直接返回数组中index位置的元素，因此在随机访问集合元素上有较好的性能。Array获取数据的时间复杂度是O(1),但是要插入、删除数据却是开销很大的，因为这需要移动数组中插入位置之后的的所有元素。</li>
-<li>相对于ArrayList，LinkedList的随机访问集合元素时性能较差，因为需要在双向列表中找到要index的位置，再返回；但在插入，删除操作是更快的。</li>
+<li>相对于ArrayList，LinkedList的随机访问集合元素时性能较差，因为需要在双向列表中找到要index的位置，再返回；但在插入，删除操作是更快的。<a id="more"></a>
+
+</li>
 </ul>
 <h4 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h4><ul>
 <li><strong>Queue 实现的实际上是一个队列，有进有出，它实现了很多对线程友好的API offer、peek、poll，他的一个子类型叫 BlockingQueue对线程友好的API又添加了put和take，这两个实现了阻塞操作，这个是在其他的List、 Set里面都是没有的。这里面最重要的就是是叫做阻塞队列，它的实现的初衷就是为了线程池、高并发做准备的。</strong></li>

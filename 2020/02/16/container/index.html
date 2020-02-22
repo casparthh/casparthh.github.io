@@ -7,15 +7,15 @@
   
   <title>Java 容器 | 永远晴天的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java 容器容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列">
+  <meta name="description" content="Java 容器容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列 SetSet 与 List, Queue 的主要区别是不会有重复元素 ArrayList &amp; LinkedList 没有加锁，线程不安全。   ArrayList是基于数组实现的，LinkedList是基于双链表实现的。 LinkedList还实现了Deque接口，De">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java 容器">
 <meta property="og:url" content="https://github.com/casparthh/casparthh.github.io/2020/02/16/container/index.html">
 <meta property="og:site_name" content="永远晴天的博客">
-<meta property="og:description" content="Java 容器容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列">
+<meta property="og:description" content="Java 容器容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列 SetSet 与 List, Queue 的主要区别是不会有重复元素 ArrayList &amp; LinkedList 没有加锁，线程不安全。   ArrayList是基于数组实现的，LinkedList是基于双链表实现的。 LinkedList还实现了Deque接口，De">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-16T14:05:29.000Z">
-<meta property="article:modified_time" content="2020-02-22T14:03:53.095Z">
+<meta property="article:modified_time" content="2020-02-22T14:07:00.647Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="Thread">
 <meta property="article:tag" content="容器">
@@ -100,15 +100,15 @@
               </div>
           
         <h3 id="Java-容器"><a href="#Java-容器" class="headerlink" title="Java 容器"></a>Java 容器</h3><p>容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列</p>
-<a id="more"></a>
-
 <h4 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h4><p>Set 与 List, Queue 的主要区别是不会有重复元素</p>
 <h4 id="ArrayList-amp-LinkedList"><a href="#ArrayList-amp-LinkedList" class="headerlink" title="ArrayList &amp; LinkedList"></a>ArrayList &amp; LinkedList</h4><ul>
 <li>没有加锁，线程不安全。  </li>
 <li>ArrayList是基于数组实现的，LinkedList是基于双链表实现的。</li>
 <li>LinkedList还实现了Deque接口，Deque接口是Queue接口的子接口，它代表一个双向队列，因此LinkedList可以作为双向对列。</li>
 <li>因为Array是基于索引(index)的数据结构，它使用索引在数组中搜索和读取数据是很快的，可以直接返回数组中index位置的元素，因此在随机访问集合元素上有较好的性能。Array获取数据的时间复杂度是O(1),但是要插入、删除数据却是开销很大的，因为这需要移动数组中插入位置之后的的所有元素。</li>
-<li>相对于ArrayList，LinkedList的随机访问集合元素时性能较差，因为需要在双向列表中找到要index的位置，再返回；但在插入，删除操作是更快的。</li>
+<li>相对于ArrayList，LinkedList的随机访问集合元素时性能较差，因为需要在双向列表中找到要index的位置，再返回；但在插入，删除操作是更快的。<a id="more"></a>
+
+</li>
 </ul>
 <h4 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h4><ul>
 <li><strong>Queue 实现的实际上是一个队列，有进有出，它实现了很多对线程友好的API offer、peek、poll，他的一个子类型叫 BlockingQueue对线程友好的API又添加了put和take，这两个实现了阻塞操作，这个是在其他的List、 Set里面都是没有的。这里面最重要的就是是叫做阻塞队列，它的实现的初衷就是为了线程池、高并发做准备的。</strong></li>
