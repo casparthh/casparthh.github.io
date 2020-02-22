@@ -306,13 +306,10 @@
 <h4 id="内存屏障-Memory-Barrier-保证特定情况下不乱序"><a href="#内存屏障-Memory-Barrier-保证特定情况下不乱序" class="headerlink" title="内存屏障(Memory Barrier) 保证特定情况下不乱序"></a>内存屏障(Memory Barrier) 保证特定情况下不乱序</h4><p>CPU执行指令可能是无序的，内存屏障有两个比较重要的作用</p>
 <ol>
 <li>阻止屏障两侧指令重排序</li>
-<li>强制把写缓冲区/高速缓存中的脏数据等写回主内存，让缓存中相应的数据失效。<p align="right">
-硬件内存屏障 X86
->  sfence: store| 在sfence指令前的写操作当必须在sfence指令后的写操作前完成。
->  lfence：load | 在lfence指令前的读操作当必须在lfence指令后的读操作前完成。
->  mfence：modify/mix | 在mfence指令前的读写操作当必须在mfence指令后的读写操作前完成。
-
-</p></li>
+<li>强制把写缓冲区/高速缓存中的脏数据等写回主内存，让缓存中相应的数据失效。<br>硬件内存屏障 X86<blockquote>
+<p> sfence: store| 在sfence指令前的写操作当必须在sfence指令后的写操作前完成。<br> lfence：load | 在lfence指令前的读操作当必须在lfence指令后的读操作前完成。<br> mfence：modify/mix | 在mfence指令前的读写操作当必须在mfence指令后的读写操作前完成。</p>
+</blockquote>
+</li>
 </ol>
 <blockquote>
 <p>原子指令，如x86上的”lock …” 指令是一个Full Barrier，执行时会锁住内存子系统来确保执行顺序，甚至跨多个CPU。Software Locks通常使用了内存屏障或原子指令来实现变量可见性和保持程序顺序</p>
@@ -352,10 +349,7 @@
 <ol>
 <li>字节码层面<br>ACC_SYNCHRONIZED<br>monitorenter monitorexit</li>
 <li>JVM层面<br>C C++ 调用了操作系统提供的同步机制</li>
-<li>OS和硬件层面<br>X86 : lock cmpxchg / xxx<br><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">https</a><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">://blog.csdn.net/21aspnet/article/details/</a><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">88571740</a><p></p>
-
-
-</li>
+<li>OS和硬件层面<br>X86 : lock cmpxchg / xxx<br><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">https</a><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">://blog.csdn.net/21aspnet/article/details/</a><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">88571740</a></li>
 </ol>
 ]]></content>
       <tags>
