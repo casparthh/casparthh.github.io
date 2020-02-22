@@ -1,6 +1,269 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>GC和GC Tuning</title>
+    <url>/2020/02/22/GC/</url>
+    <content><![CDATA[<h1 id="GC和GC-Tuning"><a href="#GC和GC-Tuning" class="headerlink" title="GC和GC Tuning"></a>GC和GC Tuning</h1><h3 id="GC的基础知识"><a href="#GC的基础知识" class="headerlink" title="GC的基础知识"></a>GC的基础知识</h3><h4 id="1-什么是垃圾"><a href="#1-什么是垃圾" class="headerlink" title="1.什么是垃圾"></a>1.什么是垃圾</h4><p>没有任何引用指向的一个对象或者多个对象（循环引用）</p>
+<h4 id="2-如何定位垃圾"><a href="#2-如何定位垃圾" class="headerlink" title="2.如何定位垃圾"></a>2.如何定位垃圾</h4><ol>
+<li>引用计数（ReferenceCount）</li>
+<li>根可达算法(RootSearching)</li>
+</ol>
+<h4 id="3-常见的垃圾回收算法"><a href="#3-常见的垃圾回收算法" class="headerlink" title="3.常见的垃圾回收算法"></a>3.常见的垃圾回收算法</h4><ol>
+<li>标记清除(mark sweep) - 位置不连续 产生碎片 效率偏低（两遍扫描）</li>
+<li>拷贝算法 (copying) - 没有碎片，浪费空间</li>
+<li>标记压缩(mark compact) - 没有碎片，效率偏低（两遍扫描，指针需要调整）<a id="more"></a>
+
+</li>
+</ol>
+<h4 id="4-JVM内存分代模型（用于分代垃圾回收算法）"><a href="#4-JVM内存分代模型（用于分代垃圾回收算法）" class="headerlink" title="4.JVM内存分代模型（用于分代垃圾回收算法）"></a>4.JVM内存分代模型（用于分代垃圾回收算法）</h4><ol>
+<li><p>部分垃圾回收器使用的模型</p>
+<blockquote>
+<p>除Epsilon ZGC Shenandoah之外的GC都是使用逻辑分代模型<br>G1是逻辑分代，物理不分代<br>除此之外不仅逻辑分代，而且物理分代</p>
+</blockquote>
+</li>
+<li><p>新生代 + 老年代 + 永久代（1.7）Perm Generation/ 元数据区(1.8) Metaspace</p>
+<ol>
+<li>永久代 元数据 - Class</li>
+<li>永久代必须指定大小限制 ，元数据可以设置，也可以不设置，无上限（受限于物理内存）</li>
+<li>字符串常量 1.7 - 永久代，1.8 - 堆</li>
+<li>MethodArea逻辑概念 - 永久代、元数据</li>
+</ol>
+</li>
+<li><p>新生代 = Eden + 2个suvivor区 </p>
+<ol>
+<li>YGC回收之后，大多数的对象会被回收，活着的进入s0</li>
+<li>再次YGC，活着的对象eden + s0 -&gt; s1</li>
+<li>再次YGC，eden + s1 -&gt; s0</li>
+<li>年龄足够 -&gt; 老年代 （-XX:MaxTenuringThreshold=X X默认是15）</li>
+<li>s区装不下 -&gt; 老年代</li>
+</ol>
+</li>
+<li><p>老年代</p>
+<ol>
+<li>顽固分子</li>
+<li>老年代满了FGC Full GC</li>
+<li>内存分配担保，在JVM在内存分配的时候，新生代内存不足时，把新生代的存活的对象搬到老生代，然后新生代腾出来的空间用于为分配给最新的对象。</li>
+</ol>
+</li>
+<li><p>GC Tuning (Generation)</p>
+<ol>
+<li>尽量减少FGC</li>
+<li>MinorGC = YGC</li>
+<li>MajorGC = FGC</li>
+</ol>
+</li>
+</ol>
+<h4 id="5-常见的垃圾回收器"><a href="#5-常见的垃圾回收器" class="headerlink" title="5.常见的垃圾回收器"></a>5.常见的垃圾回收器</h4><p><img src="/casparthh/casparthh.github/%E5%B8%B8%E7%94%A8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8.png" alt="常用垃圾回收器"></p>
+<ol>
+<li><p>JDK诞生 Serial追随，为提高效率，诞生了PS，为了配合CMS，诞生了PN，CMS是1.4版本后期引入，CMS是里程碑式的GC，它开启了并发回收的过程，并发垃圾回收是因为无法忍受STW。</p>
+</li>
+<li><p>Serial：适用年轻代，串行回收</p>
+</li>
+<li><p>PS(Parallel Scavenge) 适用年轻代，并行回收</p>
+</li>
+<li><p>ParNew 适用年轻代，配合CMS的并行回收</p>
+</li>
+<li><p>SerialOld 适用老年代</p>
+</li>
+<li><p>ParallelOld 适用老年代，配合PS使用</p>
+</li>
+<li><p>CMS(ConcurrentMarkSweep) 老年代,并发的，垃圾回收和应用程序同时运行，降低STW(Stop The World)的时间(200ms)<br>CMS问题比较多，所以现在没有一个版本默认是CMS，只能手工指定<br>CMS既然是MarkSweep，就一定会有碎片化的问题，碎片到达一定程度，CMS的老年代分配对象分配不下的时候，使用SerialOld 进行老年代回收<br>算法：三色标记 + Incremental Update<br>工作过程：初始标记，并发标记，重新标记，并发清理<br>优点：并发收集，低停顿<br>缺点：占用大量的CPU，无法处理浮动垃圾，出现Concurrent Mode Failure，空间碎片  </p>
+</li>
+<li><p>G1(10ms)<br>算法：三色标记 + SATB (snapshot-at-the-beginning)<br>优势：并行与并发，分代收集，空间整合，可预测的停顿<br>步骤：初使标记，并发标记，最终标记，筛选回收  </p>
+</li>
+<li><p>ZGC (1ms)<br>算法：ColoredPointers + LoadBarrier</p>
+</li>
+<li><p>Shenandoah<br>算法：ColoredPointers + WriteBarrier</p>
+</li>
+<li><p>PS 和 PN区别的延伸阅读：<br>▪<a href="https://docs.oracle.com/en/java/javase/13/gctuning/ergonomics.html" target="_blank" rel="noopener">https://docs.oracle.com/en/java/javase/13/gctuning/ergonomics.html#GUID-3D0BB91E-9BFF-4EBB-B523-14493A860E73</a></p>
+</li>
+<li><p>垃圾收集器跟内存大小的关系</p>
+<ol>
+<li>Serial 几十兆</li>
+<li>PS 上百兆 - 几个G</li>
+<li>CMS - 20G</li>
+<li>G1 - 上百G</li>
+<li>ZGC - 4T - 16T（JDK13）  </li>
+</ol>
+</li>
+<li><p>1.8默认的垃圾回收：PS + ParallelOld</p>
+</li>
+</ol>
+<h4 id="常见垃圾回收器组合参数设定：-1-8"><a href="#常见垃圾回收器组合参数设定：-1-8" class="headerlink" title="常见垃圾回收器组合参数设定：(1.8)"></a>常见垃圾回收器组合参数设定：(1.8)</h4><ul>
+<li>-XX:+UseSerialGC = Serial New (DefNew) + Serial Old<ul>
+<li>小型程序。默认情况下不会是这种选项，HotSpot会根据计算及配置和JDK版本自动选择收集器</li>
+</ul>
+</li>
+<li>-XX:+UseParNewGC = ParNew + SerialOld<ul>
+<li>这个组合已经很少用（在某些版本中已经废弃）</li>
+</ul>
+</li>
+<li>-XX:+UseConcurrentMarkSweepGC = ParNew + CMS + Serial Old</li>
+<li>-XX:+UseParallelGC = Parallel Scavenge + Parallel Old (1.8默认) 【PS + SerialOld】</li>
+<li>-XX:+UseParallelOldGC = Parallel Scavenge + Parallel Old</li>
+<li>-XX:+UseG1GC = G1</li>
+</ul>
+<h4 id="JVM调优第一步，了解JVM常用命令行参数"><a href="#JVM调优第一步，了解JVM常用命令行参数" class="headerlink" title="JVM调优第一步，了解JVM常用命令行参数"></a>JVM调优第一步，了解JVM常用命令行参数</h4><ul>
+<li><p>JVM的命令行参数参考：<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html</a></p>
+</li>
+<li><p>HotSpot参数分类</p>
+<blockquote>
+<p>标准： - 开头，所有的HotSpot都支持<br>非标准：-X 开头，特定版本HotSpot支持特定命令<br>不稳定：-XX 开头，下个版本可能取消<br>java -X</p>
+</blockquote>
+<ol>
+<li>区分概念：内存泄漏memory leak，内存溢出out of memory</li>
+<li>java -XX:+PrintCommandLineFlags -version 观查虚拟机配置</li>
+<li>java -XX:+PrintFlagsInitial 默认参数值</li>
+<li>java -XX:+PrintFlagsFinal 最终参数值</li>
+<li>java -XX:+PrintFlagsFinal | grep xxx 找到对应的参数</li>
+<li>java -XX:+PrintFlagsFinal -version |grep GC</li>
+</ol>
+</li>
+</ul>
+<h4 id="调优前的基础概念："><a href="#调优前的基础概念：" class="headerlink" title="调优前的基础概念："></a>调优前的基础概念：</h4><ol>
+<li>吞吐量：吞吐量（CPU用于运行用户代码的时间与CPU消耗的总时间的比值）用户代码时间 /（用户代码执行时间 + 垃圾回收时间）</li>
+<li>响应时间：STW越短，响应时间越好</li>
+</ol>
+<p>所谓调优，首先确定，追求啥？吞吐量优先，还是响应时间优先？还是在满足一定的响应时间的情况下，要求达到多大的吞吐量…</p>
+<p>问题：<br>科学计算，吞吐量。数据挖掘，thrput。吞吐量优先的一般：（PS + PO）<br>响应时间：网站 GUI API （1.8 G1）  </p>
+<h4 id="什么是调优？"><a href="#什么是调优？" class="headerlink" title="什么是调优？"></a>什么是调优？</h4><ol>
+<li>根据需求进行JVM规划和预调优</li>
+<li>优化运行JVM运行环境（慢，卡顿）</li>
+<li>解决JVM运行过程中出现的各种问题(OOM)</li>
+</ol>
+<h3 id="调优，从规划开始"><a href="#调优，从规划开始" class="headerlink" title="调优，从规划开始"></a>调优，从规划开始</h3><ul>
+<li><p>调优，从业务场景开始，没有业务场景的调优都是耍流氓</p>
+</li>
+<li><p>无监控（压力测试，能看到结果），不调优</p>
+</li>
+<li><p>步骤：</p>
+<ol>
+<li>熟悉业务场景（没有最好的垃圾回收器，只有最合适的垃圾回收器）<ol>
+<li>响应时间、停顿时间 [CMS G1 ZGC] （需要给用户作响应）</li>
+<li>吞吐量 = 用户时间 /( 用户时间 + GC时间) [PS]</li>
+</ol>
+</li>
+<li>选择回收器组合</li>
+<li>计算内存需求（经验值）</li>
+<li>选定CPU（越高越好）</li>
+<li>设定年代大小、升级年龄</li>
+<li>设定日志参数<ol>
+<li>-Xloggc:/opt/xxx/logs/xxx-xxx-gc-%t.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 -XX:GCLogFileSize=20M -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCCause</li>
+<li>或者每天产生一个日志文件</li>
+</ol>
+</li>
+<li>观察日志情况</li>
+</ol>
+</li>
+</ul>
+<h3 id="解决JVM运行中的问题"><a href="#解决JVM运行中的问题" class="headerlink" title="解决JVM运行中的问题"></a>解决JVM运行中的问题</h3><ol start="3">
+<li><p>一般是运维团队首先受到报警信息（CPU Memory）</p>
+</li>
+<li><p>top命令观察到问题：内存不断增长 CPU占用率居高不下</p>
+</li>
+<li><p>top -Hp 观察进程中的线程，哪个线程CPU和内存占比高</p>
+</li>
+<li><p>jps定位具体java进程<br>jstack 定位线程状况，重点关注：WAITING BLOCKED<br>eg.<br>waiting on &lt;0x0000000088ca3310&gt; (a java.lang.Object)<br>假如有一个进程中100个线程，很多线程都在waiting on <xx> ，一定要找到是哪个线程持有这把锁<br>怎么找？搜索jstack dump的信息，找<xx> ，看哪个线程持有这把锁RUNNABLE<br>作业：1：写一个死锁程序，用jstack观察 2 ：写一个程序，一个线程持有锁不释放，其他线程等待</xx></xx></p>
+</li>
+<li><p>为什么阿里规范里规定，线程的名称（尤其是线程池）都要写有意义的名称<br>怎么样自定义线程池里的线程名称？（自定义ThreadFactory）</p>
+</li>
+<li><p>jinfo pid </p>
+</li>
+<li><p>jstat -gc 动态观察gc情况 / 阅读GC日志发现频繁GC / arthas观察 / jconsole/jvisualVM/ Jprofiler（最好用）<br>jstat -gc 4655 500 : 每个500个毫秒打印GC的情况<br>如果面试官问你是怎么定位OOM问题的？如果你回答用图形界面（错误）<br>1：已经上线的系统不用图形界面用什么？（cmdline arthas）<br>2：图形界面到底用在什么地方？测试！测试的时候进行监控！（压测观察）</p>
+</li>
+<li><p>jmap - histo 4655 | head -20，查找有多少对象产生</p>
+</li>
+<li><p>jmap -dump:format=b,file=xxx pid ：<br>线上系统，内存特别大，jmap执行期间会对进程产生很大影响，甚至卡顿（电商不适合）<br>1：设定了参数HeapDump，OOM的时候会自动产生堆转储文件<br>2：<font color="red">很多服务器备份（高可用），停掉这台服务器对其他服务器不影响</font><br>3：在线定位(一般小点儿公司用不到)</p>
+</li>
+<li><p>java -Xms20M -Xmx20M -XX:+UseParallelGC -XX:+HeapDumpOnOutOfMemoryError com.mashibing.jvm.gc.T15_FullGC_Problem01</p>
+</li>
+<li><p>使用MAT / jhat /jvisualvm 进行dump文件分析<br>Jhat参考资料：<a href="https://www.cnblogs.com/baihuitestsoftware/articles/6406271.html" target="_blank" rel="noopener">https://www.cnblogs.com/baihuitestsoftware/articles/6406271.html</a><br>jhat -J-mx512M xxx.dump<br><a href="http://192.168.17.11:7000" target="_blank" rel="noopener">http://192.168.17.11:7000</a><br>拉到最后：找到对应链接<br>可以使用OQL查找特定问题对象</p>
+</li>
+</ol>
+<h4 id="arthas在线排查工具"><a href="#arthas在线排查工具" class="headerlink" title="arthas在线排查工具"></a>arthas在线排查工具</h4><ul>
+<li>为什么需要在线排查？<br> 在生产上我们经常会碰到一些不好排查的问题，例如线程安全问题，用最简单的threaddump或者heapdump不好查到问题原因。为了排查这些问题，有时我们会临时加一些日志，比如在一些关键的函数里打印出入参，然后重新打包发布，如果打了日志还是没找到问题，继续加日志，重新打包发布。对于上线流程复杂而且审核比较严的公司，从改代码到上线需要层层的流转，会大大影响问题排查的进度。 </li>
+<li>观察jvm信息</li>
+<li>thread定位线程问题</li>
+<li>dashboard 观察系统情况</li>
+<li>heapdump + jhat分析</li>
+<li>jad反编译<br> 动态代理生成类的问题定位<br> 第三方的类（观察代码）<br> 版本问题（确定自己最新提交的版本是不是被使用）  </li>
+<li>redefine 热替换<br> 目前有些限制条件：只能改方法实现（方法已经运行完成），不能改方法名， 不能改属性</li>
+<li>sc  - search class</li>
+<li>watch  - watch method</li>
+<li>没有包含的功能：jmap</li>
+</ul>
+<h3 id="GC算法的基础概念"><a href="#GC算法的基础概念" class="headerlink" title="GC算法的基础概念"></a>GC算法的基础概念</h3><ul>
+<li>Card Table<br>由于做YGC时，需要扫描整个OLD区，效率非常低，所以JVM设计了CardTable， 如果一个OLD区CardTable中有对象指向Y区，就将它设为Dirty，下次扫描时，只需要扫描Dirty Card<br>在结构上，Card Table用BitMap来实现</li>
+</ul>
+<h3 id="GC常用参数"><a href="#GC常用参数" class="headerlink" title="GC常用参数"></a>GC常用参数</h3><ul>
+<li>-Xmn -Xms -Xmx -Xss<br>年轻代 最小堆 最大堆 栈空间</li>
+<li>-XX:+UseTLAB<br>使用TLAB，默认打开</li>
+<li>-XX:+PrintTLAB<br>打印TLAB的使用情况</li>
+<li>-XX:TLABSize<br>设置TLAB大小</li>
+<li>-XX:+DisableExplictGC<br>System.gc()不管用 ，FGC</li>
+<li>-XX:+PrintGC</li>
+<li>-XX:+PrintGCDetails</li>
+<li>-XX:+PrintHeapAtGC</li>
+<li>-XX:+PrintGCTimeStamps</li>
+<li>-XX:+PrintGCApplicationConcurrentTime (低) 打印应用程序时间</li>
+<li>-XX:+PrintGCApplicationStoppedTime （低） 打印暂停时长</li>
+<li>-XX:+PrintReferenceGC （重要性低）记录回收了多少种不同引用类型的引用</li>
+<li>-verbose:class 类加载详细过程</li>
+<li>-XX:+PrintVMOptions</li>
+<li>-XX:+PrintFlagsFinal  -XX:+PrintFlagsInitial  必须会用</li>
+<li>-Xloggc:/opt/log/gc.log</li>
+<li>-XX:MaxTenuringThreshold 升代年龄，最大值15</li>
+<li>锁自旋次数 -XX:PreBlockSpin 热点代码检测参数-XX:CompileThreshold 逃逸分析 标量替换 这些不建议设置</li>
+</ul>
+<h3 id="Parallel常用参数"><a href="#Parallel常用参数" class="headerlink" title="Parallel常用参数"></a>Parallel常用参数</h3><ul>
+<li>-XX:SurvivorRatio</li>
+<li>-XX:PreTenureSizeThreshold  大对象到底多大</li>
+<li>-XX:+ParallelGCThreads 并行收集器的线程数，同样适用于CMS，一般设为和CPU核数相同</li>
+<li>-XX:+UseAdaptiveSizePolicy 自动选择各区大小比例</li>
+</ul>
+<h3 id="CMS常用参数"><a href="#CMS常用参数" class="headerlink" title="CMS常用参数"></a>CMS常用参数</h3><ul>
+<li>-XX:+UseConcMarkSweepGC</li>
+<li>-XX:ParallelCMSThreads CMS线程数量</li>
+<li>-XX:CMSInitiatingOccupancyFraction<br>使用多少比例的老年代后开始CMS收集，默认是68%(近似值)，如果频繁发生SerialOld卡顿，应该调小，（频繁CMS回收）</li>
+<li>-XX:+UseCMSCompactAtFullCollection<br>在FGC时进行压缩</li>
+<li>-XX:CMSFullGCsBeforeCompaction<br>多少次FGC之后进行压缩</li>
+<li>-XX:+CMSClassUnloadingEnabled</li>
+<li>-XX:CMSInitiatingPermOccupancyFraction<br>达到什么比例时进行Perm回收</li>
+<li>GCTimeRatio<br>设置GC时间占用程序运行时间的百分比</li>
+<li>-XX:MaxGCPauseMillis<br>停顿时间，是一个建议时间，GC会尝试用各种手段达到这个时间，比如减小年轻代</li>
+</ul>
+<h3 id="G1常用参数"><a href="#G1常用参数" class="headerlink" title="G1常用参数"></a>G1常用参数</h3><ul>
+<li>-XX:+UseG1GC</li>
+<li>-XX:MaxGCPauseMillis<br>建议值，G1会尝试调整Young区的块数来达到这个值</li>
+<li>-XX:GCPauseIntervalMillis<br>设置停顿间隔时间</li>
+<li>-XX:+G1HeapRegionSize<br>分区大小，建议逐渐增大该值，1 2 4 8 16 32。<br>随着size增加，垃圾的存活时间更长，GC间隔更长，但每次GC的时间也会更长<br>ZGC做了改进（动态区块大小）</li>
+<li>G1NewSizePercent<br>新生代最小比例，默认为5%</li>
+<li>G1MaxNewSizePercent<br>新生代最大比例，默认为60%</li>
+<li>GCTimeRatio<br>GC时间建议比例，G1会根据这个值调整堆空间</li>
+<li>ConcGCThreads<br>线程数量</li>
+<li>InitiatingHeapOccupancyPercent<br>启动G1的堆空间占用比例</li>
+</ul>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
+<li><a href="https://docs.oracle.com/en/java/javase/13/" target="_blank" rel="noopener">https://docs.oracle.com/en/java/javase/13/</a></li>
+<li><a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html</a></li>
+<li><a href="http://java.sun.com/javase/technologies/hotspot/vmoptions.jsp" target="_blank" rel="noopener">http://java.sun.com/javase/technologies/hotspot/vmoptions.jsp</a></li>
+<li>JVM调优参考文档：<a href="https://docs.oracle.com/en/java/javase/13/gctuning/introduction-garbage-collection-tuning.html#GUID-8A443184-7E07-4B71-9777-4F12947C8184" target="_blank" rel="noopener">https://docs.oracle.com/en/java/javase/13/gctuning/introduction-garbage-collection-tuning.html#GUID-8A443184-7E07-4B71-9777-4F12947C8184</a></li>
+<li><a href="https://www.oracle.com/technical-resources/articles/java/g1gc.html" target="_blank" rel="noopener">https://www.oracle.com/technical-resources/articles/java/g1gc.html</a> </li>
+<li>Arthas：<a href="https://github.com/alibaba/arthas">https://github.com/alibaba/arthas</a><ol>
+<li>启动arthas java -jar arthas-boot.jar</li>
+<li>绑定java进程</li>
+<li>dashboard命令观察系统整体情况</li>
+<li>help 查看帮助</li>
+<li>help xx 查看具体命令帮助</li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JVM ClassLoader</title>
     <url>/2020/02/22/ClassLoader/</url>
     <content><![CDATA[<h4 id="类加载-初始化"><a href="#类加载-初始化" class="headerlink" title="类加载-初始化"></a>类加载-初始化</h4><p><img src="https://casparthh.github.io/2020/02/22/ClassLoader/ClassLoader.png" alt="JVM ClassLoader"></p>
@@ -321,14 +584,6 @@
       </categories>
       <tags>
         <tag>Angular</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>nodejs入门</title>
-    <url>/2020/02/10/nodejs%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h1 id="nodejs-入门"><a href="#nodejs-入门" class="headerlink" title="nodejs 入门"></a>nodejs 入门</h1>]]></content>
-      <tags>
-        <tag>nodejs</tag>
       </tags>
   </entry>
   <entry>
