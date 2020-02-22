@@ -16,7 +16,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://casparthh.github.io/2020/02/22/GC/gc.png">
 <meta property="article:published_time" content="2020-02-22T08:20:37.000Z">
-<meta property="article:modified_time" content="2020-02-22T08:29:32.613Z">
+<meta property="article:modified_time" content="2020-02-22T08:30:53.326Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -93,7 +93,7 @@
           
               <div id="toc" class="toc-article">
                   <strong class="toc-title">文章目录</strong>
-                  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#GC的基础知识"><span class="toc-number">1.</span> <span class="toc-text">GC的基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-什么是垃圾"><span class="toc-number">1.1.</span> <span class="toc-text">1.什么是垃圾</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-如何定位垃圾"><span class="toc-number">1.2.</span> <span class="toc-text">2.如何定位垃圾</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-常见的垃圾回收算法"><span class="toc-number">1.3.</span> <span class="toc-text">3.常见的垃圾回收算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-JVM内存分代模型（用于分代垃圾回收算法）"><span class="toc-number">1.4.</span> <span class="toc-text">4.JVM内存分代模型（用于分代垃圾回收算法）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-常见的垃圾回收器"><span class="toc-number">1.5.</span> <span class="toc-text">5.常见的垃圾回收器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-常见垃圾回收器组合参数设定：-1-8"><span class="toc-number">1.6.</span> <span class="toc-text">6.常见垃圾回收器组合参数设定：(1.8)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JVM调优第一步，了解JVM常用命令行参数"><span class="toc-number">1.7.</span> <span class="toc-text">JVM调优第一步，了解JVM常用命令行参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#调优前的基础概念："><span class="toc-number">1.8.</span> <span class="toc-text">调优前的基础概念：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是调优？"><span class="toc-number">1.9.</span> <span class="toc-text">什么是调优？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调优，从规划开始"><span class="toc-number">2.</span> <span class="toc-text">调优，从规划开始</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决JVM运行中的问题"><span class="toc-number">3.</span> <span class="toc-text">解决JVM运行中的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#arthas在线排查工具"><span class="toc-number">3.1.</span> <span class="toc-text">arthas在线排查工具</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GC算法的基础概念"><span class="toc-number">4.</span> <span class="toc-text">GC算法的基础概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GC常用参数"><span class="toc-number">5.</span> <span class="toc-text">GC常用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Parallel常用参数"><span class="toc-number">6.</span> <span class="toc-text">Parallel常用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMS常用参数"><span class="toc-number">7.</span> <span class="toc-text">CMS常用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#G1常用参数"><span class="toc-number">8.</span> <span class="toc-text">G1常用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考资料"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#GC的基础知识"><span class="toc-number">1.</span> <span class="toc-text">GC的基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-什么是垃圾"><span class="toc-number">1.1.</span> <span class="toc-text">1.什么是垃圾</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-如何定位垃圾"><span class="toc-number">1.2.</span> <span class="toc-text">2.如何定位垃圾</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-常见的垃圾回收算法"><span class="toc-number">1.3.</span> <span class="toc-text">3.常见的垃圾回收算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-JVM内存分代模型（用于分代垃圾回收算法）"><span class="toc-number">1.4.</span> <span class="toc-text">4.JVM内存分代模型（用于分代垃圾回收算法）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-常见的垃圾回收器"><span class="toc-number">1.5.</span> <span class="toc-text">5.常见的垃圾回收器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-常见垃圾回收器组合参数设定：-1-8"><span class="toc-number">1.6.</span> <span class="toc-text">6.常见垃圾回收器组合参数设定：(1.8)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-JVM调优第一步，了解JVM常用命令行参数"><span class="toc-number">1.7.</span> <span class="toc-text">7.JVM调优第一步，了解JVM常用命令行参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-调优前的基础概念："><span class="toc-number">1.8.</span> <span class="toc-text">8. 调优前的基础概念：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-什么是调优？"><span class="toc-number">1.9.</span> <span class="toc-text">9. 什么是调优？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调优，从规划开始"><span class="toc-number">2.</span> <span class="toc-text">调优，从规划开始</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决JVM运行中的问题"><span class="toc-number">3.</span> <span class="toc-text">解决JVM运行中的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#arthas在线排查工具"><span class="toc-number">3.1.</span> <span class="toc-text">arthas在线排查工具</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GC算法的基础概念"><span class="toc-number">4.</span> <span class="toc-text">GC算法的基础概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GC常用参数"><span class="toc-number">5.</span> <span class="toc-text">GC常用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Parallel常用参数"><span class="toc-number">6.</span> <span class="toc-text">Parallel常用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMS常用参数"><span class="toc-number">7.</span> <span class="toc-text">CMS常用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#G1常用参数"><span class="toc-number">8.</span> <span class="toc-text">G1常用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考资料"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol>
               </div>
           
         <h3 id="GC的基础知识"><a href="#GC的基础知识" class="headerlink" title="GC的基础知识"></a>GC的基础知识</h3><h4 id="1-什么是垃圾"><a href="#1-什么是垃圾" class="headerlink" title="1.什么是垃圾"></a>1.什么是垃圾</h4><p>没有任何引用指向的一个对象或者多个对象（循环引用）</p>
@@ -144,12 +144,9 @@
 <ol>
 <li>尽量减少FGC</li>
 <li>MinorGC = YGC</li>
-<li>MajorGC = FGC</li>
+<li>MajorGC = FGC<h4 id="5-常见的垃圾回收器"><a href="#5-常见的垃圾回收器" class="headerlink" title="5.常见的垃圾回收器"></a>5.常见的垃圾回收器</h4><img src="https://casparthh.github.io/2020/02/22/GC/gc.png" alt="常用垃圾回收器"></li>
 </ol>
 </li>
-</ol>
-<h4 id="5-常见的垃圾回收器"><a href="#5-常见的垃圾回收器" class="headerlink" title="5.常见的垃圾回收器"></a>5.常见的垃圾回收器</h4><p><img src="https://casparthh.github.io/2020/02/22/GC/gc.png" alt="常用垃圾回收器"></p>
-<ol>
 <li><p>JDK诞生 Serial追随，为提高效率，诞生了PS，为了配合CMS，诞生了PN，CMS是1.4版本后期引入，CMS是里程碑式的GC，它开启了并发回收的过程，并发垃圾回收是因为无法忍受STW。</p>
 </li>
 <li><p>Serial：适用年轻代，串行回收</p>
@@ -198,7 +195,7 @@
 <li>-XX:+UseParallelOldGC = Parallel Scavenge + Parallel Old</li>
 <li>-XX:+UseG1GC = G1</li>
 </ul>
-<h4 id="JVM调优第一步，了解JVM常用命令行参数"><a href="#JVM调优第一步，了解JVM常用命令行参数" class="headerlink" title="JVM调优第一步，了解JVM常用命令行参数"></a>JVM调优第一步，了解JVM常用命令行参数</h4><ul>
+<h4 id="7-JVM调优第一步，了解JVM常用命令行参数"><a href="#7-JVM调优第一步，了解JVM常用命令行参数" class="headerlink" title="7.JVM调优第一步，了解JVM常用命令行参数"></a>7.JVM调优第一步，了解JVM常用命令行参数</h4><ul>
 <li><p>JVM的命令行参数参考：<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html</a></p>
 </li>
 <li><p>HotSpot参数分类</p>
@@ -215,13 +212,13 @@
 </ol>
 </li>
 </ul>
-<h4 id="调优前的基础概念："><a href="#调优前的基础概念：" class="headerlink" title="调优前的基础概念："></a>调优前的基础概念：</h4><ol>
+<h4 id="8-调优前的基础概念："><a href="#8-调优前的基础概念：" class="headerlink" title="8. 调优前的基础概念："></a>8. 调优前的基础概念：</h4><ol>
 <li>吞吐量：吞吐量（CPU用于运行用户代码的时间与CPU消耗的总时间的比值）用户代码时间 /（用户代码执行时间 + 垃圾回收时间）</li>
 <li>响应时间：STW越短，响应时间越好</li>
 </ol>
 <p>所谓调优，首先确定，追求啥？吞吐量优先，还是响应时间优先？还是在满足一定的响应时间的情况下，要求达到多大的吞吐量…</p>
 <p>问题：<br>科学计算，吞吐量。数据挖掘，thrput。吞吐量优先的一般：（PS + PO）<br>响应时间：网站 GUI API （1.8 G1）  </p>
-<h4 id="什么是调优？"><a href="#什么是调优？" class="headerlink" title="什么是调优？"></a>什么是调优？</h4><ol>
+<h4 id="9-什么是调优？"><a href="#9-什么是调优？" class="headerlink" title="9. 什么是调优？"></a>9. 什么是调优？</h4><ol>
 <li>根据需求进行JVM规划和预调优</li>
 <li>优化运行JVM运行环境（慢，卡顿）</li>
 <li>解决JVM运行过程中出现的各种问题(OOM)</li>
