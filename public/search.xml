@@ -243,6 +243,9 @@
 </li>
 </ol>
 ]]></content>
+      <categories>
+        <category>技术笔记</category>
+      </categories>
       <tags>
         <tag>JVM</tag>
       </tags>
@@ -356,6 +359,9 @@
 </li>
 </ol>
 ]]></content>
+      <categories>
+        <category>技术笔记</category>
+      </categories>
       <tags>
         <tag>JVM</tag>
       </tags>
@@ -365,28 +371,12 @@
     <url>/2020/02/22/ClassLoader/</url>
     <content><![CDATA[<p><img src="https://casparthh.github.io/2020/02/22/ClassLoader/ClassLoader.png" alt="JVM ClassLoader"></p>
 ]]></content>
+      <categories>
+        <category>技术笔记</category>
+      </categories>
       <tags>
         <tag>JVM</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/02/16/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>多线程与高并发</title>
@@ -548,6 +538,9 @@
 <li>(常用)SleepingWaitStrategy:sleep</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>技术笔记</category>
+      </categories>
       <tags>
         <tag>Thread</tag>
       </tags>
@@ -614,6 +607,9 @@
 <li>TERMINATED:整个线程全部结束;</li>
 </ol>
 ]]></content>
+      <categories>
+        <category>技术笔记</category>
+      </categories>
       <tags>
         <tag>Thread</tag>
       </tags>
@@ -690,6 +686,9 @@
 <h5 id="TransferQueue"><a href="#TransferQueue" class="headerlink" title="TransferQueue"></a>TransferQueue</h5><p>TransferQueue传递，实际上是前面这各种各样Queue的一个组合，它可以给线程来传递任务，以此同时不像是SynchronousQueue只能传递一个，TransferQueue做成列表可以传好多个。比较牛X的是它添加了一个方法叫transfer，如果我们用put就相当于一个线程来了往里一装它就走了。transfer就是装完在这等着，阻塞等有人把它取走我这个线程才回去干我自己的事情。<br>一般使用场景:是我做了一件事情，我这个事情要求有一个结果，有了这个结果之后我可以继续进行我下面的这个事情的时候，比方说 我付了钱，这个订单我付账完成了，但是我一直要等这个付账的结果完成才可以给客户反馈。  </p>
 <h4 id="PriorityQueue"><a href="#PriorityQueue" class="headerlink" title="PriorityQueue"></a>PriorityQueue</h4><p>PriorityQueue特点是它内部你往里装的时候并不是按顺序往里装的，而是内部进行了一个排序。</p>
 ]]></content>
+      <categories>
+        <category>技术笔记</category>
+      </categories>
       <tags>
         <tag>Thread</tag>
         <tag>容器</tag>
