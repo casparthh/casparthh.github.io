@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>JVM ClassLoader</title>
+    <url>/2020/02/22/JVM-ClassLoader/</url>
+    <content><![CDATA[<h4 id="类加载-初始化"><a href="#类加载-初始化" class="headerlink" title="类加载-初始化"></a>类加载-初始化</h4><p>![JVM ClassLoader](<a href="https://casparthh.github.io/2020/02/16/thread/JVM" target="_blank" rel="noopener">https://casparthh.github.io/2020/02/16/thread/JVM</a> Class Loading.png)</p>
+]]></content>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2020/02/16/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
