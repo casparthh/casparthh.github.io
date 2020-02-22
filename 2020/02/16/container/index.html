@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Java 容器 | 永远晴天的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="并发容器容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 容器">
+<meta property="og:url" content="https://github.com/casparthh/casparthh.github.io/2020/02/16/container/index.html">
+<meta property="og:site_name" content="永远晴天的博客">
+<meta property="og:description" content="并发容器容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-16T14:05:29.000Z">
+<meta property="article:modified_time" content="2020-02-22T13:16:50.204Z">
+<meta property="article:author" content="Caspar Tan">
+<meta property="article:tag" content="Thread">
+<meta property="article:tag" content="Collection">
+<meta property="article:tag" content="Map">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">永远晴天的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">面朝大海，春暖花开</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">主页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/tags">标签</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-container" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/16/container/" class="article-date">
+  <time datetime="2020-02-16T14:05:29.000Z" itemprop="datePublished">2020-02-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java 容器
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          <!-- Table of Contents -->
+          
+              <div id="toc" class="toc-article">
+                  <strong class="toc-title">文章目录</strong>
+                  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#并发容器"><span class="toc-number">1.</span> <span class="toc-text">并发容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Set"><span class="toc-number">1.1.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Queue"><span class="toc-number">1.2.</span> <span class="toc-text">Queue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ArrayList-amp-LinkedList"><span class="toc-number">1.3.</span> <span class="toc-text">ArrayList &amp; LinkedList</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vector-amp-HashTable"><span class="toc-number">1.4.</span> <span class="toc-text">Vector &amp; HashTable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HashMap"><span class="toc-number">1.5.</span> <span class="toc-text">HashMap</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Collections-synchronizedHashMap"><span class="toc-number">1.5.1.</span> <span class="toc-text">Collections.synchronizedHashMap</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ConcurrentMap-接口"><span class="toc-number">1.6.</span> <span class="toc-text">ConcurrentMap 接口</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ConcurrentHashMap-amp-ConcurrentSkipListMap"><span class="toc-number">1.6.1.</span> <span class="toc-text">ConcurrentHashMap &amp; ConcurrentSkipListMap</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CopyOnWrite"><span class="toc-number">1.7.</span> <span class="toc-text">CopyOnWrite</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#CopyOnWriteArrayList-amp-CopyOnWriteArraySet-amp-CopyOnWriteMap"><span class="toc-number">1.7.0.1.</span> <span class="toc-text">CopyOnWriteArrayList &amp; CopyOnWriteArraySet &amp; CopyOnWriteMap</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BlockingQueue-接口"><span class="toc-number">1.8.</span> <span class="toc-text">BlockingQueue 接口</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#LinkedBlockingQueue"><span class="toc-number">1.8.1.</span> <span class="toc-text">LinkedBlockingQueue</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ArrayBlockingqueue"><span class="toc-number">1.8.2.</span> <span class="toc-text">ArrayBlockingqueue</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DelayQueue"><span class="toc-number">1.8.3.</span> <span class="toc-text">DelayQueue</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SynchronousQueue"><span class="toc-number">1.8.4.</span> <span class="toc-text">SynchronousQueue</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#TransferQueue"><span class="toc-number">1.8.5.</span> <span class="toc-text">TransferQueue</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PriorityQueue"><span class="toc-number">1.9.</span> <span class="toc-text">PriorityQueue</span></a></li></ol></li></ol>
+              </div>
+          
+        <h3 id="并发容器"><a href="#并发容器" class="headerlink" title="并发容器"></a>并发容器</h3><p>容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列</p>
+<a id="more"></a>
+
+<h4 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h4><p>Set 与 List, Queue 的主要区别是不会有重复元素</p>
+<h4 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h4><ul>
+<li><strong>Queue 实现的实际上是一个队列，有进有出，它实现了很多对线程友好的API offer、peek、poll，他的一个子类型叫 BlockingQueue对线程友好的API又添加了put和take，这两个实现了阻塞操作，这个是在其他的List、 Set里面都是没有的。这里面最重要的就是是叫做阻塞队列，它的实现的初衷就是为了线程池、高并发做准备的。</strong></li>
+<li>Queue里面还有一个子接口叫Deque叫双端队列，一般的队列只是从一端往里扔从另一端往外取。 Deque就是说你可以从反方向装从另外一个方向取。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Queue Method</th>
+<th>Equivalent Deque Method</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>add(e)</td>
+<td>addLast(e)</td>
+<td>向队尾插入元素，失败则抛出异常</td>
+</tr>
+<tr>
+<td>offer(e)</td>
+<td>offerLast(e)</td>
+<td>向队尾插入元素，失败则返回false</td>
+</tr>
+<tr>
+<td>remove(e)</td>
+<td>removeFirst(e)</td>
+<td>获取并删除首元素，失败则抛出异常</td>
+</tr>
+<tr>
+<td>poll(e)</td>
+<td>pollFirst(e)</td>
+<td>获取并删除首元素，失败则返回null</td>
+</tr>
+<tr>
+<td>element(e)</td>
+<td>getFirst(e)</td>
+<td>获取但不删除首元素，失败则抛出异常</td>
+</tr>
+<tr>
+<td>peek(e)</td>
+<td>peekFirst(e)</td>
+<td>获取但不删除首元素，失败则返回null</td>
+</tr>
+</tbody></table>
+<h4 id="ArrayList-amp-LinkedList"><a href="#ArrayList-amp-LinkedList" class="headerlink" title="ArrayList &amp; LinkedList"></a>ArrayList &amp; LinkedList</h4><ul>
+<li>没有加锁，线程不安全。  </li>
+<li>ArrayList是基于数组实现的，LinkedList是基于双链表实现的。</li>
+<li>LinkedList还实现了Deque接口，Deque接口是Queue接口的子接口，它代表一个双向队列，因此LinkedList可以作为双向对列。</li>
+<li>因为Array是基于索引(index)的数据结构，它使用索引在数组中搜索和读取数据是很快的，可以直接返回数组中index位置的元素，因此在随机访问集合元素上有较好的性能。Array获取数据的时间复杂度是O(1),但是要插入、删除数据却是开销很大的，因为这需要移动数组中插入位置之后的的所有元素。</li>
+<li>相对于ArrayList，LinkedList的随机访问集合元素时性能较差，因为需要在双向列表中找到要index的位置，再返回；但在插入，删除操作是更快的。</li>
+</ul>
+<h4 id="Vector-amp-HashTable"><a href="#Vector-amp-HashTable" class="headerlink" title="Vector &amp; HashTable"></a>Vector &amp; HashTable</h4><p>最开始java1.0容器里只有两个，第一个叫Vector可以单独的往里扔，还有一个是Hashtable是可以一对一对往里扔的。Vector相对于实现了List接口，Hashtable实现了Map接口，Vector 和 Hashtable 自带锁所以性能低。</p>
+<h4 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h4><p>HashMap没有锁，线程不安全,他虽然速度比较快，但是多线程时数据会出问题。</p>
+<h5 id="Collections-synchronizedHashMap"><a href="#Collections-synchronizedHashMap" class="headerlink" title="Collections.synchronizedHashMap"></a>Collections.synchronizedHashMap</h5><p>Map&lt;String,String&gt; map = Collections.synchronizedMap(new HashMap&lt;String,String&gt;());<br>用的是SynchronizedMap这个方法，给HashMap我们手动加锁，它的源码自己做了一个Object，然后每次都是SynchronizedObject，严格来讲他和那个Hashtable效率上区别不大。</p>
+<h4 id="ConcurrentMap-接口"><a href="#ConcurrentMap-接口" class="headerlink" title="ConcurrentMap 接口"></a>ConcurrentMap 接口</h4><h5 id="ConcurrentHashMap-amp-ConcurrentSkipListMap"><a href="#ConcurrentHashMap-amp-ConcurrentSkipListMap" class="headerlink" title="ConcurrentHashMap &amp; ConcurrentSkipListMap"></a>ConcurrentHashMap &amp; ConcurrentSkipListMap</h5><p>ConcurrentHashMap是多线程里面真正用的，提高效率主要提高在读上面，由于它往里插的时候内部又做了各种各样的判断，本来是链表的，到8之后又变成了红黑树，然后里面又做了各种各样的 CAS 的判断，所以他往里插的速度是要更低一些的。<br>ConcurrentSkipListMap 通过<strong>跳表</strong>来实现的高并发容器并且这个Map是有排序的;<br>这两个的区别一个是有序的一个是无序的，同时都支持并发的操作</p>
+<h4 id="CopyOnWrite"><a href="#CopyOnWrite" class="headerlink" title="CopyOnWrite"></a>CopyOnWrite</h4><h6 id="CopyOnWriteArrayList-amp-CopyOnWriteArraySet-amp-CopyOnWriteMap"><a href="#CopyOnWriteArrayList-amp-CopyOnWriteArraySet-amp-CopyOnWriteMap" class="headerlink" title="CopyOnWriteArrayList &amp; CopyOnWriteArraySet &amp; CopyOnWriteMap"></a>CopyOnWriteArrayList &amp; CopyOnWriteArraySet &amp; CopyOnWriteMap</h6><p>写时复制，当Write的时候我们要进行复制。这个原码非常简单，当我们需要往里面加元素的时候，把里面的元素得复制出来，再添加一个位置存放新元素。 而且在写的时个有加锁，但在读的时候没有锁。在写的时候特别少，读的时候很多的情况下，在这个时候就可以考虑CopyOnWrite这种方式来提高效率。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;CopyOnWriteMap.put方法</span><br><span class="line">public V put(K key, V value) &#123;</span><br><span class="line">    synchronized(this) &#123;</span><br><span class="line">        Map&lt;K, V&gt; newMap &#x3D; new HashMap(this.internalMap);</span><br><span class="line">        V val &#x3D; newMap.put(key, value);</span><br><span class="line">        this.internalMap &#x3D; newMap;</span><br><span class="line">        return val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;CopyOnWriteArrayList.add</span><br><span class="line">public boolean add(E e) &#123;</span><br><span class="line">    synchronized (lock) &#123;</span><br><span class="line">        Object[] es &#x3D; getArray();</span><br><span class="line">        int len &#x3D; es.length;</span><br><span class="line">        es &#x3D; Arrays.copyOf(es, len + 1);</span><br><span class="line">        es[len] &#x3D; e;</span><br><span class="line">        setArray(es);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;CopyOnWriteArraySet 中实际是由CopyOnWriteArrayList存放的，在add的时候直接调用的CopyOnWriteArrayList.addIfAbsent(...)</span><br></pre></td></tr></table></figure>
+
+<h4 id="BlockingQueue-接口"><a href="#BlockingQueue-接口" class="headerlink" title="BlockingQueue 接口"></a>BlockingQueue 接口</h4><p>BlockingQueue的概念重点是在Blocking上，Blocking阻塞，Queue队列，是阻塞队列。<br>BlockingQueue在 Queue的基础上又添加了两个方法，这两个方法一个叫put，一个叫take。这两个方法是真真正正的实现了阻塞。put往里装如果满了的话我这个线程会阻塞住，take往外取如果空了的话线程会阻塞住。所 以这个BlockingQueue就实现了生产者消费者里面的那个容器。</p>
+<h5 id="LinkedBlockingQueue"><a href="#LinkedBlockingQueue" class="headerlink" title="LinkedBlockingQueue"></a>LinkedBlockingQueue</h5><p>用链表实现的BlockingQueue，是一个无界队列</p>
+<h5 id="ArrayBlockingqueue"><a href="#ArrayBlockingqueue" class="headerlink" title="ArrayBlockingqueue"></a>ArrayBlockingqueue</h5><p>ArrayBlockingQueue是有界的，可以指定它一个固定的值10，它容器就是10，那么当你往里面扔容器的时候，一旦他满了这个put方法就会阻塞住。然后你可以看看用add方法满了之后他会报异常。 offer用返回值来判断到底加没加成功，offer还有另外一个写法你可以指定一个时间尝试着往里面加1秒钟，1秒钟之后如果加不进去它就返回了.</p>
+<h5 id="DelayQueue"><a href="#DelayQueue" class="headerlink" title="DelayQueue"></a>DelayQueue</h5><p>DelayQueue可以实现在时间上的排序，这个DelayQueue能实现按照在里面等待的时间来进行排序。</p>
+<h5 id="SynchronousQueue"><a href="#SynchronousQueue" class="headerlink" title="SynchronousQueue"></a>SynchronousQueue</h5><p>SynchronousQueue容量为0，就是这个东西它不是用来装内容的，SynchronousQueue是专门用来两 个线程之间传内容的，给线程下达任务。<br>这个Queue和其他的很重要的区别就是 你不能往里头装东西，只能用来阻塞式的put调用，要求是前面得有人等着拿这个东西的时候你才可以 往里装，但容量为0，其实说白了就是我要递到另外一个的手里才可以。</p>
+<h5 id="TransferQueue"><a href="#TransferQueue" class="headerlink" title="TransferQueue"></a>TransferQueue</h5><p>TransferQueue传递，实际上是前面这各种各样Queue的一个组合，它可以给线程来传递任务，以此同时不像是SynchronousQueue只能传递一个，TransferQueue做成列表可以传好多个。比较牛X的是它添加了一个方法叫transfer，如果我们用put就相当于一个线程来了往里一装它就走了。transfer就是装完在这等着，阻塞等有人把它取走我这个线程才回去干我自己的事情。<br>一般使用场景:是我做了一件事情，我这个事情要求有一个结果，有了这个结果之后我可以继续进行我下面的这个事情的时候，比方说 我付了钱，这个订单我付账完成了，但是我一直要等这个付账的结果完成才可以给客户反馈。  </p>
+<h4 id="PriorityQueue"><a href="#PriorityQueue" class="headerlink" title="PriorityQueue"></a>PriorityQueue</h4><p>PriorityQueue特点是它内部你往里装的时候并不是按顺序往里装的，而是内部进行了一个排序。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/16/container/" data-id="ck6xmwqkm0002rxc9an294m4v" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Collection/" rel="tag">Collection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Map/" rel="tag">Map</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/16/ThreadPool/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          线程池
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/10/Angular%E5%85%A5%E9%97%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Angular入门</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/Collection/" style="font-size: 10px;">Collection</a> <a href="/tags/JVM/" style="font-size: 20px;">JVM</a> <a href="/tags/Map/" style="font-size: 10px;">Map</a> <a href="/tags/Thread/" style="font-size: 20px;">Thread</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/02/22/GC/">GC和GC Tuning</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/22/jmm/">内存模型 JMM</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/22/ClassLoader/">类加载-初始化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/16/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/16/thread/">多线程与高并发</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Caspar Tan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+  <a id="rocket" href="#top" class="show"></a>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/tags" class="mobile-nav-link">标签</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
