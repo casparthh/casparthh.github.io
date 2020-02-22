@@ -216,12 +216,14 @@
 </li>
 </ul>
 <h6 id="volatile的实现细节"><a href="#volatile的实现细节" class="headerlink" title="volatile的实现细节"></a>volatile的实现细节</h6><ol>
-<li><p>字节码层面</p>
+<li>字节码层面</li>
+</ol>
 <ul>
 <li>ACC_VOLATILE</li>
 </ul>
-</li>
-<li><p>JVM层面, Volatile内存区的读写都加屏障</p>
+<ol start="2">
+<li>JVM层面, Volatile内存区的读写都加屏障</li>
+</ol>
 <ul>
 <li>StoreStoreBarrier</li>
 <li>volatile 写操作</li>
@@ -230,21 +232,19 @@
 <li>volatile 读操作</li>
 <li>LoadStoreBarrier</li>
 </ul>
-</li>
-</ol>
 <h6 id="synchronized实现细节"><a href="#synchronized实现细节" class="headerlink" title="synchronized实现细节"></a>synchronized实现细节</h6><ol>
-<li><p>字节码层面</p>
+<li>字节码层面</li>
+</ol>
 <ul>
 <li>ACC_SYNCHRONIZED</li>
 <li>monitorenter monitorexit</li>
 </ul>
-</li>
-<li><p>JVM层面</p>
+<ol start="2">
+<li>JVM层面</li>
+</ol>
 <ul>
 <li>C C++ 调用了操作系统提供的同步机制</li>
 </ul>
-</li>
-</ol>
 
       
     </div>
