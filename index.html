@@ -271,7 +271,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>线程: 作为一个进程里面最小的执行单元它就叫一个线程，用简单的话讲一个程序里不同的执行路径就叫做一个线程</p>
-<h3 id="一、创建线程的几种方式："><a href="#一、创建线程的几种方式：" class="headerlink" title="一、创建线程的几种方式："></a>一、创建线程的几种方式：</h3><h4 id="1-继承Thread，并重写该类的run方法"><a href="#1-继承Thread，并重写该类的run方法" class="headerlink" title="1. 继承Thread，并重写该类的run方法"></a>1. 继承Thread，并重写该类的run方法</h4>
+<h3 id="一、创建线程的几种方式："><a href="#一、创建线程的几种方式：" class="headerlink" title="一、创建线程的几种方式："></a>一、创建线程的几种方式：</h3><ol>
+<li><p>继承Thread，并重写该类的run方法</p></li></ol>
         
           <p class="article-more-link">
             <a href="/2020/02/16/thread/#more">阅读更多</a>
@@ -315,8 +316,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>线程: 作为一个进程里面最小的执行单元它就叫一个线程，用简单的话讲一个程序里不同的执行路径就叫做一个线程</p>
-<h4 id="一、创建线程的几种方式："><a href="#一、创建线程的几种方式：" class="headerlink" title="一、创建线程的几种方式："></a>一、创建线程的几种方式：</h4><h6 id="1-继承Thread，并重写该类的run方法"><a href="#1-继承Thread，并重写该类的run方法" class="headerlink" title="1. 继承Thread，并重写该类的run方法"></a>1. 继承Thread，并重写该类的run方法</h6>
+        <h6 id="Executor"><a href="#Executor" class="headerlink" title="Executor"></a>Executor</h6><p>执行者，是一个接口类，他有一个方法叫执行，那么执行的东西是 Runnable。</p>
+<h6 id="ExecutorService"><a href="#ExecutorService" class="headerlink" title="ExecutorService"></a>ExecutorService</h6><p>是从Executor继承，除了去实现Executor可以去执行一个任务之外，还完善了整个任务执行器的一个生命周期，就拿线程池来举例子，一个线程池里面一堆的线程就是一堆的工人，执行完一个任务之后我这个线程怎么结束啊；<br>线程池定义了这样一些个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">void shutdown();&#x2F;&#x2F;结束</span><br><span class="line">List&lt;Runnable&gt; shutdownNow();&#x2F;&#x2F;马上结束</span><br><span class="line">boolean isShutdown();&#x2F;&#x2F;是否结束了</span><br><span class="line">boolean isTerminated();&#x2F;&#x2F;是不是整体都执行完了</span><br><span class="line">boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;&#x2F;&#x2F;等着结束，等多长时间，时间到了还不结束的话他 就返回false</span><br><span class="line">&lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);</span><br><span class="line">Future&lt;?&gt; submit(Runnable task);</span><br><span class="line">List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks) throws InterruptedException;</span><br><span class="line">&lt;T&gt; T invokeAny(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks) throws InterruptedException, ExecutionException;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
         
           <p class="article-more-link">
             <a href="/2020/02/16/ThreadPool/#more">阅读更多</a>
