@@ -15,7 +15,7 @@
 <meta property="og:description" content="CPU和内存的交互在计算机中，CPU和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。 在多核CPU中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。 越靠近CPU的缓存越快也越小。所以L1缓存(一级缓存)很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍然更大，更">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-22T08:20:37.000Z">
-<meta property="article:modified_time" content="2020-02-22T12:32:35.102Z">
+<meta property="article:modified_time" content="2020-02-22T12:36:05.798Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -142,7 +142,7 @@
 <p>设想消费者更新了head的值。缓存中的值和内存中的值都被更新了，而其他所有存储head的缓存行都会都会失效。请记住我们必须以整个缓存行作为单位来处理，不能只把head标记为无效。<br>现在如果一些正在其他内核中运行的进程只是想读tail的值，整个缓存行需要从主内存重新读取。那么一个和你的消费者无关的线程读一个和head无关的值，它被缓存未命中给拖慢了。</p>
 <h3 id="乱序问题"><a href="#乱序问题" class="headerlink" title="乱序问题"></a>乱序问题</h3><p>CPU为了提高指令执行效率，会在一条指令执行过程中（比如去内存读数据（慢100倍）），去同时执行另一条指令，前提是，两条指令没有依赖关系。</p>
 <h3 id="硬件层数据一致性"><a href="#硬件层数据一致性" class="headerlink" title="硬件层数据一致性"></a>硬件层数据一致性</h3><p>MESI(Modified Exclusive Shared Or Invalid)–CPU缓存一致性协议, 是一种广泛使用的支持写回策略的缓存一致性协议。</p>
-<h4 id="MESI协议中的状态"><a href="#MESI协议中的状态" class="headerlink" title="MESI协议中的状态"></a>MESI协议中的状态</h4><p>CPU中每个缓存行（caceh line)使用4种状态进行标记（使用额外的两位(bit)表示):</p>
+<h4 id="MESI协议中的状态"><a href="#MESI协议中的状态" class="headerlink" title="MESI协议中的状态"></a>MESI协议中的状态</h4><p>CPU中每个缓存行（caceh line)使用4种状态进行标记，CPU在每个cache line 额外两位标记四种状态（使用额外的两位(bit)表示):</p>
 <p>M: 被修改（Modified)<br>该缓存行只被缓存在该CPU的缓存中，并且是被修改过的（dirty),即与主存中的数据不一致，该缓存行中的内存需要在未来的某个时间点（允许其它CPU读取请主存中相应内存之前）写回（write back）主存。 当被写回主存之后，该缓存行的状态会变成独享（exclusive)状态。</p>
 <p>E: 独享的（Exclusive)<br>该缓存行只被缓存在该CPU的缓存中，它是未被修改过的（clean)，与主存中数据一致。该状态可以在任何时刻当有其它CPU读取该内存时变成共享状态（shared)。同样地，当CPU修改该缓存行中内容时，该状态可以变成Modified状态。</p>
 <p>S:共享的（Shared)<br>该状态意味着该缓存行可能被多个CPU缓存，并且各个缓存中的数据与主存数据一致（clean)，当有一个CPU修改该缓存行中，其它CPU中该缓存行可以被作废（变成无效状态（Invalid））。</p>
@@ -178,12 +178,18 @@
 <li>JVM层面, Volatile内存区的读写都加屏障</li>
 </ol>
 <ul>
-<li>StoreStoreBarrier</li>
-<li>volatile 写操作</li>
-<li>StoreLoadBarrier</li>
-<li>LoadLoadBarrier</li>
-<li>volatile 读操作</li>
-<li>LoadStoreBarrier</li>
+<li><p>StoreStoreBarrier</p>
+</li>
+<li><p>volatile 写操作</p>
+</li>
+<li><p>StoreLoadBarrier</p>
+</li>
+<li><p>LoadLoadBarrier</p>
+</li>
+<li><p>volatile 读操作</p>
+</li>
+<li><p>LoadStoreBarrier</p>
+</li>
 </ul>
 <h6 id="synchronized实现细节"><a href="#synchronized实现细节" class="headerlink" title="synchronized实现细节"></a>synchronized实现细节</h6><ol>
 <li>字节码层面</li>
