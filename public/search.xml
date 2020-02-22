@@ -165,7 +165,7 @@
 </li>
 <li><p>jmap - histo 4655 | head -20，查找有多少对象产生</p>
 </li>
-<li><p>jmap -dump:format=b,file=xxx pid ：<br>线上系统，内存特别大，jmap执行期间会对进程产生很大影响，甚至卡顿（电商不适合）<br>1：-XX:+HeapDumpOnOutOfMemoryError 设定了参数HeapDump，OOM的时候会自动产生堆转储文件<br>2：很多服务器备份（高可用），停掉这台服务器对其他服务器不影响<br>3：在线定位</p>
+<li><p>jmap -dump:format=b,file=xxx pid ：<br>线上系统，内存特别大，jmap执行期间会对进程产生很大影响，甚至卡顿，<font color="red">线上慎用</font>（电商不适合）<br>1：-XX:+HeapDumpOnOutOfMemoryError 设定了参数HeapDump，OOM的时候会自动产生堆转储文件<br>2：很多服务器备份（高可用），停掉这台服务器对其他服务器不影响<br>3：在线定位</p>
 </li>
 <li><p>使用MAT / jhat /jvisualvm 进行dump文件分析<br>Jhat参考资料：<a href="https://www.cnblogs.com/baihuitestsoftware/articles/6406271.html" target="_blank" rel="noopener">https://www.cnblogs.com/baihuitestsoftware/articles/6406271.html</a><br>jhat -J-mx512M xxx.dump<br><a href="http://192.168.17.11:7000" target="_blank" rel="noopener">http://192.168.17.11:7000</a><br>拉到最后：找到对应链接<br>可以使用OQL查找特定问题对象</p>
 </li>
