@@ -7,15 +7,15 @@
   
   <title>线程池 | 永远晴天的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Executor执行者，是一个接口类，他有一个方法叫执行，那么执行的东西是 Runnable。 ExecutorService是从Executor继承，除了去实现Executor可以去执行一个任务之外，还完善了整个任务执行器的一个生命周期，就拿线程池来举例子，一个线程池里面一堆的线程就是一堆的工人，执行完一个任务之后我这个线程怎么结束啊；线程池定义了这样一些个方法： 12345678910void">
+  <meta name="description" content="Executor执行者，是一个接口类，他有一个方法叫执行，那么执行的东西是 Runnable。 ExecutorService是从Executor继承，除了去实现Executor可以去执行一个任务之外，还完善了整个任务执行器的一个生命周期，就拿线程池来举例子，一个线程池里面一堆的线程就是一堆的工人，执行完一个任务之后我这个线程怎么结束啊；线程池定义了这样一些个方法：  void shutdown(">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线程池">
 <meta property="og:url" content="https://github.com/casparthh/casparthh.github.io/2020/02/16/ThreadPool/index.html">
 <meta property="og:site_name" content="永远晴天的博客">
-<meta property="og:description" content="Executor执行者，是一个接口类，他有一个方法叫执行，那么执行的东西是 Runnable。 ExecutorService是从Executor继承，除了去实现Executor可以去执行一个任务之外，还完善了整个任务执行器的一个生命周期，就拿线程池来举例子，一个线程池里面一堆的线程就是一堆的工人，执行完一个任务之后我这个线程怎么结束啊；线程池定义了这样一些个方法： 12345678910void">
+<meta property="og:description" content="Executor执行者，是一个接口类，他有一个方法叫执行，那么执行的东西是 Runnable。 ExecutorService是从Executor继承，除了去实现Executor可以去执行一个任务之外，还完善了整个任务执行器的一个生命周期，就拿线程池来举例子，一个线程池里面一堆的线程就是一堆的工人，执行完一个任务之后我这个线程怎么结束啊；线程池定义了这样一些个方法：  void shutdown(">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-16T13:05:29.000Z">
-<meta property="article:modified_time" content="2020-02-22T13:53:08.688Z">
+<meta property="article:modified_time" content="2020-02-22T13:54:33.576Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="Thread">
 <meta name="twitter:card" content="summary">
@@ -100,10 +100,18 @@
           
         <h4 id="Executor"><a href="#Executor" class="headerlink" title="Executor"></a>Executor</h4><p>执行者，是一个接口类，他有一个方法叫执行，那么执行的东西是 Runnable。</p>
 <h4 id="ExecutorService"><a href="#ExecutorService" class="headerlink" title="ExecutorService"></a>ExecutorService</h4><p>是从Executor继承，除了去实现Executor可以去执行一个任务之外，还完善了整个任务执行器的一个生命周期，就拿线程池来举例子，一个线程池里面一堆的线程就是一堆的工人，执行完一个任务之后我这个线程怎么结束啊；<br>线程池定义了这样一些个方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">void shutdown();&#x2F;&#x2F;结束</span><br><span class="line">List&lt;Runnable&gt; shutdownNow();&#x2F;&#x2F;马上结束</span><br><span class="line">boolean isShutdown();&#x2F;&#x2F;是否结束了</span><br><span class="line">boolean isTerminated();&#x2F;&#x2F;是不是整体都执行完了</span><br><span class="line">boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;&#x2F;&#x2F;等着结束，等多长时间，时间到了还不结束的话他 就返回false</span><br><span class="line">&lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);</span><br><span class="line">Future&lt;?&gt; submit(Runnable task);</span><br><span class="line">List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks) throws InterruptedException;</span><br><span class="line">&lt;T&gt; T invokeAny(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks) throws InterruptedException, ExecutionException;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExecutroServiceTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ExecutorService es = Executors.newCachedThreadPool();</span><br><span class="line">        FutureTask&lt;Integer&gt; task = <span class="keyword">new</span> FutureTask(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"Executor Service Test"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;);</span><br><span class="line">        es.execute(task);</span><br><span class="line">        es.shutdownNow();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>void shutdown();//结束</li>
+<li>List<Runnable> shutdownNow();//马上结束</Runnable></li>
+<li>boolean isShutdown();//是否结束了</li>
+<li>boolean isTerminated();//是不是整体都执行完了</li>
+<li>boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;//等着结束，等多长时间，时间到了还不结束的话他 就返回false</li>
+<li><T> Future<T> submit(Callable<T> task);</T></T></T></li>
+<li>Future&lt;?&gt; submit(Runnable task);</li>
+<li>List&lt;Future<T>&gt; invokeAll(Collection&lt;? extends Callable<T>&gt; tasks) throws InterruptedException;</T></T></li>
+<li><T> T invokeAny(Collection&lt;? extends Callable<T>&gt; tasks) throws InterruptedException, ExecutionException;</T></T></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">public class ExecutroServiceTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ExecutorService es &#x3D; Executors.newCachedThreadPool();</span><br><span class="line">        FutureTask&lt;Integer&gt; task &#x3D; new FutureTask(() -&gt; &#123;</span><br><span class="line">            System.out.println(&quot;Executor Service Test&quot;);</span><br><span class="line">            return 1;</span><br><span class="line">        &#125;);</span><br><span class="line">        es.execute(task);</span><br><span class="line">        es.shutdownNow();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>他是实现了一些个线程的线程池的生命周期的东西，扩展了Executor的接口，真正的线程池的现实是在ExecutorService的这个基础上来实现的。<br>ExecutorService的时候你会发现他除了Executor执行任务之外还有submit提交任务，执行任务是直接拿过来马上运行，而submit是扔给这个线程池，什么时候运行由这个线程池来决定，相当于 是异步的，我只要往里面一扔就不管了。那好，如果不管的话什么时候他有结果啊，这里面就涉及了比较新的类:比如说Future、RunnableFuture、FutureTask。</p>
 <h4 id="Callable"><a href="#Callable" class="headerlink" title="Callable"></a>Callable</h4><p>以前定义一个线程的任务只能去实现Runnable接口，那在1.5之后他就增加了Callable这个接口。<br>Callable是什么，他类似于Runnable，不过 Callable可以有返回值。  </p>
