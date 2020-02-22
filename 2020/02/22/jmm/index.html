@@ -7,15 +7,15 @@
   
   <title>内存模型 JMM | 永远晴天的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="计算机入门CPU和内存的交互在计算机中，cpu和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。 在多核cpu中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。 越靠近CPU的缓存越快也越小。所以L1缓存(一级缓存)很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍">
+  <meta name="description" content="计算机入门CPU和内存的交互在计算机中，CPU和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。 在多核CPU中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。 越靠近CPU的缓存越快也越小。所以L1缓存(一级缓存)很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍">
 <meta property="og:type" content="article">
 <meta property="og:title" content="内存模型 JMM">
 <meta property="og:url" content="https://github.com/casparthh/casparthh.github.io/2020/02/22/jmm/index.html">
 <meta property="og:site_name" content="永远晴天的博客">
-<meta property="og:description" content="计算机入门CPU和内存的交互在计算机中，cpu和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。 在多核cpu中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。 越靠近CPU的缓存越快也越小。所以L1缓存(一级缓存)很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍">
+<meta property="og:description" content="计算机入门CPU和内存的交互在计算机中，CPU和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。 在多核CPU中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。 越靠近CPU的缓存越快也越小。所以L1缓存(一级缓存)很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-22T08:20:37.000Z">
-<meta property="article:modified_time" content="2020-02-22T12:07:53.347Z">
+<meta property="article:modified_time" content="2020-02-22T12:11:02.339Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -94,8 +94,8 @@
                   <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#计算机入门"><span class="toc-number">1.</span> <span class="toc-text">计算机入门</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CPU和内存的交互"><span class="toc-number">1.1.</span> <span class="toc-text">CPU和内存的交互</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#硬件层数据一致性"><span class="toc-number">1.2.</span> <span class="toc-text">硬件层数据一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#MESI协议中的状态"><span class="toc-number">1.2.1.</span> <span class="toc-text">MESI协议中的状态</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缓存行"><span class="toc-number">1.3.</span> <span class="toc-text">缓存行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#伪共享问题-（使用缓存行的对齐能够提高效率）"><span class="toc-number">1.4.</span> <span class="toc-text">伪共享问题 （使用缓存行的对齐能够提高效率）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#乱序问题"><span class="toc-number">1.5.</span> <span class="toc-text">乱序问题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#内存屏障-Memory-Barrier-保证特定情况下不乱序"><span class="toc-number">1.5.1.</span> <span class="toc-text">内存屏障(Memory Barrier) 保证特定情况下不乱序</span></a></li></ol></li></ol></li></ol>
               </div>
           
-        <h3 id="计算机入门"><a href="#计算机入门" class="headerlink" title="计算机入门"></a>计算机入门</h3><h4 id="CPU和内存的交互"><a href="#CPU和内存的交互" class="headerlink" title="CPU和内存的交互"></a>CPU和内存的交互</h4><p>在计算机中，cpu和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。</p>
-<p>在多核cpu中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。</p>
+        <h3 id="计算机入门"><a href="#计算机入门" class="headerlink" title="计算机入门"></a>计算机入门</h3><h4 id="CPU和内存的交互"><a href="#CPU和内存的交互" class="headerlink" title="CPU和内存的交互"></a>CPU和内存的交互</h4><p>在计算机中，CPU和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。</p>
+<p>在多核CPU中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。</p>
 <p>越靠近CPU的缓存越快也越小。所以L1缓存(一级缓存)很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍然更大，更慢，并且被单个插槽上的所有 CPU 核共享。</p>
 <p>当CPU执行运算的时候，它先去L1查找所需的数据，再去L2，然后是L3，最后如果这些缓存中都没有，所需的数据就要去主内存拿。走得越远，运算耗费的时间就越长。</p>
 <table>
@@ -187,6 +187,14 @@
 <p>LoadStoreBarrier</p>
 </blockquote>
 </li>
+<li><p>OS和硬件层面<br><a href="https://blog.csdn.net/qq_26222859/article/details/52235930" target="_blank" rel="noopener">https://blog.csdn.net/qq_26222859/article/details/52235930</a><br>hsdis - HotSpot Dis Assembler<br>windows lock 指令实现 | MESI实现</p>
+</li>
+</ol>
+<p>synchronized实现细节</p>
+<ol>
+<li>字节码层面<br>ACC_SYNCHRONIZED<br>monitorenter monitorexit</li>
+<li>JVM层面<br>C C++ 调用了操作系统提供的同步机制</li>
+<li>OS和硬件层面<br>X86 : lock cmpxchg / xxx<br><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">https</a><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">://blog.csdn.net/21aspnet/article/details/</a><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">88571740</a></li>
 </ol>
 
       
