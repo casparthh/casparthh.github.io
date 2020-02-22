@@ -45,7 +45,7 @@
 </ol>
 </li>
 </ol>
-<h4 id="5-常见的垃圾回收器"><a href="#5-常见的垃圾回收器" class="headerlink" title="5.常见的垃圾回收器"></a>5.常见的垃圾回收器</h4><p><img src="https://casparthh.github.io/2020/02/22/GC/gc.png" alt="常用垃圾回收器"></p>
+<h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3><h4 id="1-常见的垃圾回收器"><a href="#1-常见的垃圾回收器" class="headerlink" title="1.常见的垃圾回收器"></a>1.常见的垃圾回收器</h4><p><img src="https://casparthh.github.io/2020/02/22/GC/gc.png" alt="常用垃圾回收器"></p>
 <ol>
 <li><p>JDK诞生 Serial追随，为提高效率，诞生了PS，为了配合CMS，诞生了PN，CMS是1.4版本后期引入，CMS是里程碑式的GC，它开启了并发回收的过程，并发垃圾回收是因为无法忍受STW。</p>
 </li>
@@ -81,7 +81,7 @@
 <li><p>1.8默认的垃圾回收：PS + ParallelOld</p>
 </li>
 </ol>
-<h4 id="6-常见垃圾回收器组合参数设定：-1-8"><a href="#6-常见垃圾回收器组合参数设定：-1-8" class="headerlink" title="6.常见垃圾回收器组合参数设定：(1.8)"></a>6.常见垃圾回收器组合参数设定：(1.8)</h4><ul>
+<h4 id="2-常见垃圾回收器组合参数设定：-1-8"><a href="#2-常见垃圾回收器组合参数设定：-1-8" class="headerlink" title="2.常见垃圾回收器组合参数设定：(1.8)"></a>2.常见垃圾回收器组合参数设定：(1.8)</h4><ul>
 <li>-XX:+UseSerialGC = Serial New (DefNew) + Serial Old<ul>
 <li>小型程序。默认情况下不会是这种选项，HotSpot会根据计算及配置和JDK版本自动选择收集器</li>
 </ul>
@@ -95,7 +95,7 @@
 <li>-XX:+UseParallelOldGC = Parallel Scavenge + Parallel Old</li>
 <li>-XX:+UseG1GC = G1</li>
 </ul>
-<h4 id="7-JVM调优第一步，了解JVM常用命令行参数"><a href="#7-JVM调优第一步，了解JVM常用命令行参数" class="headerlink" title="7.JVM调优第一步，了解JVM常用命令行参数"></a>7.JVM调优第一步，了解JVM常用命令行参数</h4><ul>
+<h4 id="3-JVM调优第一步，了解JVM常用命令行参数"><a href="#3-JVM调优第一步，了解JVM常用命令行参数" class="headerlink" title="3.JVM调优第一步，了解JVM常用命令行参数"></a>3.JVM调优第一步，了解JVM常用命令行参数</h4><ul>
 <li><p>JVM的命令行参数参考：<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html</a></p>
 </li>
 <li><p>HotSpot参数分类<br>  标准： - 开头，所有的HotSpot都支持<br>  非标准：-X 开头，特定版本HotSpot支持特定命令<br>  不稳定：-XX 开头，下个版本可能取消<br>  java -X  </p>
@@ -109,18 +109,18 @@
 </ol>
 </li>
 </ul>
-<h4 id="8-调优前的基础概念："><a href="#8-调优前的基础概念：" class="headerlink" title="8. 调优前的基础概念："></a>8. 调优前的基础概念：</h4><ol>
+<h4 id="4-调优前的基础概念："><a href="#4-调优前的基础概念：" class="headerlink" title="4.调优前的基础概念："></a>4.调优前的基础概念：</h4><ol>
 <li>吞吐量：吞吐量（CPU用于运行用户代码的时间与CPU消耗的总时间的比值）用户代码时间 /（用户代码执行时间 + 垃圾回收时间）</li>
 <li>响应时间：STW越短，响应时间越好</li>
 </ol>
 <p>所谓调优，首先确定，追求啥？吞吐量优先，还是响应时间优先？还是在满足一定的响应时间的情况下，要求达到多大的吞吐量…</p>
 <p>问题：<br>科学计算，吞吐量。数据挖掘，thrput。吞吐量优先的一般：（PS + PO）<br>响应时间：网站 GUI API （1.8 G1）  </p>
-<h4 id="9-什么是调优？"><a href="#9-什么是调优？" class="headerlink" title="9. 什么是调优？"></a>9. 什么是调优？</h4><ol>
+<h4 id="5-什么是调优？"><a href="#5-什么是调优？" class="headerlink" title="5.什么是调优？"></a>5.什么是调优？</h4><ol>
 <li>根据需求进行JVM规划和预调优</li>
 <li>优化运行JVM运行环境（慢，卡顿）</li>
 <li>解决JVM运行过程中出现的各种问题(OOM)</li>
 </ol>
-<h3 id="调优，从规划开始"><a href="#调优，从规划开始" class="headerlink" title="调优，从规划开始"></a>调优，从规划开始</h3><ul>
+<h3 id="6-调优，从规划开始"><a href="#6-调优，从规划开始" class="headerlink" title="6.调优，从规划开始"></a>6.调优，从规划开始</h3><ul>
 <li><p>调优，从业务场景开始，没有业务场景的调优都是耍流氓</p>
 </li>
 <li><p>无监控（压力测试，能看到结果），不调优</p>
@@ -145,7 +145,7 @@
 </ol>
 </li>
 </ul>
-<h3 id="解决JVM运行中的问题"><a href="#解决JVM运行中的问题" class="headerlink" title="解决JVM运行中的问题"></a>解决JVM运行中的问题</h3><ol start="3">
+<h3 id="7-解决JVM运行中的问题"><a href="#7-解决JVM运行中的问题" class="headerlink" title="7.解决JVM运行中的问题"></a>7.解决JVM运行中的问题</h3><ol start="3">
 <li><p>一般是运维团队首先受到报警信息（CPU Memory）</p>
 </li>
 <li><p>top命令观察到问题：内存不断增长 CPU占用率居高不下</p>
