@@ -16,7 +16,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://casparthh.github.io/2020/02/22/GC/gc.png">
 <meta property="article:published_time" content="2020-02-22T08:20:37.000Z">
-<meta property="article:modified_time" content="2020-02-22T08:35:04.449Z">
+<meta property="article:modified_time" content="2020-02-22T08:36:23.393Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -191,10 +191,7 @@
 <h4 id="7-JVM调优第一步，了解JVM常用命令行参数"><a href="#7-JVM调优第一步，了解JVM常用命令行参数" class="headerlink" title="7.JVM调优第一步，了解JVM常用命令行参数"></a>7.JVM调优第一步，了解JVM常用命令行参数</h4><ul>
 <li><p>JVM的命令行参数参考：<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html</a></p>
 </li>
-<li><p>HotSpot参数分类</p>
-<blockquote>
-<p>标准： - 开头，所有的HotSpot都支持<br>非标准：-X 开头，特定版本HotSpot支持特定命令<br>不稳定：-XX 开头，下个版本可能取消<br>java -X</p>
-</blockquote>
+<li><p>HotSpot参数分类<br>  标准： - 开头，所有的HotSpot都支持<br>  非标准：-X 开头，特定版本HotSpot支持特定命令<br>  不稳定：-XX 开头，下个版本可能取消<br>  java -X  </p>
 <ol>
 <li>区分概念：内存泄漏memory leak，内存溢出out of memory</li>
 <li>java -XX:+PrintCommandLineFlags -version 观查虚拟机配置</li>
