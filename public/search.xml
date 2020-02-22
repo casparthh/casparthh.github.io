@@ -332,18 +332,12 @@
 </li>
 <li><p>JVM层面, Volatile内存区的读写都加屏障</p>
 <ul>
-<li><p>StoreStoreBarrier</p>
-</li>
-<li><p>volatile 写操作</p>
-</li>
-<li><p>StoreLoadBarrier</p>
-</li>
-<li><p>LoadLoadBarrier</p>
-</li>
-<li><p>volatile 读操作</p>
-</li>
-<li><p>LoadStoreBarrier</p>
-</li>
+<li>StoreStoreBarrier</li>
+<li>volatile 写操作</li>
+<li>StoreLoadBarrier</li>
+<li>LoadLoadBarrier</li>
+<li>volatile 读操作</li>
+<li>LoadStoreBarrier</li>
 </ul>
 </li>
 </ol>
