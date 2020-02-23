@@ -14,13 +14,13 @@
 <meta property="og:site_name" content="永远晴天的博客">
 <meta property="og:description" content="一、GC的基础知识什么是垃圾没有任何引用指向的一个对象或者多个对象（循环引用） 如何定位垃圾 引用计数（ReferenceCount） 根可达算法(RootSearching)  常见的垃圾回收算法 标记清除(mark sweep) - 位置不连续 产生碎片 效率偏低（两遍扫描） 拷贝算法 (copying) - 没有碎片，浪费空间 标记压缩(mark compact) - 没有碎片，效率偏低（两">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://casparthh.github.io/2020/02/22/jvm/gc.png">
+<meta property="og:image" content="https://casparthh.github.io/2020/02/22/GC/gc.png">
 <meta property="article:published_time" content="2020-02-22T08:20:37.000Z">
-<meta property="article:modified_time" content="2020-02-23T08:42:33.427Z">
+<meta property="article:modified_time" content="2020-02-23T08:47:27.580Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://casparthh.github.io/2020/02/22/jvm/gc.png">
+<meta name="twitter:image" content="https://casparthh.github.io/2020/02/22/GC/gc.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -140,7 +140,7 @@
 </ol>
 </li>
 </ol>
-<h3 id="二、垃圾回收器及调优"><a href="#二、垃圾回收器及调优" class="headerlink" title="二、垃圾回收器及调优"></a>二、垃圾回收器及调优</h3><h4 id="常见的垃圾回收器"><a href="#常见的垃圾回收器" class="headerlink" title="常见的垃圾回收器"></a>常见的垃圾回收器</h4><p><img src="https://casparthh.github.io/2020/02/22/jvm/gc.png" alt="常用垃圾回收器"></p>
+<h3 id="二、垃圾回收器及调优"><a href="#二、垃圾回收器及调优" class="headerlink" title="二、垃圾回收器及调优"></a>二、垃圾回收器及调优</h3><h4 id="常见的垃圾回收器"><a href="#常见的垃圾回收器" class="headerlink" title="常见的垃圾回收器"></a>常见的垃圾回收器</h4><p><img src="https://casparthh.github.io/2020/02/22/GC/gc.png" alt="常用垃圾回收器"></p>
 <ol>
 <li><p>JDK诞生 Serial追随，为提高效率，诞生了PS，为了配合CMS，诞生了PN，CMS是1.4版本后期引入，CMS是里程碑式的GC，它开启了并发回收的过程，并发垃圾回收是因为无法忍受STW。</p>
 </li>
