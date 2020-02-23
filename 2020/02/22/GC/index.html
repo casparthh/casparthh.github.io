@@ -5,18 +5,18 @@
   
 
   
-  <title>GC和GC Tuning | 永远晴天的博客</title>
+  <title>JVM - GC和GC Tuning | 永远晴天的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="一、GC的基础知识什么是垃圾没有任何引用指向的一个对象或者多个对象（循环引用） 如何定位垃圾 引用计数（ReferenceCount） 根可达算法(RootSearching)  常见的垃圾回收算法 标记清除(mark sweep) - 位置不连续 产生碎片 效率偏低（两遍扫描） 拷贝算法 (copying) - 没有碎片，浪费空间 标记压缩(mark compact) - 没有碎片，效率偏低（两">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GC和GC Tuning">
+<meta property="og:title" content="JVM - GC和GC Tuning">
 <meta property="og:url" content="https://github.com/casparthh/casparthh.github.io/2020/02/22/GC/index.html">
 <meta property="og:site_name" content="永远晴天的博客">
 <meta property="og:description" content="一、GC的基础知识什么是垃圾没有任何引用指向的一个对象或者多个对象（循环引用） 如何定位垃圾 引用计数（ReferenceCount） 根可达算法(RootSearching)  常见的垃圾回收算法 标记清除(mark sweep) - 位置不连续 产生碎片 效率偏低（两遍扫描） 拷贝算法 (copying) - 没有碎片，浪费空间 标记压缩(mark compact) - 没有碎片，效率偏低（两">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://casparthh.github.io/2020/02/22/GC/gc.png">
 <meta property="article:published_time" content="2020-02-22T08:20:37.000Z">
-<meta property="article:modified_time" content="2020-02-22T13:58:38.681Z">
+<meta property="article:modified_time" content="2020-02-23T08:38:35.796Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -83,7 +83,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      GC和GC Tuning
+      JVM - GC和GC Tuning
     </h1>
   
 
@@ -352,10 +352,19 @@
     
 <nav id="article-nav">
   
+    <a href="/2020/02/22/classfile/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          JVM - Class文件格式
+        
+      </div>
+    </a>
+  
   
     <a href="/2020/02/22/jmm/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">内存模型 JMM</div>
+      <div class="article-nav-title">JVM - JMM内存模型</div>
     </a>
   
 </nav>
@@ -382,7 +391,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/JVM/" style="font-size: 20px;">JVM</a> <a href="/tags/Thread/" style="font-size: 20px;">Thread</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">容器</a>
+      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/JVM/" style="font-size: 20px;">JVM</a> <a href="/tags/Thread/" style="font-size: 15px;">Thread</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">容器</a>
     </div>
   </div>
 
@@ -404,27 +413,31 @@
       <ul>
         
           <li>
-            <a href="/2020/02/22/GC/">GC和GC Tuning</a>
+            <a href="/2020/02/22/classfile/">JVM - Class文件格式</a>
           </li>
         
           <li>
-            <a href="/2020/02/22/jmm/">内存模型 JMM</a>
+            <a href="/2020/02/22/GC/">JVM - GC和GC Tuning</a>
           </li>
         
           <li>
-            <a href="/2020/02/22/ClassLoader/">类加载-初始化</a>
+            <a href="/2020/02/22/jmm/">JVM - JMM内存模型</a>
           </li>
         
           <li>
-            <a href="/2020/02/16/container/">Java 容器</a>
+            <a href="/2020/02/22/ClassLoader/">JVM - 类加载 &amp; 初始化</a>
           </li>
         
           <li>
-            <a href="/2020/02/16/thread/">多线程与高并发</a>
+            <a href="/2020/02/16/container/">高并发与多线程 - Java容器</a>
           </li>
         
           <li>
-            <a href="/2020/02/16/ThreadPool/">线程池</a>
+            <a href="/2020/02/16/thread/">高并发与多线程 - 线程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/16/ThreadPool/">高并发与多线程 - 线程池</a>
           </li>
         
           <li>

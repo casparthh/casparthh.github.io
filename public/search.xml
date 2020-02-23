@@ -1,7 +1,387 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>GC和GC Tuning</title>
+    <title>JVM - Class文件格式</title>
+    <url>/2020/02/22/classfile/</url>
+    <content><![CDATA[<ul>
+<li>JVM 是一种规范<br>参考文档：<br><a href="https://docs.oracle.com/en/java/javase/13/" target="_blank" rel="noopener">https://docs.oracle.com/en/java/javase/13/</a><br><a href="https://docs.oracle.com/javase/specs/index.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/index.html</a><br><a href="https://docs.oracle.com/javase/specs/jvms/se13/html/index.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se13/html/index.html</a></li>
+<li>虚构出来的一台计算机  </li>
+</ul>
+<p>-字节码指令集（汇编语言）<br>-内存管理：堆、栈、方法区等  </p>
+<h3 id="JDK-JRE-JVM"><a href="#JDK-JRE-JVM" class="headerlink" title="JDK, JRE, JVM"></a>JDK, JRE, JVM</h3><p><img src="/casparthh/casparthh.github/jvm.jpeg" alt="JAVA SE Platform"></p>
+<a id="more"></a>
+
+<h4 id="常见的JVM实现"><a href="#常见的JVM实现" class="headerlink" title="常见的JVM实现"></a>常见的JVM实现</h4><ul>
+<li>Hotspot - Oracl 官方</li>
+<li>Jrockit - BEA，曾经号称世界上最快的JVM,被Oracle收购后，合并于hotspot</li>
+<li>J9 - IBM</li>
+<li>Microsoft VM</li>
+<li>TaobaoVM - Hotspot 深度定制版</li>
+<li>LiquidVM - 直接针对硬件</li>
+<li>azul zing - 商业版，最新垃圾回收的业界标杆，参考zing的垃圾回收产生了ZGC</li>
+</ul>
+<h3 id="Class-文件"><a href="#Class-文件" class="headerlink" title="Class 文件"></a>Class 文件</h3><h4 id="查看ByteCode的方法"><a href="#查看ByteCode的方法" class="headerlink" title="查看ByteCode的方法"></a>查看ByteCode的方法</h4><ul>
+<li>javap</li>
+<li>JBE 可以直接修改</li>
+<li>JClassLib IDEA插件之一</li>
+</ul>
+<h4 id="Class-文件构成"><a href="#Class-文件构成" class="headerlink" title="Class 文件构成"></a>Class 文件构成</h4><ul>
+<li>魔数 “cafebaby”</li>
+<li>Class 文件版本</li>
+<li>常量池</li>
+<li>访问标志</li>
+<li>类索引，父类索引，接口索引集合</li>
+<li>字段表集合</li>
+<li>方法表集合</li>
+<li>属性表集合</li>
+</ul>
+<h4 id="Class-文件格式"><a href="#Class-文件格式" class="headerlink" title="Class 文件格式"></a>Class 文件格式</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>U4</td>
+<td>magic</td>
+<td>1</td>
+</tr>
+<tr>
+<td>U2</td>
+<td>minor_version</td>
+<td>1</td>
+</tr>
+<tr>
+<td>U2</td>
+<td>major_version</td>
+<td>1</td>
+</tr>
+<tr>
+<td>U2</td>
+<td>constant_pool_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>cp_info</td>
+<td>constant_pool</td>
+<td>constant_pool_count - 1</td>
+</tr>
+<tr>
+<td>U2</td>
+<td>access_flags</td>
+<td>1</td>
+</tr>
+<tr>
+<td>U2</td>
+<td>this_class</td>
+<td>1</td>
+</tr>
+<tr>
+<td>U2</td>
+<td>super_class</td>
+<td>1</td>
+</tr>
+<tr>
+<td>U2</td>
+<td>interfaces_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>U2</td>
+<td>interfaces</td>
+<td>interfaces_count</td>
+</tr>
+<tr>
+<td>U2</td>
+<td>fields_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>field_info</td>
+<td>fields</td>
+<td>fields_count</td>
+</tr>
+<tr>
+<td>U2</td>
+<td>methods_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>method_info</td>
+<td>methods</td>
+<td>methods_count</td>
+</tr>
+<tr>
+<td>U2</td>
+<td>attributes_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>attribute_info</td>
+<td>attributes</td>
+<td>attributes_count</td>
+</tr>
+</tbody></table>
+<pre><code>u1 一个字节，u2 两个字节。。。  
+一个16进制数就是4位，2个16进制数就是8位，也就是一个字节  
+char 1 个字节  
+int &amp; float 4个字节  
+double &amp; long 8个字节</code></pre><p>magic = 0xCAFEBABE.<br>minor_version, major_version 定义版本号<br>constant_pool_count = constant_pool.size +1</p>
+<h4 id="access-flags"><a href="#access-flags" class="headerlink" title="access_flags"></a>access_flags</h4><p>参考 jvms13 Table 4.1-B. Class access and property modifiers</p>
+<table>
+<thead>
+<tr>
+<th>Flag Name</th>
+<th>Value</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ACC_PUBLIC</td>
+<td>0x0001</td>
+<td>Declared public; may be accessed from outside its package.</td>
+</tr>
+<tr>
+<td>ACC_FINAL</td>
+<td>0x0010</td>
+<td>Declared final; no subclasses allowed.</td>
+</tr>
+<tr>
+<td>ACC_SUPER</td>
+<td>0x0020</td>
+<td>Treat superclass methods specially when invoked by the invokespecial instruction.</td>
+</tr>
+<tr>
+<td>ACC_INTERFACE</td>
+<td>0x0200</td>
+<td>Is an interface, not a class.</td>
+</tr>
+<tr>
+<td>ACC_ABSTRACT</td>
+<td>0x0400</td>
+<td>Declared abstract; must not be instantiated.</td>
+</tr>
+<tr>
+<td>ACC_SYNTHETIC</td>
+<td>0x1000</td>
+<td>Declared synthetic; not present in the source code.</td>
+</tr>
+<tr>
+<td>ACC_ANNOTATION</td>
+<td>0x2000</td>
+<td>Declared as an annotation type.</td>
+</tr>
+<tr>
+<td>ACC_ENUM</td>
+<td>0x4000</td>
+<td>Declared as an enum type.</td>
+</tr>
+<tr>
+<td>ACC_MODULE</td>
+<td>0x8000</td>
+<td>Is a module, not a class or interface.</td>
+</tr>
+</tbody></table>
+<p>*实际值采用的位运算</p>
+<h4 id="Field-Descriptors"><a href="#Field-Descriptors" class="headerlink" title="Field Descriptors"></a>Field Descriptors</h4><p>参考 jvms13 Table 4.3-A. Interpretation of field descriptors</p>
+<table>
+<thead>
+<tr>
+<th>FieldType term</th>
+<th>Type</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>B</td>
+<td>byte</td>
+<td>signed byte</td>
+</tr>
+<tr>
+<td>C</td>
+<td>char</td>
+<td>Unicode character code point in the Basic Multilingual Plane, encoded with UTF-16</td>
+</tr>
+<tr>
+<td>D</td>
+<td>double</td>
+<td>double-precision floating-point value</td>
+</tr>
+<tr>
+<td>F</td>
+<td>float</td>
+<td>single-precision floating-point value</td>
+</tr>
+<tr>
+<td>I</td>
+<td>int</td>
+<td>integer</td>
+</tr>
+<tr>
+<td>J</td>
+<td>long</td>
+<td>long integer</td>
+</tr>
+<tr>
+<td>L ClassName;</td>
+<td>reference</td>
+<td>an instance of class ClassName</td>
+</tr>
+<tr>
+<td>S</td>
+<td>short</td>
+<td>signed short</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>boolean</td>
+<td>true or false</td>
+</tr>
+<tr>
+<td>[</td>
+<td>reference</td>
+<td>one array dimension</td>
+</tr>
+</tbody></table>
+<h4 id="Method-Descriptors"><a href="#Method-Descriptors" class="headerlink" title="Method Descriptors"></a>Method Descriptors</h4><p>( {ParameterDescriptor} ) ReturnDescriptor</p>
+<pre><code>Object m(int i, double d, Thread t) {...}
+int-&gt;I, double-&gt;D, Thread-&gt;Ljava/lang/Thread，返回值Ojbect-&gt;Ljava/lang/Object;
+
+所以该方法的描述符为：
+(IDLjava/lang/Thread;)Ljava/lang/Object;
+
+如果返回值为空，则ReturnDescriptor为VoidDescriptor-&gt;V
+The character V indicates that the method returns no value (its result is void).</code></pre><h4 id="Constant-Pool"><a href="#Constant-Pool" class="headerlink" title="Constant Pool"></a>Constant Pool</h4><p>常量池中的每一个entry必须是由一个字节的tag开始来表示该常量的种类。<br>参考 jvms13 Table 4.4-A. Constant pool tags (by section)</p>
+<table>
+<thead>
+<tr>
+<th>Constant Kind</th>
+<th>Tag</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CONSTANT_Utf8</td>
+<td>1</td>
+<td>§4.4.7</td>
+</tr>
+<tr>
+<td>CONSTANT_Integer</td>
+<td>3</td>
+<td>§4.4.4</td>
+</tr>
+<tr>
+<td>CONSTANT_Float</td>
+<td>4</td>
+<td>§4.4.4</td>
+</tr>
+<tr>
+<td>CONSTANT_Long</td>
+<td>5</td>
+<td>§4.4.5</td>
+</tr>
+<tr>
+<td>CONSTANT_Double</td>
+<td>6</td>
+<td>§4.4.5</td>
+</tr>
+<tr>
+<td>CONSTANT_Class</td>
+<td>7</td>
+<td>§4.4.1</td>
+</tr>
+<tr>
+<td>CONSTANT_String</td>
+<td>8</td>
+<td>§4.4.3</td>
+</tr>
+<tr>
+<td>CONSTANT_Fieldref</td>
+<td>9</td>
+<td>§4.4.2</td>
+</tr>
+<tr>
+<td>CONSTANT_Methodref</td>
+<td>10</td>
+<td>§4.4.2</td>
+</tr>
+<tr>
+<td>CONSTANT_InterfaceMethodref</td>
+<td>11</td>
+<td>§4.4.2</td>
+</tr>
+<tr>
+<td>CONSTANT_NameAndType</td>
+<td>12</td>
+<td>§4.4.6</td>
+</tr>
+<tr>
+<td>CONSTANT_MethodHandle</td>
+<td>15</td>
+<td>§4.4.8</td>
+</tr>
+<tr>
+<td>CONSTANT_MethodType</td>
+<td>16</td>
+<td>§4.4.9</td>
+</tr>
+<tr>
+<td>CONSTANT_Dynamic (JDK11)</td>
+<td>17</td>
+<td>§4.4.10</td>
+</tr>
+<tr>
+<td>CONSTANT_InvokeDynamic</td>
+<td>18</td>
+<td>§4.4.10</td>
+</tr>
+<tr>
+<td>CONSTANT_Module (JDK9)</td>
+<td>19</td>
+<td>§4.4.11</td>
+</tr>
+<tr>
+<td>CONSTANT_Package (JDK9)</td>
+<td>20</td>
+<td>§4.4.12</td>
+</tr>
+</tbody></table>
+<p>表中的section表是该tag详细文档对应的章节。</p>
+<h4 id="CONSTANT-Utf8-info"><a href="#CONSTANT-Utf8-info" class="headerlink" title="CONSTANT_Utf8_info"></a>CONSTANT_Utf8_info</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CONSTANT_Utf8_info &#123;</span><br><span class="line">    u1 tag;             &#x2F;&#x2F;占一个字节, CONSTANT_Utf8 对就上面的值为1</span><br><span class="line">    u2 length;          &#x2F;&#x2F;UTF-8字符串占用的字节数   </span><br><span class="line">    u1 bytes[length];   &#x2F;&#x2F;长度为length的字符串</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="CONSTANT-Integer-info-CONSTANT-Float-info-Structures-数据结构"><a href="#CONSTANT-Integer-info-CONSTANT-Float-info-Structures-数据结构" class="headerlink" title="CONSTANT_Integer_info, CONSTANT_Float_info Structures 数据结构"></a>CONSTANT_Integer_info, CONSTANT_Float_info Structures 数据结构</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CONSTANT_Integer_info &#123;</span><br><span class="line">   u1 tag;</span><br><span class="line">   u4 bytes;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CONSTANT_Float_info &#123;</span><br><span class="line">   u1 tag;</span><br><span class="line">   u4 bytes; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="CONSTANT-Long-info-and-CONSTANT-Double-info-数据结构"><a href="#CONSTANT-Long-info-and-CONSTANT-Double-info-数据结构" class="headerlink" title="CONSTANT_Long_info and CONSTANT_Double_info 数据结构"></a>CONSTANT_Long_info and CONSTANT_Double_info 数据结构</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CONSTANT_Long_info &#123;</span><br><span class="line">   u1 tag;</span><br><span class="line">   u4 high_bytes;</span><br><span class="line">   u4 low_bytes;</span><br><span class="line">&#125;</span><br><span class="line">CONSTANT_Double_info &#123;</span><br><span class="line">   u1 tag;</span><br><span class="line">   u4 high_bytes;</span><br><span class="line">   u4 low_bytes;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="CONSTANT-Class-info-数据结构"><a href="#CONSTANT-Class-info-数据结构" class="headerlink" title="CONSTANT_Class_info 数据结构"></a>CONSTANT_Class_info 数据结构</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CONSTANT_Class_info &#123;</span><br><span class="line">   u1 tag;              &#x2F;&#x2F;CONSTANT_Class 对应上面表中的7， 占一个字节；</span><br><span class="line">   u2 name_index;       &#x2F;&#x2F;指向常量池的索引位置，该位置存放类的名称, 占用2个字节</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="CONSTANT-String-info-数据结构"><a href="#CONSTANT-String-info-数据结构" class="headerlink" title="CONSTANT_String_info 数据结构"></a>CONSTANT_String_info 数据结构</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CONSTANT_String_info &#123;</span><br><span class="line">   u1 tag;</span><br><span class="line">   u2 string_index;     &#x2F;&#x2F;占2字节，指向字符串的索引;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="CONSTANT-Fieldref-info-CONSTANT-Methodref-info-CONSTANT-InterfaceMethodref-info-内存节构"><a href="#CONSTANT-Fieldref-info-CONSTANT-Methodref-info-CONSTANT-InterfaceMethodref-info-内存节构" class="headerlink" title="CONSTANT_Fieldref_info, CONSTANT_Methodref_info, CONSTANT_InterfaceMethodref_info 内存节构"></a>CONSTANT_Fieldref_info, CONSTANT_Methodref_info, CONSTANT_InterfaceMethodref_info 内存节构</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CONSTANT_Fieldref_info &#123;</span><br><span class="line">   u1 tag;                  &#x2F;&#x2F;CONSTANT_Fieldref 对应上面表中的9， 占一个字节；</span><br><span class="line">   u2 class_index;          &#x2F;&#x2F;占2字节，指向声明字段的类或者接口描述符CONSTANT_Class_info的索引项</span><br><span class="line">   u2 name_and_type_index; &#x2F;&#x2F;占2字节，指向字段描述符CONSTANT_NameAndType的索引项</span><br><span class="line">&#125;</span><br><span class="line">CONSTANT_Methodref_info &#123;</span><br><span class="line">   u1 tag;                  &#x2F;&#x2F;CONSTANT_Methodref 对应上面表中的10， 占一个字节；</span><br><span class="line">   u2 class_index;          &#x2F;&#x2F;占2字节，指向声明方法的类或者接口描述符CONSTANT_Class_info的索引项</span><br><span class="line">   u2 name_and_type_index; &#x2F;&#x2F;占2字节，指向字段描述符CONSTANT_NameAndType的索引项</span><br><span class="line">&#125;</span><br><span class="line">CONSTANT_InterfaceMethodref_info &#123;</span><br><span class="line">   u1 tag;                  &#x2F;&#x2F;CONSTANT_InterfaceMethodref 对应上面表中的11， 占一个字节；</span><br><span class="line">   u2 class_index;          &#x2F;&#x2F;占2字节，指向声明方法的类或者接口描述符CONSTANT_Class_info的索引项</span><br><span class="line">   u2 name_and_type_index; &#x2F;&#x2F;占2字节，指向字段描述符CONSTANT_NameAndType的索引项</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="CONSTANT-NameAndType-info"><a href="#CONSTANT-NameAndType-info" class="headerlink" title="CONSTANT_NameAndType_info"></a>CONSTANT_NameAndType_info</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CONSTANT_NameAndType_info &#123;</span><br><span class="line">   u1 tag;              &#x2F;&#x2F;1字节，NameAndType 对就表中的值12</span><br><span class="line">   u2 name_index;       &#x2F;&#x2F;2字节，指向该字段或方法名称常量项的索引</span><br><span class="line">   u2 descriptor_index; &#x2F;&#x2F;2字节，指向该字段或方法描述符常量项的索引</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>技术笔记</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JVM - GC和GC Tuning</title>
     <url>/2020/02/22/GC/</url>
     <content><![CDATA[<h3 id="一、GC的基础知识"><a href="#一、GC的基础知识" class="headerlink" title="一、GC的基础知识"></a>一、GC的基础知识</h3><h4 id="什么是垃圾"><a href="#什么是垃圾" class="headerlink" title="什么是垃圾"></a>什么是垃圾</h4><p>没有任何引用指向的一个对象或者多个对象（循环引用）</p>
 <h4 id="如何定位垃圾"><a href="#如何定位垃圾" class="headerlink" title="如何定位垃圾"></a>如何定位垃圾</h4><ol>
@@ -251,7 +631,7 @@
       </tags>
   </entry>
   <entry>
-    <title>内存模型 JMM</title>
+    <title>JVM - JMM内存模型</title>
     <url>/2020/02/22/jmm/</url>
     <content><![CDATA[<h3 id="一、CPU和内存的交互"><a href="#一、CPU和内存的交互" class="headerlink" title="一、CPU和内存的交互"></a>一、CPU和内存的交互</h3><p>在计算机中，CPU和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。</p>
 <p>在多核CPU中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。</p>
@@ -367,7 +747,7 @@
       </tags>
   </entry>
   <entry>
-    <title>类加载-初始化</title>
+    <title>JVM - 类加载 &amp; 初始化</title>
     <url>/2020/02/22/ClassLoader/</url>
     <content><![CDATA[<p><img src="https://casparthh.github.io/2020/02/22/ClassLoader/ClassLoader.png" alt="JVM ClassLoader"></p>
 ]]></content>
@@ -379,7 +759,7 @@
       </tags>
   </entry>
   <entry>
-    <title>Java 容器</title>
+    <title>高并发与多线程 - Java容器</title>
     <url>/2020/02/16/container/</url>
     <content><![CDATA[<h3 id="Java-容器"><a href="#Java-容器" class="headerlink" title="Java 容器"></a>Java 容器</h3><p>容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列</p>
 <h4 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h4><p>Set 与 List, Queue 的主要区别是不会有重复元素</p>
@@ -459,7 +839,7 @@
       </tags>
   </entry>
   <entry>
-    <title>多线程与高并发</title>
+    <title>高并发与多线程 - 线程</title>
     <url>/2020/02/16/thread/</url>
     <content><![CDATA[<p>线程: 作为一个进程里面最小的执行单元它就叫一个线程，用简单的话讲一个程序里不同的执行路径就叫做一个线程</p>
 <h3 id="一、创建线程的几种方式："><a href="#一、创建线程的几种方式：" class="headerlink" title="一、创建线程的几种方式："></a>一、创建线程的几种方式：</h3><ol>
@@ -629,7 +1009,7 @@
       </tags>
   </entry>
   <entry>
-    <title>线程池</title>
+    <title>高并发与多线程 - 线程池</title>
     <url>/2020/02/16/ThreadPool/</url>
     <content><![CDATA[<h4 id="一、Executor"><a href="#一、Executor" class="headerlink" title="一、Executor"></a>一、Executor</h4><p>执行者，是一个接口类，他有一个方法叫执行，那么执行的东西是 Runnable。</p>
 <h4 id="二、ExecutorService"><a href="#二、ExecutorService" class="headerlink" title="二、ExecutorService"></a>二、ExecutorService</h4><p>是从Executor继承，除了去实现Executor可以去执行一个任务之外，还完善了整个任务执行器的一个生命周期，就拿线程池来举例子，一个线程池里面一堆的线程就是一堆的工人，执行完一个任务之后我这个线程怎么结束啊；<br>线程池定义了这样一些个方法：</p>
