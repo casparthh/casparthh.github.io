@@ -103,7 +103,58 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/classfile/" data-id="ck6ys5ybg0000dxc9b9smbsz4" class="article-share-link">Share</a>
+      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/classfile/" data-id="ck6ysf0d6000ornc9gpj48twe" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-jmm" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/22/jmm/" class="article-date">
+  <time datetime="2020-02-22T08:20:37.000Z" itemprop="datePublished">2020-02-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/22/jmm/">JVM - JMM内存模型</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、CPU和内存的交互"><a href="#一、CPU和内存的交互" class="headerlink" title="一、CPU和内存的交互"></a>一、CPU和内存的交互</h3><p>在计算机中，CPU和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。</p>
+<p>在多核CPU中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。</p>
+<p>越靠近CPU的缓存越快也越小。所以L1缓存(一级缓存)很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍然更大，更慢，并且被单个插槽上的所有 CPU 核共享。</p>
+<p>当CPU执行运算的时候，它先去L1查找所需的数据，再去L2，然后是L3，最后如果这些缓存中都没有，所需的数据就要去主内存拿。走得越远，运算耗费的时间就越长。</p>
+        
+          <p class="article-more-link">
+            <a href="/2020/02/22/jmm/#more">阅读更多</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/jmm/" data-id="ck6ysf0d8000qrnc948go4sgy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
@@ -159,58 +210,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/GC/" data-id="ck6xoxaxx00073hc99bnf4cbx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-jmm" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/02/22/jmm/" class="article-date">
-  <time datetime="2020-02-22T08:20:37.000Z" itemprop="datePublished">2020-02-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/22/jmm/">JVM - JMM内存模型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="一、CPU和内存的交互"><a href="#一、CPU和内存的交互" class="headerlink" title="一、CPU和内存的交互"></a>一、CPU和内存的交互</h3><p>在计算机中，CPU和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。</p>
-<p>在多核CPU中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。</p>
-<p>越靠近CPU的缓存越快也越小。所以L1缓存(一级缓存)很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍然更大，更慢，并且被单个插槽上的所有 CPU 核共享。</p>
-<p>当CPU执行运算的时候，它先去L1查找所需的数据，再去L2，然后是L3，最后如果这些缓存中都没有，所需的数据就要去主内存拿。走得越远，运算耗费的时间就越长。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/02/22/jmm/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/jmm/" data-id="ck6xoxay0000c3hc9e8l47o6h" class="article-share-link">Share</a>
+      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/GC/" data-id="ck6ysf0d9000srnc9fts4b5wn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
@@ -256,7 +256,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/ClassLoader/" data-id="ck6xoxaxv00063hc97ws207g1" class="article-share-link">Share</a>
+      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/ClassLoader/" data-id="ck6ysf0cb0004rnc9akpxfx6k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
@@ -311,7 +311,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/16/container/" data-id="ck6xoxaxq00023hc91sjx7822" class="article-share-link">Share</a>
+      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/16/container/" data-id="ck6ysf0c70001rnc9hct79ll8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
@@ -361,7 +361,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/16/thread/" data-id="ck6xoxaxu00053hc9bikxabyy" class="article-share-link">Share</a>
+      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/16/thread/" data-id="ck6ysf0cd0005rnc9an54969y" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li></ul>
@@ -420,7 +420,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/16/ThreadPool/" data-id="ck6xoxaxy000b3hc979or098c" class="article-share-link">Share</a>
+      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/16/ThreadPool/" data-id="ck6ysf0d3000mrnc90y7x8wyo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li></ul>
@@ -469,7 +469,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/10/angular%E5%85%A5%E9%97%A8/" data-id="ck6xoxaxk00003hc936cd1x6b" class="article-share-link">Share</a>
+      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/10/angular%E5%85%A5%E9%97%A8/" data-id="ck6ysf0c00000rnc9ecttc1hf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li></ul>
@@ -528,11 +528,11 @@
           </li>
         
           <li>
-            <a href="/2020/02/22/GC/">JVM - GC和GC Tuning</a>
+            <a href="/2020/02/22/jmm/">JVM - JMM内存模型</a>
           </li>
         
           <li>
-            <a href="/2020/02/22/jmm/">JVM - JMM内存模型</a>
+            <a href="/2020/02/22/GC/">JVM - GC和GC Tuning</a>
           </li>
         
           <li>
