@@ -8,9 +8,6 @@
 <li>虚构出来的一台计算机  </li>
 </ul>
 <p>-字节码指令集（汇编语言）<br>-内存管理：堆、栈、方法区等  </p>
-<h3 id="JDK-JRE-JVM"><a href="#JDK-JRE-JVM" class="headerlink" title="JDK, JRE, JVM"></a>JDK, JRE, JVM</h3><p><img src="https://casparthh.github.io/2020/02/22/classfile/jvm.jpeg" alt="常用垃圾回收器"></p>
-<a id="more"></a>
-
 <h4 id="常见的JVM实现"><a href="#常见的JVM实现" class="headerlink" title="常见的JVM实现"></a>常见的JVM实现</h4><ul>
 <li>Hotspot - Oracl 官方</li>
 <li>Jrockit - BEA，曾经号称世界上最快的JVM,被Oracle收购后，合并于hotspot</li>
@@ -20,6 +17,9 @@
 <li>LiquidVM - 直接针对硬件</li>
 <li>azul zing - 商业版，最新垃圾回收的业界标杆，参考zing的垃圾回收产生了ZGC</li>
 </ul>
+<h3 id="JDK-JRE-JVM"><a href="#JDK-JRE-JVM" class="headerlink" title="JDK, JRE, JVM"></a>JDK, JRE, JVM</h3><p><img src="https://casparthh.github.io/2020/02/22/classfile/jvm.jpeg" alt="常用垃圾回收器"></p>
+<a id="more"></a>
+
 <h3 id="Class-文件"><a href="#Class-文件" class="headerlink" title="Class 文件"></a>Class 文件</h3><h4 id="查看ByteCode的方法"><a href="#查看ByteCode的方法" class="headerlink" title="查看ByteCode的方法"></a>查看ByteCode的方法</h4><ul>
 <li>javap</li>
 <li>JBE 可以直接修改</li>
