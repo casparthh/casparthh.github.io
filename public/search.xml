@@ -8,7 +8,7 @@
 <li>虚构出来的一台计算机  </li>
 </ul>
 <p>-字节码指令集（汇编语言）<br>-内存管理：堆、栈、方法区等  </p>
-<h3 id="JDK-JRE-JVM"><a href="#JDK-JRE-JVM" class="headerlink" title="JDK, JRE, JVM"></a>JDK, JRE, JVM</h3><p><img src="https://casparthh.github.io/2020/02/22/classfile/jvm.jpge" alt="常用垃圾回收器"></p>
+<h3 id="JDK-JRE-JVM"><a href="#JDK-JRE-JVM" class="headerlink" title="JDK, JRE, JVM"></a>JDK, JRE, JVM</h3><p><img src="https://casparthh.github.io/2020/02/22/jvm/jvm.jpge" alt="常用垃圾回收器"></p>
 <a id="more"></a>
 
 <h4 id="常见的JVM实现"><a href="#常见的JVM实现" class="headerlink" title="常见的JVM实现"></a>常见的JVM实现</h4><ul>
@@ -425,7 +425,7 @@ The character V indicates that the method returns no value (its result is void).
 </ol>
 </li>
 </ol>
-<h3 id="二、垃圾回收器及调优"><a href="#二、垃圾回收器及调优" class="headerlink" title="二、垃圾回收器及调优"></a>二、垃圾回收器及调优</h3><h4 id="常见的垃圾回收器"><a href="#常见的垃圾回收器" class="headerlink" title="常见的垃圾回收器"></a>常见的垃圾回收器</h4><p><img src="https://casparthh.github.io/2020/02/22/GC/gc.png" alt="常用垃圾回收器"></p>
+<h3 id="二、垃圾回收器及调优"><a href="#二、垃圾回收器及调优" class="headerlink" title="二、垃圾回收器及调优"></a>二、垃圾回收器及调优</h3><h4 id="常见的垃圾回收器"><a href="#常见的垃圾回收器" class="headerlink" title="常见的垃圾回收器"></a>常见的垃圾回收器</h4><p><img src="https://casparthh.github.io/2020/02/22/jvm/gc.png" alt="常用垃圾回收器"></p>
 <ol>
 <li><p>JDK诞生 Serial追随，为提高效率，诞生了PS，为了配合CMS，诞生了PN，CMS是1.4版本后期引入，CMS是里程碑式的GC，它开启了并发回收的过程，并发垃圾回收是因为无法忍受STW。</p>
 </li>
@@ -749,7 +749,7 @@ The character V indicates that the method returns no value (its result is void).
   <entry>
     <title>JVM - 类加载 &amp; 初始化</title>
     <url>/2020/02/22/ClassLoader/</url>
-    <content><![CDATA[<p><img src="https://casparthh.github.io/2020/02/22/ClassLoader/ClassLoader.png" alt="JVM ClassLoader"></p>
+    <content><![CDATA[<p><img src="https://casparthh.github.io/2020/02/22/jvm/ClassLoader.png" alt="JVM ClassLoader"></p>
 ]]></content>
       <categories>
         <category>技术笔记</category>
