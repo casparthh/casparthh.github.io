@@ -5,18 +5,18 @@
   
 
   
-  <title>JVM - Class文件格式 | 永远晴天的博客</title>
+  <title>JVM - Class文件格式入门 | 永远晴天的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="JVM 是一种规范参考文档：https:&#x2F;&#x2F;docs.oracle.com&#x2F;en&#x2F;java&#x2F;javase&#x2F;13&#x2F;https:&#x2F;&#x2F;docs.oracle.com&#x2F;javase&#x2F;specs&#x2F;index.htmlhttps:&#x2F;&#x2F;docs.oracle.com&#x2F;javase&#x2F;specs&#x2F;jvms&#x2F;se13&#x2F;html&#x2F;index.html 虚构出来的一台计算机    -字节码指令集（汇编语言）-内存管理：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JVM - Class文件格式">
+<meta property="og:title" content="JVM - Class文件格式入门">
 <meta property="og:url" content="https://github.com/casparthh/casparthh.github.io/2020/02/22/classfile/index.html">
 <meta property="og:site_name" content="永远晴天的博客">
 <meta property="og:description" content="JVM 是一种规范参考文档：https:&#x2F;&#x2F;docs.oracle.com&#x2F;en&#x2F;java&#x2F;javase&#x2F;13&#x2F;https:&#x2F;&#x2F;docs.oracle.com&#x2F;javase&#x2F;specs&#x2F;index.htmlhttps:&#x2F;&#x2F;docs.oracle.com&#x2F;javase&#x2F;specs&#x2F;jvms&#x2F;se13&#x2F;html&#x2F;index.html 虚构出来的一台计算机    -字节码指令集（汇编语言）-内存管理：">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://casparthh.github.io/2020/02/22/classfile/jvm.jpeg">
 <meta property="article:published_time" content="2020-02-22T08:30:57.000Z">
-<meta property="article:modified_time" content="2020-02-23T08:49:22.888Z">
+<meta property="article:modified_time" content="2020-02-23T08:55:12.435Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -83,7 +83,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      JVM - Class文件格式
+      JVM - Class文件格式入门
     </h1>
   
 
@@ -95,7 +95,7 @@
           
               <div id="toc" class="toc-article">
                   <strong class="toc-title">文章目录</strong>
-                  <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#常见的JVM实现"><span class="toc-number">1.</span> <span class="toc-text">常见的JVM实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK-JRE-JVM"><span class="toc-number"></span> <span class="toc-text">JDK, JRE, JVM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class-文件"><span class="toc-number"></span> <span class="toc-text">Class 文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#查看ByteCode的方法"><span class="toc-number">1.</span> <span class="toc-text">查看ByteCode的方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Class-文件构成"><span class="toc-number">2.</span> <span class="toc-text">Class 文件构成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Class-文件格式"><span class="toc-number">3.</span> <span class="toc-text">Class 文件格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#access-flags"><span class="toc-number">4.</span> <span class="toc-text">access_flags</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Field-Descriptors"><span class="toc-number">5.</span> <span class="toc-text">Field Descriptors</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Method-Descriptors"><span class="toc-number">6.</span> <span class="toc-text">Method Descriptors</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Constant-Pool"><span class="toc-number">7.</span> <span class="toc-text">Constant Pool</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-Utf8-info"><span class="toc-number">8.</span> <span class="toc-text">CONSTANT_Utf8_info</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-Integer-info-CONSTANT-Float-info-Structures-数据结构"><span class="toc-number">9.</span> <span class="toc-text">CONSTANT_Integer_info, CONSTANT_Float_info Structures 数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-Long-info-and-CONSTANT-Double-info-数据结构"><span class="toc-number">10.</span> <span class="toc-text">CONSTANT_Long_info and CONSTANT_Double_info 数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#CONSTANT-Class-info-数据结构"><span class="toc-number">10.1.</span> <span class="toc-text">CONSTANT_Class_info 数据结构</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-String-info-数据结构"><span class="toc-number">11.</span> <span class="toc-text">CONSTANT_String_info 数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-Fieldref-info-CONSTANT-Methodref-info-CONSTANT-InterfaceMethodref-info-内存节构"><span class="toc-number">12.</span> <span class="toc-text">CONSTANT_Fieldref_info, CONSTANT_Methodref_info, CONSTANT_InterfaceMethodref_info 内存节构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-NameAndType-info"><span class="toc-number">13.</span> <span class="toc-text">CONSTANT_NameAndType_info</span></a></li></ol>
+                  <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#常见的JVM实现"><span class="toc-number">1.</span> <span class="toc-text">常见的JVM实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JDK-JRE-JVM"><span class="toc-number">2.</span> <span class="toc-text">JDK, JRE, JVM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查看ByteCode的方法"><span class="toc-number">3.</span> <span class="toc-text">查看ByteCode的方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Class-文件构成"><span class="toc-number">4.</span> <span class="toc-text">Class 文件构成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Class-文件格式"><span class="toc-number">5.</span> <span class="toc-text">Class 文件格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#access-flags"><span class="toc-number">6.</span> <span class="toc-text">access_flags</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Field-Descriptors"><span class="toc-number">7.</span> <span class="toc-text">Field Descriptors</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Method-Descriptors"><span class="toc-number">8.</span> <span class="toc-text">Method Descriptors</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Constant-Pool"><span class="toc-number">9.</span> <span class="toc-text">Constant Pool</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-Utf8-info"><span class="toc-number">10.</span> <span class="toc-text">CONSTANT_Utf8_info</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-Integer-info-CONSTANT-Float-info-Structures-数据结构"><span class="toc-number">11.</span> <span class="toc-text">CONSTANT_Integer_info, CONSTANT_Float_info Structures 数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-Long-info-and-CONSTANT-Double-info-数据结构"><span class="toc-number">12.</span> <span class="toc-text">CONSTANT_Long_info and CONSTANT_Double_info 数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#CONSTANT-Class-info-数据结构"><span class="toc-number">12.1.</span> <span class="toc-text">CONSTANT_Class_info 数据结构</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-String-info-数据结构"><span class="toc-number">13.</span> <span class="toc-text">CONSTANT_String_info 数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-Fieldref-info-CONSTANT-Methodref-info-CONSTANT-InterfaceMethodref-info-内存节构"><span class="toc-number">14.</span> <span class="toc-text">CONSTANT_Fieldref_info, CONSTANT_Methodref_info, CONSTANT_InterfaceMethodref_info 内存节构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONSTANT-NameAndType-info"><span class="toc-number">15.</span> <span class="toc-text">CONSTANT_NameAndType_info</span></a></li></ol>
               </div>
           
         <ul>
@@ -112,10 +112,10 @@
 <li>LiquidVM - 直接针对硬件</li>
 <li>azul zing - 商业版，最新垃圾回收的业界标杆，参考zing的垃圾回收产生了ZGC</li>
 </ul>
-<h3 id="JDK-JRE-JVM"><a href="#JDK-JRE-JVM" class="headerlink" title="JDK, JRE, JVM"></a>JDK, JRE, JVM</h3><p><img src="https://casparthh.github.io/2020/02/22/classfile/jvm.jpeg" alt="常用垃圾回收器"></p>
+<h4 id="JDK-JRE-JVM"><a href="#JDK-JRE-JVM" class="headerlink" title="JDK, JRE, JVM"></a>JDK, JRE, JVM</h4><p><img src="https://casparthh.github.io/2020/02/22/classfile/jvm.jpeg" alt="常用垃圾回收器"></p>
 <a id="more"></a>
 
-<h3 id="Class-文件"><a href="#Class-文件" class="headerlink" title="Class 文件"></a>Class 文件</h3><h4 id="查看ByteCode的方法"><a href="#查看ByteCode的方法" class="headerlink" title="查看ByteCode的方法"></a>查看ByteCode的方法</h4><ul>
+<h4 id="查看ByteCode的方法"><a href="#查看ByteCode的方法" class="headerlink" title="查看ByteCode的方法"></a>查看ByteCode的方法</h4><ul>
 <li>javap</li>
 <li>JBE 可以直接修改</li>
 <li>JClassLib IDEA插件之一</li>
@@ -219,11 +219,7 @@
 <td>attributes_count</td>
 </tr>
 </tbody></table>
-<pre><code>u1 一个字节，u2 两个字节。。。  
-一个16进制数就是4位，2个16进制数就是8位，也就是一个字节  
-char 1 个字节  
-int &amp; float 4个字节  
-double &amp; long 8个字节</code></pre><p>magic = 0xCAFEBABE.<br>minor_version, major_version 定义版本号<br>constant_pool_count = constant_pool.size +1</p>
+<p>u1 一个字节，u2 两个字节。。。<br>一个16进制数就是4位，2个16进制数就是8位，也就是一个字节<br>char 1 个字节<br>int &amp; float 4个字节<br>double &amp; long 8个字节<br>magic = 0xCAFEBABE.<br>minor_version, major_version 定义版本号<br>constant_pool_count = constant_pool.size +1</p>
 <h4 id="access-flags"><a href="#access-flags" class="headerlink" title="access_flags"></a>access_flags</h4><p>参考 jvms13 Table 4.1-B. Class access and property modifiers</p>
 <table>
 <thead>
@@ -340,15 +336,11 @@ double &amp; long 8个字节</code></pre><p>magic = 0xCAFEBABE.<br>minor_version
 <td>one array dimension</td>
 </tr>
 </tbody></table>
-<h4 id="Method-Descriptors"><a href="#Method-Descriptors" class="headerlink" title="Method Descriptors"></a>Method Descriptors</h4><p>( {ParameterDescriptor} ) ReturnDescriptor</p>
-<pre><code>Object m(int i, double d, Thread t) {...}
-int-&gt;I, double-&gt;D, Thread-&gt;Ljava/lang/Thread，返回值Ojbect-&gt;Ljava/lang/Object;
-
-所以该方法的描述符为：
-(IDLjava/lang/Thread;)Ljava/lang/Object;
-
-如果返回值为空，则ReturnDescriptor为VoidDescriptor-&gt;V
-The character V indicates that the method returns no value (its result is void).</code></pre><h4 id="Constant-Pool"><a href="#Constant-Pool" class="headerlink" title="Constant Pool"></a>Constant Pool</h4><p>常量池中的每一个entry必须是由一个字节的tag开始来表示该常量的种类。<br>参考 jvms13 Table 4.4-A. Constant pool tags (by section)</p>
+<h4 id="Method-Descriptors"><a href="#Method-Descriptors" class="headerlink" title="Method Descriptors"></a>Method Descriptors</h4><p>( {ParameterDescriptor} ) ReturnDescriptor  </p>
+<p>Object m(int i, double d, Thread t) {…}<br>int-&gt;I, double-&gt;D, Thread-&gt;Ljava/lang/Thread，返回值Ojbect-&gt;Ljava/lang/Object;  </p>
+<p>所以该方法的描述符为：<br>(IDLjava/lang/Thread;)Ljava/lang/Object;  </p>
+<p>如果返回值为空，则ReturnDescriptor为VoidDescriptor-&gt;V<br>The character V indicates that the method returns no value (its result is void).</p>
+<h4 id="Constant-Pool"><a href="#Constant-Pool" class="headerlink" title="Constant Pool"></a>Constant Pool</h4><p>常量池中的每一个entry必须是由一个字节的tag开始来表示该常量的种类。<br>参考 jvms13 Table 4.4-A. Constant pool tags (by section)</p>
 <table>
 <thead>
 <tr>
@@ -482,6 +474,15 @@ The character V indicates that the method returns no value (its result is void).
     
 <nav id="article-nav">
   
+    <a href="/2020/02/23/algorithm/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          algorithm
+        
+      </div>
+    </a>
+  
   
     <a href="/2020/02/22/GC/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
@@ -512,7 +513,7 @@ The character V indicates that the method returns no value (its result is void).
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/JVM/" style="font-size: 20px;">JVM</a> <a href="/tags/Thread/" style="font-size: 15px;">Thread</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">容器</a>
+      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/JVM/" style="font-size: 20px;">JVM</a> <a href="/tags/Thread/" style="font-size: 15px;">Thread</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">容器</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a>
     </div>
   </div>
 
@@ -534,7 +535,11 @@ The character V indicates that the method returns no value (its result is void).
       <ul>
         
           <li>
-            <a href="/2020/02/22/classfile/">JVM - Class文件格式</a>
+            <a href="/2020/02/23/algorithm/">algorithm</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/22/classfile/">JVM - Class文件格式入门</a>
           </li>
         
           <li>
