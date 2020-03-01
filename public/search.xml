@@ -1,6 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>网络协议原理</title>
+    <url>/2020/03/01/tcpip/</url>
+    <content><![CDATA[<h3 id="计算机网络体系结构分层"><a href="#计算机网络体系结构分层" class="headerlink" title="计算机网络体系结构分层"></a>计算机网络体系结构分层</h3><table>
+<thead>
+<tr>
+<th>OSI 七层模型</th>
+<th>TCP/IP 概念层模型</th>
+<th>功能</th>
+<th>TCP/IP 协议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应用层</td>
+<td>应用层</td>
+<td>文件传输，电子邮件，文件服务 ，虚拟终端</td>
+<td>TFTP,HTTP,SMTP,FTP,SNTP,DNS,Telnet</td>
+</tr>
+<tr>
+<td>表示层</td>
+<td>应用层</td>
+<td>数据格式化，代码转换，数据加密</td>
+<td>没有协议</td>
+</tr>
+<tr>
+<td>会话层</td>
+<td>应用层</td>
+<td>解除或建立与的接点的联系</td>
+<td>没有协议</td>
+</tr>
+<tr>
+<td>传输层</td>
+<td>传输层</td>
+<td>提供端对端的接口</td>
+<td>TCP,UDP</td>
+</tr>
+<tr>
+<td>网络层</td>
+<td>网络层</td>
+<td>为数据包选择路由</td>
+<td>IP,ICMP,RIP,OSPF,BCP,ICMP</td>
+</tr>
+<tr>
+<td>数据链路层</td>
+<td>链路层</td>
+<td>传输有地址的帧以及错误检测功能</td>
+<td>SLIP,CSLIP,PPP,ARP,RARP,MTU</td>
+</tr>
+<tr>
+<td>物理层</td>
+<td>链路层</td>
+<td>以二进制数据型式在物理媒体上传数数据</td>
+<td>ISO2110,IEEE802,IEEE802.2</td>
+</tr>
+</tbody></table>
+<table>
+    <tr>
+        <td>OSI 七层模型</td> 
+        <td>TCP/IP 概念层模型</td> 
+        <td>功能</td>
+        <td>TCP/IP 协议</td>
+   </tr>
+    <tr>
+        <td>应用层</td>
+        <td rowspan="4">应用层</td>
+        <td>文件传输，电子邮件，文件服务 ，虚拟终端</td>
+        <td>TFTP,HTTP,SMTP,FTP,SNTP,DNS,Telnet</td>
+    </tr>
+    <tr>
+        <td>表示层</td>
+        <td>数据格式化，代码转换，数据加密</td>
+        <td>没有协议</td>
+    </tr>
+    <tr>
+        <td>会话层</td>
+        <td>解除或建立与的接点的联系</td>
+        <td>没有协议</td>
+    </tr>
+    <tr>
+        <td>传输层</td>
+        <td>传输层</td>
+        <td>提供端对端的接口</td>
+        <td>TCP,UDP</td>
+    </tr>
+    <tr>
+        <td>网络层</td>
+        <td>网络层</td>
+        <td>为数据包选择路由</td>
+        <td>IP,ICMP,RIP,OSPF,BCP,ICMP</td>
+    </tr>
+    <tr>
+        <td>数据链路层</td>
+        <td>链路层</td>
+        <td>传输有地址的帧以及错误检测功能</td>
+        <td>SLIP,CSLIP,PPP,ARP,RARP,MTU</td>
+    </tr>
+    <tr>
+        <td>物理层</td>
+        <td>以二进制数据型式在物理媒体上传数数据</td>
+        <td>ISO2110,IEEE802,IEEE802.2</td>
+    </tr>
+</table>
+]]></content>
+      <categories>
+        <category>技术笔记</category>
+      </categories>
+      <tags>
+        <tag>高并发</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JVM - Class文件格式入门</title>
     <url>/2020/02/22/classfile/</url>
     <content><![CDATA[<ul>
@@ -530,7 +640,7 @@
 </li>
 <li><p>jstat -gc 动态观察gc情况 / 阅读GC日志发现频繁GC / arthas观察 / jconsole/jvisualVM/ Jprofiler（最好用）<br>jstat -gc|gcnew|gcold|gcutil <pid> 500 10 : 每个500个毫秒打印GC的情况，共打印10次退出<br>jstat -class <pid>   观察加载类的数量<br>jstat -options       查看所有options  </pid></pid></p>
 </li>
-<li><p>jmap 一个可以输出所有内存中对象的工具，甚至可以将VM 中的heap，以二进制输出成文本。<br>jmap -heap <pid>   -heap 打印heap的概要信息，GC使用的算法，heap（堆）的配置及JVM堆内存的使用情况.<br>jmap - histo 4655 | head -20，查找有多少对象产生<br>jmap -dump:format=b,file=xxx pid<br> -dump 使用hprof二进制形式,输出jvm的heap内容到文件=.  live子选项是可选的，假如指定live选项,那么只输出活的对象到文件<br> 线上系统，内存特别大，jmap执行期间会对进程产生很大影响，甚至卡顿，<font color="red">线上慎用</font>（电商不适合用）<br> 1：-XX:+HeapDumpOnOutOfMemoryError 设定了参数HeapDump，OOM的时候会自动产生堆转储文件<br> 2：很多服务器备份（高可用），停掉这台服务器对其他服务器不影响<br> 3：用在线定位</pid></p>
+<li><p>jmap 一个可以输出所有内存中对象的工具，甚至可以将VM 中的heap，以二进制输出成文本。<br>jmap -heap <pid> 打印heap的概要信息，GC使用的算法，heap（堆）的配置及JVM堆内存的使用情况.<br>jmap -histo <pid> | head -200， 将实例对象最多的200个类<br>jmap -histo:live  <pid>  在*:live前会进行full gc，带上live则只统计活对象，因此不加live的堆大小要大于加live堆的大小<br>jmap -dump:format=b,file=xxx pid<br> -dump 使用hprof二进制形式,输出jvm的heap内容到文件=.  live子选项是可选的，假如指定live选项,那么只输出活的对象到文件<br> 线上系统，内存特别大，jmap执行期间会对进程产生很大影响，甚至卡顿，<font color="red">线上慎用</font>（电商不适合用）<br> 1：-XX:+HeapDumpOnOutOfMemoryError 设定了参数HeapDump，OOM的时候会自动产生堆转储文件<br> 2：很多服务器备份（高可用），停掉这台服务器对其他服务器不影响<br> 3：用在线定位</pid></pid></pid></p>
 </li>
 <li><p>使用MAT / jhat /jvisualvm 进行dump文件分析<br> Jhat参考资料：<a href="https://www.cnblogs.com/baihuitestsoftware/articles/6406271.html" target="_blank" rel="noopener">https://www.cnblogs.com/baihuitestsoftware/articles/6406271.html</a> </p>
 </li>
@@ -545,7 +655,6 @@
 <li>redefine 热替换<br> 目前有些限制条件：只能改方法实现（方法已经运行完成），不能改方法名， 不能改属性</li>
 <li>sc  - search class</li>
 <li>watch  - watch method</li>
-<li>没有包含的功能：jmap</li>
 </ul>
 <h3 id="三、常用参数"><a href="#三、常用参数" class="headerlink" title="三、常用参数"></a>三、常用参数</h3><h4 id="GC算法的基础概念"><a href="#GC算法的基础概念" class="headerlink" title="GC算法的基础概念"></a>GC算法的基础概念</h4><ul>
 <li>Card Table<br>由于做YGC时，需要扫描整个OLD区，效率非常低，所以JVM设计了CardTable， 如果一个OLD区CardTable中有对象指向Y区，就将它设为Dirty，下次扫描时，只需要扫描Dirty Card<br>在结构上，Card Table用BitMap来实现</li>
