@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>负载均衡架构</title>
+    <url>/2020/03/02/loadbalance/</url>
+    <content><![CDATA[<p><img src="https://casparthh.github.io/2020/03/02/loadbalance/loadbalance.png" alt="负载均衡架构"></p>
+]]></content>
+      <categories>
+        <category>技术笔记</category>
+      </categories>
+      <tags>
+        <tag>高并发</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>网络协议原理</title>
     <url>/2020/03/01/tcpip/</url>
     <content><![CDATA[<h3 id="计算机网络体系结构分层"><a href="#计算机网络体系结构分层" class="headerlink" title="计算机网络体系结构分层"></a>计算机网络体系结构分层</h3><table style="border: solid;">
