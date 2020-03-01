@@ -15,7 +15,7 @@
 <meta property="og:description" content="计算机网络体系结构分层              OSI 七层模型          TCP&#x2F;IP 概念层模型          功能         TCP&#x2F;IP 协议                  应用层         应用层         文件传输，电子邮件，文件服务 ，虚拟终端         TFTP,HTTP,SMTP,FTP,SNTP,DNS,Telnet">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-01T08:53:16.000Z">
-<meta property="article:modified_time" content="2020-03-01T13:07:48.979Z">
+<meta property="article:modified_time" content="2020-03-01T16:14:14.726Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="高并发">
 <meta name="twitter:card" content="summary">
@@ -93,7 +93,7 @@
           
               <div id="toc" class="toc-article">
                   <strong class="toc-title">文章目录</strong>
-                  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#计算机网络体系结构分层"><span class="toc-number">1.</span> <span class="toc-text">计算机网络体系结构分层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用层协议演示"><span class="toc-number">2.</span> <span class="toc-text">应用层协议演示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#传输控制层-TCP三次握手四次挥手"><span class="toc-number">3.</span> <span class="toc-text">传输控制层 TCP三次握手四次挥手</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络层下一跳寻址"><span class="toc-number">4.</span> <span class="toc-text">网络层下一跳寻址</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#查看路由表"><span class="toc-number">4.1.</span> <span class="toc-text">查看路由表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#路由确定过程"><span class="toc-number">4.2.</span> <span class="toc-text">路由确定过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#链路层数据包的封装"><span class="toc-number">5.</span> <span class="toc-text">链路层数据包的封装</span></a></li></ol>
+                  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#计算机网络体系结构分层"><span class="toc-number">1.</span> <span class="toc-text">计算机网络体系结构分层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#传输控制层-TCP三次握手四次挥手"><span class="toc-number">2.</span> <span class="toc-text">传输控制层 TCP三次握手四次挥手</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络层下一跳寻址"><span class="toc-number">3.</span> <span class="toc-text">网络层下一跳寻址</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#查看路由表"><span class="toc-number">3.1.</span> <span class="toc-text">查看路由表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#路由确定过程"><span class="toc-number">3.2.</span> <span class="toc-text">路由确定过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#链路层数据包的封装"><span class="toc-number">4.</span> <span class="toc-text">链路层数据包的封装</span></a></li></ol>
               </div>
           
         <h3 id="计算机网络体系结构分层"><a href="#计算机网络体系结构分层" class="headerlink" title="计算机网络体系结构分层"></a>计算机网络体系结构分层</h3><table style="border: solid;">
@@ -143,16 +143,17 @@
         <td>ISO2110,IEEE802,IEEE802.2</td>
     </tr>
 </table>
-
-<h3 id="应用层协议演示"><a href="#应用层协议演示" class="headerlink" title="应用层协议演示"></a>应用层协议演示</h3><ul>
-<li><p>建立连接</p>
+<a id="more"></a>
+### 应用层协议演示
+* 建立连接
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;proc&#x2F;$$&#x2F;fd</span><br><span class="line">exec 8&lt;&gt; &#x2F;dev&#x2F;tcp&#x2F;www.baidu.com&#x2F;80</span><br></pre></td></tr></table></figure>
-<p>$$当前进程ID<br>fd:文件描述符<br>执行完后再执行ll 可以查看到多了一个socket连接</p>
-</li>
-<li><p>传送数据（http协议：规范标准）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -e &#39;GET &#x2F; HTTP&#x2F;1.0\n&#39; &gt;&amp;8</span><br></pre></td></tr></table></figure>
-<p>GET / HTTP/1.0：HTTP 协议规定的 Request 请求头最小的写法<br>GET: 请求方法<br>/: URL请求资源<br>HTTP/1.0： HTTP 协议版本  </p>
-</li>
+$$当前进程ID  
+fd:文件描述符
+执行完后再执行ll 可以查看到多了一个socket连接
+
+<ul>
+<li>传送数据（http协议：规范标准）<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -e &#39;GET &#x2F; HTTP&#x2F;1.0\n&#39; &gt;&amp;8</span><br></pre></td></tr></table></figure>
+GET / HTTP/1.0：HTTP 协议规定的 Request 请求头最小的写法<br>GET: 请求方法<br>/: URL请求资源<br>HTTP/1.0： HTTP 协议版本  </li>
 </ul>
 <p>-e 识别\n换行符<br>echo 打印Request信息重定向到文件描述符8 Socket里，Socket会发送到百度</p>
 <ul>

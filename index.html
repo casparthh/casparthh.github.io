@@ -135,8 +135,6 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-          <!-- Table of Contents -->
-          
         <h3 id="计算机网络体系结构分层"><a href="#计算机网络体系结构分层" class="headerlink" title="计算机网络体系结构分层"></a>计算机网络体系结构分层</h3><table style="border: solid;">
     <tr style="text-align:center">
         <td>OSI 七层模型</td> 
@@ -184,63 +182,11 @@
         <td>ISO2110,IEEE802,IEEE802.2</td>
     </tr>
 </table>
-
-<h3 id="应用层协议演示"><a href="#应用层协议演示" class="headerlink" title="应用层协议演示"></a>应用层协议演示</h3><ul>
-<li><p>建立连接</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;proc&#x2F;$$&#x2F;fd</span><br><span class="line">exec 8&lt;&gt; &#x2F;dev&#x2F;tcp&#x2F;www.baidu.com&#x2F;80</span><br></pre></td></tr></table></figure>
-<p>$$当前进程ID<br>fd:文件描述符<br>执行完后再执行ll 可以查看到多了一个socket连接</p>
-</li>
-<li><p>传送数据（http协议：规范标准）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -e &#39;GET &#x2F; HTTP&#x2F;1.0\n&#39; &gt;&amp;8</span><br></pre></td></tr></table></figure>
-<p>GET / HTTP/1.0：HTTP 协议规定的 Request 请求头最小的写法<br>GET: 请求方法<br>/: URL请求资源<br>HTTP/1.0： HTTP 协议版本  </p>
-</li>
-</ul>
-<p>-e 识别\n换行符<br>echo 打印Request信息重定向到文件描述符8 Socket里，Socket会发送到百度</p>
-<ul>
-<li>查看结果<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&amp; 8</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="传输控制层-TCP三次握手四次挥手"><a href="#传输控制层-TCP三次握手四次挥手" class="headerlink" title="传输控制层 TCP三次握手四次挥手"></a>传输控制层 TCP三次握手四次挥手</h3><ul>
-<li><p>三次握手<br>在socket通过TCP协议进行数据连接时，客户端在连接上服务端后会有一个三次握手的过程  </p>
-<ul>
-<li>客户端：我可以和你传输数据吗  </li>
-<li>服务端：可以  </li>
-<li>客户端：好的我来了  </li>
-</ul>
-</li>
-<li><p>四次挥手<br>在socket端开连接时，会有一个四次挥手的过程  </p>
-<ul>
-<li>我要断开连接了  </li>
-<li>好的，我先处理完手中的任务  </li>
-<li>好的，我等你  </li>
-<li>断开吧  </li>
-</ul>
-</li>
-<li><p>三次握手&gt;数据传输&gt;四次分手 成为一个最小粒度,不可被分割</p>
-</li>
-<li><p>查看当前所有Socket连接信息：netstat -natp<br>n: 显示ip地址，不要用逻辑名称<br>a: 所有<br>t: 查看当前所有的socket链接<br>p: PID，显示通信是哪个进程的ID号  </p>
-</li>
-</ul>
-<h3 id="网络层下一跳寻址"><a href="#网络层下一跳寻址" class="headerlink" title="网络层下一跳寻址"></a>网络层下一跳寻址</h3><p>cat /etc/sysconfig/network-scripts/ifcfg-eth1<br>IPADDR=192.168.79.101<br>GATEWAY=192.168.79.2<br>NETMASK=255.255.255.0<br>IP地址，点分字节，通信每一个点的标识符，IP是端点间，MAC地址是节点间的</p>
-<p>TCP/IP协议：基于下一跳的机制, 每一台互联网设备的内存中，不需要存储全网数据，只需要存周边一步之内的数据<br>IP地址与掩码发生二进制的按位与计算:  192.168.79.101 &amp; 255.255.255.0<br>得出这台机器的网络号是：192.168.79.0； 当前机器是这个网络中的第101号。</p>
-<h4 id="查看路由表"><a href="#查看路由表" class="headerlink" title="查看路由表"></a>查看路由表</h4><p>路由表：存储了本地计算机可以到达的网络目的地址范围和如何到达的路由信息。路由表是TCP/IP通信的基础，本地计算机上的任何TCP/IP通信都受到路由表的控制。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">route -n</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">192.168.79.0    0.0.0.0         255.255.255.0   U     1      0        0 eth1</span><br><span class="line">0.0.0.0         192.168.79.2    0.0.0.0         UG    0      0        0 eth1</span><br></pre></td></tr></table></figure>
-<ul>
-<li>U 表示该路由可以使用。</li>
-<li>G 该路由是到一个网关（路由器）</li>
-</ul>
-<p>1） 网络地址（Network Destination）、网络掩码（Netmask）<br>网络地址和网络掩码相与的结果用于定义本地计算机可以到达的目的网络地址范围。</p>
-<p>2） 网关（Gateway，又称为下一跳服务器）<br>在发送IP数据包时，网关定义了针对特定的网络目的地址，数据包发送到的下一跳服务器。如果是本地计算机直接连接到的网络，网关通常是0.0.0.0。如果是远程网络或默认路由，网关通常是本地计算机所连接到的网络上的某个服务器或路由器。</p>
-<p>3） 接口（Interface）<br>接口定义了针对特定的网络目的地址，本地计算机用于发送数据包的网络接口。</p>
-<p>(4) 跃点数（Metric）<br>跃点数用于指出路由的成本，通常情况下代表到达目标地址所需要经过的跃点数量，一个跃点代表经过一个路由器。跃点数越低，代表路由成本越低；跃点数越高，代表路由成本越高。当具有多条到达相同目的网络的路由项时，TCP/IP会选择具有更低跃点数的路由项。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#route add 添加路由</span><br><span class="line">#使用route 命令添加的路由，机器重启或者网卡重启后路由就失效了</span><br><span class="line">route add -net 192.168.88.88 netmask 255.255.255.255 gw 192.168.79.102</span><br><span class="line"></span><br><span class="line">#删除一条路由,删除的时候不用写网关</span><br><span class="line">route del -net 192.168.79.0 netmask 255.255.255.0</span><br></pre></td></tr></table></figure>
-
-<h4 id="路由确定过程"><a href="#路由确定过程" class="headerlink" title="路由确定过程"></a>路由确定过程</h4><p>当TCP/IP需要向某个IP地址发起通信时，它会对路由表进行评估，以确定如何发送数据包。评估过程如下：<br>(1) TCP/IP使用需要通信的目的IP地址和路由表中每一个路由项的网络掩码进行相与计算，如果相与后的结果匹配对应路由项的网络地址，则记录下此路由项。<br>(2) 当计算完路由表中所有的路由项后，<br>    (a) TCP/IP选择记录下的路由项中的最长匹配路由（网络掩码中具有最多“1”位的路由项）来和此目的IP地址进行通信。<br>    (b) 如果存在多个最长匹配路由，那么选择具有最低跃点数的路由项。<br>    (c) 如果存在多个具有最低跃点数的最长匹配路由，那么：均根据最长匹配路由所对应的网络接口在网络连接的高级设置中的绑定优先级来决定(一般有线(eth0) &gt; 无线 (wlan0) &gt; 移动信号(4G))。<br>    (d) 如果优先级一致，则选择最开始找到的最长匹配路由。</p>
-<h3 id="链路层数据包的封装"><a href="#链路层数据包的封装" class="headerlink" title="链路层数据包的封装"></a>链路层数据包的封装</h3><p>传输层及其以下的机制由内核提供，应用层由用户进程提供，数据在传输之前，必须要进行封装。链路层也可以叫做以太网帧格式。</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arp -a</span><br><span class="line">? (192.168.79.1) at 00:50:56:c0:00:08 [ether] on eth1</span><br><span class="line">? (192.168.79.2) at 00:50:56:ec:ef:30 [ether] on eth1</span><br></pre></td></tr></table></figure>
-<p>ARP：解释局域网内的IP地址到网卡硬件地址的映射。<br>通过ARP数据报表，来返回下一个路由器的MAC地址，封装数据。每到一个路由器，确认MAC地址并修改下一跳的MAC地址，再重新打包，再继续传。</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2020/03/01/tcpip/#more">阅读更多</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
