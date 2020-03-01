@@ -15,7 +15,7 @@
 <meta property="og:description" content="计算机网络体系结构分层              OSI 七层模型          TCP&#x2F;IP 概念层模型          功能         TCP&#x2F;IP 协议                  应用层         应用层         文件传输，电子邮件，文件服务 ，虚拟终端         TFTP,HTTP,SMTP,FTP,SNTP,DNS,Telnet">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-01T08:53:16.000Z">
-<meta property="article:modified_time" content="2020-03-01T12:56:14.831Z">
+<meta property="article:modified_time" content="2020-03-01T13:07:48.979Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="高并发">
 <meta name="twitter:card" content="summary">
@@ -105,7 +105,7 @@
    </tr>
     <tr>
         <td>应用层</td>
-        <td rowspan="4">应用层</td>
+        <td rowspan="3">应用层</td>
         <td>文件传输，电子邮件，文件服务 ，虚拟终端</td>
         <td>TFTP,HTTP,SMTP,FTP,SNTP,DNS,Telnet</td>
     </tr>
@@ -120,6 +120,7 @@
         <td>没有协议</td>
     </tr>
     <tr>
+        <td>传输层</td>
         <td>传输层</td>
         <td>提供端对端的接口</td>
         <td>TCP,UDP</td>
@@ -192,7 +193,7 @@
 <p>2） 网关（Gateway，又称为下一跳服务器）<br>在发送IP数据包时，网关定义了针对特定的网络目的地址，数据包发送到的下一跳服务器。如果是本地计算机直接连接到的网络，网关通常是0.0.0.0。如果是远程网络或默认路由，网关通常是本地计算机所连接到的网络上的某个服务器或路由器。</p>
 <p>3） 接口（Interface）<br>接口定义了针对特定的网络目的地址，本地计算机用于发送数据包的网络接口。</p>
 <p>(4) 跃点数（Metric）<br>跃点数用于指出路由的成本，通常情况下代表到达目标地址所需要经过的跃点数量，一个跃点代表经过一个路由器。跃点数越低，代表路由成本越低；跃点数越高，代表路由成本越高。当具有多条到达相同目的网络的路由项时，TCP/IP会选择具有更低跃点数的路由项。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#route add 添加路由</span><br><span class="line">#使用route 命令添加的路由，机器重启或者网卡重启后路由就失效了</span><br><span class="line">route add -net 192.168.88.88 netmask 255.255.255.255 gw 192.168.79.102</span><br><span class="line"></span><br><span class="line">删除一条路由,删除的时候不用写网关</span><br><span class="line">route del -net 192.168.79.0 netmask 255.255.255.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#route add 添加路由</span><br><span class="line">#使用route 命令添加的路由，机器重启或者网卡重启后路由就失效了</span><br><span class="line">route add -net 192.168.88.88 netmask 255.255.255.255 gw 192.168.79.102</span><br><span class="line"></span><br><span class="line">#删除一条路由,删除的时候不用写网关</span><br><span class="line">route del -net 192.168.79.0 netmask 255.255.255.0</span><br></pre></td></tr></table></figure>
 
 <h4 id="路由确定过程"><a href="#路由确定过程" class="headerlink" title="路由确定过程"></a>路由确定过程</h4><p>当TCP/IP需要向某个IP地址发起通信时，它会对路由表进行评估，以确定如何发送数据包。评估过程如下：<br>(1) TCP/IP使用需要通信的目的IP地址和路由表中每一个路由项的网络掩码进行相与计算，如果相与后的结果匹配对应路由项的网络地址，则记录下此路由项。<br>(2) 当计算完路由表中所有的路由项后，<br>    (a) TCP/IP选择记录下的路由项中的最长匹配路由（网络掩码中具有最多“1”位的路由项）来和此目的IP地址进行通信。<br>    (b) 如果存在多个最长匹配路由，那么选择具有最低跃点数的路由项。<br>    (c) 如果存在多个具有最低跃点数的最长匹配路由，那么：均根据最长匹配路由所对应的网络接口在网络连接的高级设置中的绑定优先级来决定(一般有线(eth0) &gt; 无线 (wlan0) &gt; 移动信号(4G))。<br>    (d) 如果优先级一致，则选择最开始找到的最长匹配路由。</p>
 <h3 id="链路层数据包的封装"><a href="#链路层数据包的封装" class="headerlink" title="链路层数据包的封装"></a>链路层数据包的封装</h3><p>传输层及其以下的机制由内核提供，应用层由用户进程提供，数据在传输之前，必须要进行封装。链路层也可以叫做以太网帧格式。</p>
