@@ -45,7 +45,7 @@
       </tags>
   </entry>
   <entry>
-    <title>网络协议原理</title>
+    <title>高并发 - 网络协议原理</title>
     <url>/2020/03/01/tcpip/</url>
     <content><![CDATA[<h3 id="计算机网络体系结构分层"><a href="#计算机网络体系结构分层" class="headerlink" title="计算机网络体系结构分层"></a>计算机网络体系结构分层</h3><table style="border: solid;">
     <tr style="text-align:center">
@@ -160,7 +160,7 @@ GET / HTTP/1.0：HTTP 协议规定的 Request 请求头最小的写法<br>GET: �
       </tags>
   </entry>
   <entry>
-    <title>LVS的DR模型搭建</title>
+    <title>高并发 - LVS的DR模型搭建</title>
     <url>/2020/03/01/lvs/</url>
     <content><![CDATA[<h3 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h3><p>网卡上有IP和MAC地址，网卡一加电就会将自己公布出去，别的机器只能知道IP地址逻辑的会走ARP协议请求MAC地址。<br>Linux系统下 /proc 是虚拟目录，开机之后才会有的目录，里面放的内核及所有启动的进程，把里面的变量及参数抽象成文件，<br>修改文件的值相当于改了内核变量参数的值，目录中的文件的参数值一变，内核立即发生效果。<br>这些文件修改的时候不能用vi 命令去打开修改。因为会产生隐藏临时文件，只能echo 重定向去覆盖。</p>
 <p>lo 回环接口，是内核上的虚拟网卡，虚拟网络接口，并非真实存在，并不真实地从外界接收和发送数据包，而是在系统内部接收和发送数据包，因此虚拟网络接口不需要驱动程序。lo回环地址</p>
