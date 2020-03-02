@@ -128,15 +128,9 @@ GET / HTTP/1.0：HTTP 协议规定的 Request 请求头最小的写法<br>GET: �
       </tags>
   </entry>
   <entry>
-    <title>lvs</title>
+    <title>LVS的DR模型搭建</title>
     <url>/2020/03/01/lvs/</url>
-    <content><![CDATA[<hr>
-<p>title: LVS的DR模型搭建<br>date: 2020-03-01 16:53:16<br>toc: true<br>categories:</p>
-<ul>
-<li>技术笔记<br>tags:</li>
-<li>高并发</li>
-</ul>
-<h3 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h3><p>网卡上有IP和MAC地址，网卡一加电就会将自己公布出去，别的机器只能知道IP地址逻辑的会走ARP协议请求MAC地址。<br>Linux系统下 /proc 是虚拟目录，开机之后才会有的目录，里面放的内核及所有启动的进程，把里面的变量及参数抽象成文件，<br>修改文件的值相当于改了内核变量参数的值，目录中的文件的参数值一变，内核立即发生效果。<br>这些文件修改的时候不能用vi 命令去打开修改。因为会产生隐藏临时文件，只能echo 重定向去覆盖。</p>
+    <content><![CDATA[<h3 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h3><p>网卡上有IP和MAC地址，网卡一加电就会将自己公布出去，别的机器只能知道IP地址逻辑的会走ARP协议请求MAC地址。<br>Linux系统下 /proc 是虚拟目录，开机之后才会有的目录，里面放的内核及所有启动的进程，把里面的变量及参数抽象成文件，<br>修改文件的值相当于改了内核变量参数的值，目录中的文件的参数值一变，内核立即发生效果。<br>这些文件修改的时候不能用vi 命令去打开修改。因为会产生隐藏临时文件，只能echo 重定向去覆盖。</p>
 <p>lo 回环接口，是内核上的虚拟网卡，虚拟网络接口，并非真实存在，并不真实地从外界接收和发送数据包，而是在系统内部接收和发送数据包，因此虚拟网络接口不需要驱动程序。lo回环地址</p>
 <p>eth0 以太网接口，以太网接口与网卡对应，每个硬件网卡(一个MAC)对应一个以太网接口，其工作完全由网卡相应的驱动程序控制。<br>如果物理网卡只有一个，而却有eth1，eth2等，则可能存在无线网卡或多个虚拟网卡，虚拟网卡由系统创建或通过应用层程序创建，作用与物理网卡类似。</p>
 <h4 id="关闭arp解析，隐藏VIP方法"><a href="#关闭arp解析，隐藏VIP方法" class="headerlink" title="关闭arp解析，隐藏VIP方法"></a>关闭arp解析，隐藏VIP方法</h4><p>/proc/sys/net/ipv4/conf/eth0 目录下有arp_ignore &amp; arp_announce 两个文件，默认设置都为0  </p>
@@ -176,6 +170,13 @@ GET / HTTP/1.0：HTTP 协议规定的 Request 请求头最小的写法<br>GET: �
 <p>四种静态：<br>rr:轮循<br>wrr:<br>dh:<br>sh:</p>
 <p>动态调度方法：<br>lc: 最少连接<br>wlc: 加权最少连接<br>sed: 最短期望延迟<br>nq: never queue<br>LBLC: 基于本地的最少连接<br>DH:<br>LBLCR: 基于本地的带复制功能的最少连接</p>
 ]]></content>
+      <categories>
+        <category>技术笔记</category>
+      </categories>
+      <tags>
+        <tag>高并发</tag>
+        <tag>LVS</tag>
+      </tags>
   </entry>
   <entry>
     <title>JVM - Class文件格式入门</title>
