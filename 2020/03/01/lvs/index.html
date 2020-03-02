@@ -15,7 +15,7 @@
 <meta property="og:description" content="理论基础网卡上有IP和MAC地址，网卡一加电就会将自己公布出去，别的机器只能知道IP地址逻辑的会走ARP协议请求MAC地址。Linux系统下 &#x2F;proc 是虚拟目录，开机之后才会有的目录，里面放的内核及所有启动的进程，把里面的变量及参数抽象成文件，修改文件的值相当于改了内核变量参数的值，目录中的文件的参数值一变，内核立即发生效果。这些文件修改的时候不能用vi 命令去打开修改。因为会产生隐藏临时文件">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-01T08:53:16.000Z">
-<meta property="article:modified_time" content="2020-03-02T03:54:35.077Z">
+<meta property="article:modified_time" content="2020-03-02T05:46:02.984Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="高并发">
 <meta property="article:tag" content="LVS">
@@ -94,12 +94,13 @@
           
               <div id="toc" class="toc-article">
                   <strong class="toc-title">文章目录</strong>
-                  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#理论基础"><span class="toc-number">1.</span> <span class="toc-text">理论基础</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#关闭arp解析，隐藏VIP方法"><span class="toc-number">1.1.</span> <span class="toc-text">关闭arp解析，隐藏VIP方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LVS服务配置"><span class="toc-number">2.</span> <span class="toc-text">LVS服务配置</span></a></li></ol>
+                  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#理论基础"><span class="toc-number">1.</span> <span class="toc-text">理论基础</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#关闭arp解析，隐藏VIP方法"><span class="toc-number">1.1.</span> <span class="toc-text">关闭arp解析，隐藏VIP方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LVS服务配置"><span class="toc-number">2.</span> <span class="toc-text">LVS服务配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#添加虚拟IP"><span class="toc-number">2.1.</span> <span class="toc-text">添加虚拟IP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#添加服务"><span class="toc-number">2.2.</span> <span class="toc-text">添加服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查看"><span class="toc-number">2.3.</span> <span class="toc-text">查看</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除所有集群服务"><span class="toc-number">2.4.</span> <span class="toc-text">删除所有集群服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#保存规则"><span class="toc-number">2.5.</span> <span class="toc-text">保存规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#载入规则"><span class="toc-number">2.6.</span> <span class="toc-text">载入规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#调度方法："><span class="toc-number">2.7.</span> <span class="toc-text">调度方法：</span></a></li></ol></li></ol>
               </div>
           
         <h3 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h3><p>网卡上有IP和MAC地址，网卡一加电就会将自己公布出去，别的机器只能知道IP地址逻辑的会走ARP协议请求MAC地址。<br>Linux系统下 /proc 是虚拟目录，开机之后才会有的目录，里面放的内核及所有启动的进程，把里面的变量及参数抽象成文件，<br>修改文件的值相当于改了内核变量参数的值，目录中的文件的参数值一变，内核立即发生效果。<br>这些文件修改的时候不能用vi 命令去打开修改。因为会产生隐藏临时文件，只能echo 重定向去覆盖。</p>
 <p>lo 回环接口，是内核上的虚拟网卡，虚拟网络接口，并非真实存在，并不真实地从外界接收和发送数据包，而是在系统内部接收和发送数据包，因此虚拟网络接口不需要驱动程序。lo回环地址</p>
 <p>eth0 以太网接口，以太网接口与网卡对应，每个硬件网卡(一个MAC)对应一个以太网接口，其工作完全由网卡相应的驱动程序控制。<br>如果物理网卡只有一个，而却有eth1，eth2等，则可能存在无线网卡或多个虚拟网卡，虚拟网卡由系统创建或通过应用层程序创建，作用与物理网卡类似。</p>
+<a id="more"></a>
 <h4 id="关闭arp解析，隐藏VIP方法"><a href="#关闭arp解析，隐藏VIP方法" class="headerlink" title="关闭arp解析，隐藏VIP方法"></a>关闭arp解析，隐藏VIP方法</h4><p>/proc/sys/net/ipv4/conf/eth0 目录下有arp_ignore &amp; arp_announce 两个文件，默认设置都为0  </p>
 <ul>
 <li>arp_ingore: 定义接收到ARP请求时的响应级别<br>  0: 只要本地配置的有相应地址，就给予响应；<br>  1: 只有请求的目标（MAC）地址配置请求到达的接口上的时候，才给予响应；</li>
@@ -113,29 +114,29 @@
 <h3 id="LVS服务配置"><a href="#LVS服务配置" class="headerlink" title="LVS服务配置"></a>LVS服务配置</h3><ul>
 <li>安装lvs的管理工具ipvsadm<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install ipvsadm -y</span><br></pre></td></tr></table></figure>
 
-
 </li>
 </ul>
-<ul>
-<li>添加虚拟IP规则，管理集群服务<br>ipvsadm -A -t 192.168.79.110:80 -s rr</li>
-</ul>
+<h4 id="添加虚拟IP"><a href="#添加虚拟IP" class="headerlink" title="添加虚拟IP"></a>添加虚拟IP</h4><p>添加虚拟IP规则，管理集群服务<br>ipvsadm -A -t 192.168.79.110:80 -s rr</p>
 <blockquote>
-<p>添加：-A -t|u|f service-address [-s scheduler]<br>-t: TCP协议的集群<br>-u: UDP协议的集群<br>service-address:     IP:PORT<br>-f: FWM: 防火墙标记<br>service-address: Mark Number<br>修改：-E<br>删除：-D -t|u|f service-address<br>scheduler 调度方法</p>
+<p>-A：添加虚拟IP规则<br>-A -t|u|f service-address [-s scheduler]<br>-t: TCP协议的集群<br>-u: UDP协议的集群<br>service-address:     IP:PORT<br>-f: FWM: 防火墙标记<br>service-address: Mark Number<br>修改：-E<br>删除：-D -t|u|f service-address<br>scheduler 调度方法，one of rr|wrr|lc|wlc|lblc|lblcr|dh|sh|sed|nq, the default scheduler is wlc.</p>
 </blockquote>
-<ul>
-<li>在虚拟IP中添加服务规则，管理集群服务中的RS<br>ipvsadm -a  -t 192.168.79.110:80  -r  192.168.79.102 -g -w 1<br>ipvsadm -a  -t 192.168.79.110:80  -r  192.168.79.103 -g -w 1  </li>
-</ul>
+<h4 id="添加服务"><a href="#添加服务" class="headerlink" title="添加服务"></a>添加服务</h4><p>在虚拟IP中添加服务规则，管理集群服务中的RS<br>ipvsadm -a  -t 192.168.79.110:80  -r  192.168.79.102 -g -w 1<br>ipvsadm -a  -t 192.168.79.110:80  -r  192.168.79.103 -g -w 1  </p>
 <blockquote>
-<p>添加：-a -t|u|f service-address -r server-address [-g|i|m] [-w weight]<br>-t|u|f service-address：事先定义好的某集群服务<br>-r server-address: 某RS的地址，在NAT模型中，可使用IP：PORT实现端口映射；<br>[-g|i|m]: LVS类型<br>-g: DR<br>-i: TUN<br>-m: NAT<br>[-w weight]: 定义服务器权重<br>修改：-e<br>删除：-d -t|u|f service-address -r server-address</p>
+<p>-a： 添加服务规则<br>-t|u|f service-address -r server-address [-g|i|m] [-w weight]<br>-t|u|f service-address：事先定义好的某集群服务<br>-r server-address: 某RS的地址，在NAT模型中，可使用IP：PORT实现端口映射；<br>[-g|i|m]: LVS类型<br>-g: DR<br>-i: TUN<br>-m: NAT<br>[-w weight]: 定义服务器权重<br>修改：-e<br>删除：-d -t|u|f service-address -r server-address</p>
 </blockquote>
-<blockquote>
-<p>查看<br>-L|l<br>-n: 数字格式显示主机地址和端口<br>–stats：统计数据<br>–rate: 速率<br>–timeout: 显示tcp、tcpfin和udp的会话超时时长<br>-:c 显示当前的ipvs连接状况</p>
+<h4 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h4><blockquote>
+<p>-L|l<br>-n: 数字格式显示主机地址和端口<br>–stats：统计数据<br>–rate: 速率<br>–timeout: 显示tcp、tcpfin和udp的会话超时时长<br>-:c 显示当前的ipvs连接状况</p>
 </blockquote>
-<blockquote>
-<p>删除所有集群服务<br>-C：清空ipvs规则<br>-S:保存规则<br>ipvsadm -S &gt; /path/to/somefile<br>-R 载入此前的规则：<br>ipvsadm -R &lt; /path/form/somefile </p>
+<h4 id="删除所有集群服务"><a href="#删除所有集群服务" class="headerlink" title="删除所有集群服务"></a>删除所有集群服务</h4><blockquote>
+<p>-C：清空ipvs规则</p>
 </blockquote>
-<p>四种静态：<br>rr:轮循<br>wrr:<br>dh:<br>sh:</p>
-<p>动态调度方法：<br>lc: 最少连接<br>wlc: 加权最少连接<br>sed: 最短期望延迟<br>nq: never queue<br>LBLC: 基于本地的最少连接<br>DH:<br>LBLCR: 基于本地的带复制功能的最少连接</p>
+<h4 id="保存规则"><a href="#保存规则" class="headerlink" title="保存规则"></a>保存规则</h4><blockquote>
+<p>-S:保存规则<br>ipvsadm -S &gt; /path/to/somefile</p>
+</blockquote>
+<h4 id="载入规则"><a href="#载入规则" class="headerlink" title="载入规则"></a>载入规则</h4><blockquote>
+<p>-R 载入此前的规则：<br>ipvsadm -R &lt; /path/form/somefile </p>
+</blockquote>
+<h4 id="调度方法："><a href="#调度方法：" class="headerlink" title="调度方法："></a>调度方法：</h4><p>rr: 轮询调度<br>wrr: 加权轮询调度<br>sh: 源地址散列调度U<br>lc: 最小连接调度<br>wlc: 加权最小连接调度 (默认)<br>sed: 最短期望延迟<br>nq: 最少队列调度<br>lblc: 基于本地的最少连接<br>dh: 目标地址散列调度<br>lblcr: 基于本地的带复制功能的最少连接</p>
 
       
     </div>
