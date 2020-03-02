@@ -5,17 +5,21 @@
   
 
   
-  <title>永远晴天的博客</title>
+  <title>基于Keepalived的LVS实验 | 永远晴天的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="永远晴天的博客">
-<meta property="og:url" content="https://github.com/casparthh/casparthh.github.io/index.html">
+  <meta name="description" content="准备环境vip：node01 192.168.79.101  lvs(主)：node01 192.168.79.101lvs(备)：node04 192.168.79.104  nginx1：node02 192.168.79.102nginx2：node03 192.168.79.103  RS中的服务node02~node03:1)修改内核：    echo 1  &gt;  &#x2F;proc&#x2F;sy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Keepalived的LVS实验">
+<meta property="og:url" content="https://github.com/casparthh/casparthh.github.io/2020/03/02/keepalivedlvs/index.html">
 <meta property="og:site_name" content="永远晴天的博客">
-<meta property="og:description" content="description">
+<meta property="og:description" content="准备环境vip：node01 192.168.79.101  lvs(主)：node01 192.168.79.101lvs(备)：node04 192.168.79.104  nginx1：node02 192.168.79.102nginx2：node03 192.168.79.103  RS中的服务node02~node03:1)修改内核：    echo 1  &gt;  &#x2F;proc&#x2F;sy">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-02T13:35:00.000Z">
+<meta property="article:modified_time" content="2020-03-02T15:51:38.559Z">
 <meta property="article:author" content="Caspar Tan">
-<meta property="article:tag" content="Java">
+<meta property="article:tag" content="高并发">
+<meta property="article:tag" content="LVS">
+<meta property="article:tag" content="Keepalived">
 <meta name="twitter:card" content="summary">
   
   
@@ -61,9 +65,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-keepalivedlvs" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-keepalivedlvs" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/03/02/keepalivedlvs/" class="article-date">
   <time datetime="2020-03-02T13:35:00.000Z" itemprop="datePublished">2020-03-02</time>
@@ -80,8 +82,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/02/keepalivedlvs/">基于Keepalived的LVS实验</a>
+    <h1 class="article-title" itemprop="name">
+      基于Keepalived的LVS实验
     </h1>
   
 
@@ -90,6 +92,11 @@
     <div class="article-entry" itemprop="articleBody">
       
           <!-- Table of Contents -->
+          
+              <div id="toc" class="toc-article">
+                  <strong class="toc-title">文章目录</strong>
+                  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#准备环境"><span class="toc-number">1.</span> <span class="toc-text">准备环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RS中的服务"><span class="toc-number">2.</span> <span class="toc-text">RS中的服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d"><span class="toc-number">3.</span> <span class="toc-text">d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装ipvsadm-amp-keepalived"><span class="toc-number">4.</span> <span class="toc-text">安装ipvsadm &amp; keepalived</span></a></li></ol>
+              </div>
           
         <h3 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h3><p>vip：node01 192.168.79.101 </p>
 <p>lvs(主)：node01 192.168.79.101<br>lvs(备)：node04 192.168.79.104 </p>
@@ -121,527 +128,20 @@
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-loadbalance" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/03/02/loadbalance/" class="article-date">
-  <time datetime="2020-03-01T16:06:30.000Z" itemprop="datePublished">2020-03-02</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/02/loadbalance/">负载均衡架构</a>
-    </h1>
+    <a href="/2020/03/02/loadbalance/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">负载均衡架构</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          <!-- Table of Contents -->
-          
-        <p><img src="https://casparthh.github.io/2020/03/02/loadbalance/loadbalance.png" alt="负载均衡架构"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/03/02/loadbalance/" data-id="ck798bchc0000sbc9fmocf5ug" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/" rel="tag">高并发</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
 
-
-
-  
-    <article id="post-tcpip" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/03/01/tcpip/" class="article-date">
-  <time datetime="2020-03-01T08:53:16.000Z" itemprop="datePublished">2020-03-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/01/tcpip/">网络协议原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="计算机网络体系结构分层"><a href="#计算机网络体系结构分层" class="headerlink" title="计算机网络体系结构分层"></a>计算机网络体系结构分层</h3><table style="border: solid;">
-    <tr style="text-align:center">
-        <td>OSI 七层模型</td> 
-        <td>TCP/IP 概念层模型</td> 
-        <td>功能</td>
-        <td>TCP/IP 协议</td>
-   </tr>
-    <tr>
-        <td>应用层</td>
-        <td rowspan="3">应用层</td>
-        <td>文件传输，电子邮件，文件服务 ，虚拟终端</td>
-        <td>TFTP,HTTP,SMTP,FTP,SNTP,DNS,Telnet</td>
-    </tr>
-    <tr>
-        <td>表示层</td>
-        <td>数据格式化，代码转换，数据加密</td>
-        <td>没有协议</td>
-    </tr>
-    <tr>
-        <td>会话层</td>
-        <td>解除或建立与的接点的联系</td>
-        <td>没有协议</td>
-    </tr>
-    <tr>
-        <td>传输层</td>
-        <td>传输层</td>
-        <td>提供端对端的接口</td>
-        <td>TCP,UDP</td>
-    </tr>
-    <tr>
-        <td>网络层</td>
-        <td>网络层</td>
-        <td>为数据包选择路由</td>
-        <td>IP,ICMP,RIP,OSPF,BCP,ICMP</td>
-    </tr>
-    <tr>
-        <td>数据链路层</td>
-        <td rowspan="2">链路层</td>
-        <td>传输有地址的帧以及错误检测功能</td>
-        <td>SLIP,CSLIP,PPP,ARP,RARP,MTU</td>
-    </tr>
-    <tr>
-        <td>物理层</td>
-        <td>以二进制数据型式在物理媒体上传数数据</td>
-        <td>ISO2110,IEEE802,IEEE802.2</td>
-    </tr>
-</table>
-        
-          <p class="article-more-link">
-            <a href="/2020/03/01/tcpip/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/03/01/tcpip/" data-id="ck78tfjrj0000shc957fibxls" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/" rel="tag">高并发</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-lvs" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/03/01/lvs/" class="article-date">
-  <time datetime="2020-03-01T08:53:16.000Z" itemprop="datePublished">2020-03-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/01/lvs/">LVS的DR模型搭建</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h3><p>网卡上有IP和MAC地址，网卡一加电就会将自己公布出去，别的机器只能知道IP地址逻辑的会走ARP协议请求MAC地址。<br>Linux系统下 /proc 是虚拟目录，开机之后才会有的目录，里面放的内核及所有启动的进程，把里面的变量及参数抽象成文件，<br>修改文件的值相当于改了内核变量参数的值，目录中的文件的参数值一变，内核立即发生效果。<br>这些文件修改的时候不能用vi 命令去打开修改。因为会产生隐藏临时文件，只能echo 重定向去覆盖。</p>
-<p>lo 回环接口，是内核上的虚拟网卡，虚拟网络接口，并非真实存在，并不真实地从外界接收和发送数据包，而是在系统内部接收和发送数据包，因此虚拟网络接口不需要驱动程序。lo回环地址</p>
-<p>eth0 以太网接口，以太网接口与网卡对应，每个硬件网卡(一个MAC)对应一个以太网接口，其工作完全由网卡相应的驱动程序控制。<br>如果物理网卡只有一个，而却有eth1，eth2等，则可能存在无线网卡或多个虚拟网卡，虚拟网卡由系统创建或通过应用层程序创建，作用与物理网卡类似。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/03/01/lvs/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/03/01/lvs/" data-id="ck78xuu3x0000tdc91q771phn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LVS/" rel="tag">LVS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/" rel="tag">高并发</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-classfile" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/02/22/classfile/" class="article-date">
-  <time datetime="2020-02-22T08:30:57.000Z" itemprop="datePublished">2020-02-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/22/classfile/">JVM - Class文件格式入门</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>JVM 是一种规范<br>参考文档：<br><a href="https://docs.oracle.com/en/java/javase/13/" target="_blank" rel="noopener">https://docs.oracle.com/en/java/javase/13/</a><br><a href="https://docs.oracle.com/javase/specs/index.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/index.html</a><br><a href="https://docs.oracle.com/javase/specs/jvms/se13/html/index.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se13/html/index.html</a></li>
-<li>虚构出来的一台计算机  </li>
-</ul>
-<p>-字节码指令集（汇编语言）<br>-内存管理：堆、栈、方法区等  </p>
-<h4 id="常见的JVM实现"><a href="#常见的JVM实现" class="headerlink" title="常见的JVM实现"></a>常见的JVM实现</h4><ul>
-<li>Hotspot - Oracl 官方</li>
-<li>Jrockit - BEA，曾经号称世界上最快的JVM,被Oracle收购后，合并于hotspot</li>
-<li>J9 - IBM</li>
-<li>Microsoft VM</li>
-<li>TaobaoVM - Hotspot 深度定制版</li>
-<li>LiquidVM - 直接针对硬件</li>
-<li>azul zing - 商业版，最新垃圾回收的业界标杆，参考zing的垃圾回收产生了ZGC</li>
-</ul>
-<h4 id="JDK-JRE-JVM"><a href="#JDK-JRE-JVM" class="headerlink" title="JDK, JRE, JVM"></a>JDK, JRE, JVM</h4><p><img src="https://casparthh.github.io/2020/02/22/classfile/jvm.jpeg" alt="常用垃圾回收器"></p>
-        
-          <p class="article-more-link">
-            <a href="/2020/02/22/classfile/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/classfile/" data-id="ck6ztaqui000g5xc98d54hegh" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-GC" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/02/22/GC/" class="article-date">
-  <time datetime="2020-02-22T08:20:37.000Z" itemprop="datePublished">2020-02-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/22/GC/">JVM - GC和GC Tuning</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="一、GC的基础知识"><a href="#一、GC的基础知识" class="headerlink" title="一、GC的基础知识"></a>一、GC的基础知识</h3><h4 id="什么是垃圾"><a href="#什么是垃圾" class="headerlink" title="什么是垃圾"></a>什么是垃圾</h4><p>没有任何引用指向的一个对象或者多个对象（循环引用）</p>
-<h4 id="如何定位垃圾"><a href="#如何定位垃圾" class="headerlink" title="如何定位垃圾"></a>如何定位垃圾</h4><ol>
-<li>引用计数（ReferenceCount）</li>
-<li>根可达算法(RootSearching)</li>
-</ol>
-<h4 id="常见的垃圾回收算法"><a href="#常见的垃圾回收算法" class="headerlink" title="常见的垃圾回收算法"></a>常见的垃圾回收算法</h4><ol>
-<li>标记清除(mark sweep) - 位置不连续 产生碎片 效率偏低（两遍扫描）</li>
-<li>拷贝算法 (copying) - 没有碎片，浪费空间</li>
-<li>标记压缩(mark compact) - 没有碎片，效率偏低（两遍扫描，指针需要调整）</li></ol>
-        
-          <p class="article-more-link">
-            <a href="/2020/02/22/GC/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/GC/" data-id="ck6ztaqud000b5xc9424641r7" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-jmm" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/02/22/jmm/" class="article-date">
-  <time datetime="2020-02-22T08:20:37.000Z" itemprop="datePublished">2020-02-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/22/jmm/">JVM - JMM内存模型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="一、CPU和内存的交互"><a href="#一、CPU和内存的交互" class="headerlink" title="一、CPU和内存的交互"></a>一、CPU和内存的交互</h3><p>在计算机中，CPU和内存的交互最为频繁，相比内存，磁盘读写太慢，内存相当于高速的缓冲区。</p>
-<p>在多核CPU中，每个处理器都有各自的高速缓存(L1,L2,L3)，而主内存确只有一个 。</p>
-<p>越靠近CPU的缓存越快也越小。所以L1缓存(一级缓存)很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍然更大，更慢，并且被单个插槽上的所有 CPU 核共享。</p>
-<p>当CPU执行运算的时候，它先去L1查找所需的数据，再去L2，然后是L3，最后如果这些缓存中都没有，所需的数据就要去主内存拿。走得越远，运算耗费的时间就越长。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/02/22/jmm/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/jmm/" data-id="ck6ztaquj000j5xc93mjsb2kv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ClassLoader" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/02/22/ClassLoader/" class="article-date">
-  <time datetime="2020-02-22T06:22:56.000Z" itemprop="datePublished">2020-02-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/22/ClassLoader/">JVM - 类加载 &amp; 初始化</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          <!-- Table of Contents -->
-          
-        <p><img src="https://casparthh.github.io/2020/02/22/ClassLoader/ClassLoader.png" alt="JVM ClassLoader"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/ClassLoader/" data-id="ck6ztaqub00075xc942v45u7d" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-container" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/02/16/container/" class="article-date">
-  <time datetime="2020-02-16T14:05:29.000Z" itemprop="datePublished">2020-02-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/16/container/">高并发与多线程 - Java容器</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="Java-容器"><a href="#Java-容器" class="headerlink" title="Java 容器"></a>Java 容器</h3><p>容器 分两大类Collection、Map，Collection又分三大类List、Set、Queue队列</p>
-<h4 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h4><p>Set 与 List, Queue 的主要区别是不会有重复元素</p>
-<h4 id="ArrayList-amp-LinkedList"><a href="#ArrayList-amp-LinkedList" class="headerlink" title="ArrayList &amp; LinkedList"></a>ArrayList &amp; LinkedList</h4><ul>
-<li>没有加锁，线程不安全。  </li>
-<li>ArrayList是基于数组实现的，LinkedList是基于双链表实现的。</li>
-<li>LinkedList还实现了Deque接口，Deque接口是Queue接口的子接口，它代表一个双向队列，因此LinkedList可以作为双向对列。</li>
-<li>因为Array是基于索引(index)的数据结构，它使用索引在数组中搜索和读取数据是很快的，可以直接返回数组中index位置的元素，因此在随机访问集合元素上有较好的性能。Array获取数据的时间复杂度是O(1),但是要插入、删除数据却是开销很大的，因为这需要移动数组中插入位置之后的的所有元素。</li>
-<li>相对于ArrayList，LinkedList的随机访问集合元素时性能较差，因为需要在双向列表中找到要index的位置，再返回；但在插入，删除操作是更快的。</li></ul>
-        
-          <p class="article-more-link">
-            <a href="/2020/02/16/container/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/16/container/" data-id="ck6ztaqu900055xc9hmtn3ykb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-thread" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/02/16/thread/" class="article-date">
-  <time datetime="2020-02-16T14:05:29.000Z" itemprop="datePublished">2020-02-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/16/thread/">高并发与多线程 - 线程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>线程: 作为一个进程里面最小的执行单元它就叫一个线程，用简单的话讲一个程序里不同的执行路径就叫做一个线程</p>
-<h3 id="一、创建线程的几种方式："><a href="#一、创建线程的几种方式：" class="headerlink" title="一、创建线程的几种方式："></a>一、创建线程的几种方式：</h3><ol>
-<li>继承Thread，并重写该类的run方法</li></ol>
-        
-          <p class="article-more-link">
-            <a href="/2020/02/16/thread/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/16/thread/" data-id="ck6ztaqua00065xc9627o43h0" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &amp;raquo;</a>
-  </nav>
 
 </section>
         

@@ -63,6 +63,65 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-ThreadPool" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/16/ThreadPool/" class="article-date">
+  <time datetime="2020-02-16T13:05:29.000Z" itemprop="datePublished">2020-02-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/16/ThreadPool/">高并发与多线程 - 线程池</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="一、Executor"><a href="#一、Executor" class="headerlink" title="一、Executor"></a>一、Executor</h4><p>执行者，是一个接口类，他有一个方法叫执行，那么执行的东西是 Runnable。</p>
+<h4 id="二、ExecutorService"><a href="#二、ExecutorService" class="headerlink" title="二、ExecutorService"></a>二、ExecutorService</h4><p>是从Executor继承，除了去实现Executor可以去执行一个任务之外，还完善了整个任务执行器的一个生命周期，就拿线程池来举例子，一个线程池里面一堆的线程就是一堆的工人，执行完一个任务之后我这个线程怎么结束啊；<br>线程池定义了这样一些个方法：</p>
+<ul>
+<li>void shutdown();//结束</li>
+<li>List<Runnable> shutdownNow();//马上结束</Runnable></li>
+<li>boolean isShutdown();//是否结束了</li>
+<li>boolean isTerminated();//是不是整体都执行完了</li>
+<li>boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;//等着结束，等多长时间，时间到了还不结束的话他 就返回false</li>
+<li><T> Future<T> submit(Callable<T> task);</T></T></T></li>
+<li>Future&lt;?&gt; submit(Runnable task);</li>
+<li>List&lt;Future<T>&gt; invokeAll(Collection&lt;? extends Callable<T>&gt; tasks) throws InterruptedException;</T></T></li>
+<li><T> T invokeAny(Collection&lt;? extends Callable<T>&gt; tasks) throws InterruptedException, ExecutionException;</T></T></li></ul>
+        
+          <p class="article-more-link">
+            <a href="/2020/02/16/ThreadPool/#more">阅读更多</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/16/ThreadPool/" data-id="ck6ztaquf000c5xc94st1dlff" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-angular入门" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/02/10/angular%E5%85%A5%E9%97%A8/" class="article-date">
@@ -185,7 +244,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/JVM/" style="font-size: 20px;">JVM</a> <a href="/tags/LVS/" style="font-size: 10px;">LVS</a> <a href="/tags/Thread/" style="font-size: 15px;">Thread</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">容器</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/" style="font-size: 15px;">高并发</a>
+      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/JVM/" style="font-size: 20px;">JVM</a> <a href="/tags/Keepalived/" style="font-size: 10px;">Keepalived</a> <a href="/tags/LVS/" style="font-size: 13.33px;">LVS</a> <a href="/tags/Thread/" style="font-size: 16.67px;">Thread</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">容器</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/" style="font-size: 20px;">高并发</a>
     </div>
   </div>
 
@@ -205,6 +264,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/03/02/keepalivedlvs/">基于Keepalived的LVS实验</a>
+          </li>
         
           <li>
             <a href="/2020/03/02/loadbalance/">负载均衡架构</a>
