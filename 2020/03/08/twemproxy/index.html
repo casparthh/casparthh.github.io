@@ -15,7 +15,7 @@
 <meta property="og:description" content="Twtter 开源的一个 Redis 和 Memcache 代理服务器，主要用于管理 Redis 和 Memcached 集群。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-07T16:45:46.000Z">
-<meta property="article:modified_time" content="2020-03-07T17:19:34.258Z">
+<meta property="article:modified_time" content="2020-03-07T17:21:15.667Z">
 <meta property="article:author" content="Caspar Tan">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
@@ -99,17 +99,17 @@
         <p>Twtter 开源的一个 Redis 和 Memcache 代理服务器，主要用于管理 Redis 和 Memcached 集群。</p>
 <a id="more"></a>
 <h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>git :<a href="https://github.com/twitter/twemproxy">https://github.com/twitter/twemproxy</a><br>下载源码<br>安装依赖工具<br><code>$ yum install automake libtool</code></p>
-<p>添加阿里云epel repository<br>$ wget -O /etc/yum.repos.d/epel.repo <a href="http://mirrors.aliyun.com/repo/epel-6.repo" target="_blank" rel="noopener">http://mirrors.aliyun.com/repo/epel-6.repo</a><br>$ yum clean all</p>
-<p>查找新版本的autoconf<br>$ yum search autoconf<br>$ yum install autoconf268</p>
-<p> 从源码编译<br>$ makereconf -fvi<br>$ ./configure<br>$ make</p>
+<p>添加阿里云epel repository<br><code>$ wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo</code><br><code>$ yum clean all</code></p>
+<p>查找新版本的autoconf<br><code>$ yum search autoconf</code><br><code>$ yum install autoconf268</code></p>
+<p> 从源码编译<br><code>$ makereconf -fvi</code><br><code>$ ./configure</code><br><code>$ make</code></p>
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>编译完成后进入script目录下，可以找到nutcracker.init文件，这是个脚本文件可以打开看下。<br>里面有指定了<br>a. chkconfig<br>b. 执行程序：<br>    prog=”nutcracker”<br>c. 配置文件nutcracker.yml：<br>  OPTIONS=”-d -c /etc/nutcracker/nutcracker.yml”</p>
-<p>接下来需要做的就是：<br>1.将这个脚本文件复制到 /etc/init.d/<br>$ cp nutcracker.init /etc/init.d/nutcracker<br>$ chmod +x /etc/init.d/nutcracker</p>
-<p>2.回到编译目录下找到nutcracker.yml配置文件并复制到/tec/nutcracker/目录下<br>$ mkdir /etc/nutcracker<br>$ cp ./conf/nutcracker.* /etc/nutcracker/</p>
+<p>接下来需要做的就是：<br>1.将这个脚本文件复制到 /etc/init.d/<br><code>$ cp nutcracker.init /etc/init.d/nutcracker</code><br><code>$ chmod +x /etc/init.d/nutcracker</code></p>
+<p>2.回到编译目录下找到nutcracker.yml配置文件并复制到/tec/nutcracker/目录下<br><code>$ mkdir /etc/nutcracker</code><br><code>$ cp ./conf/nutcracker.* /etc/nutcracker/</code></p>
 <p>3.在编译文件的src目录下找到程序nutcracker,并复制到/usr/bin/下<br><code>$ cp ./src/nutcracker /usr/bin/</code></p>
 <p>4.修改nutcracker<br>文件中有配置好了几个参考模版。我们只需保留任意一个，然后修改services部分指向redis master就行。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">alpha:</span><br><span class="line">  listen: 127.0.0.1:22121</span><br><span class="line">  hash: fnv1a_64</span><br><span class="line">  distribution: ketama</span><br><span class="line">  auto_eject_hosts: true</span><br><span class="line">  redis: true</span><br><span class="line">  server_retry_timeout: 2000</span><br><span class="line">  server_failure_limit: 1</span><br><span class="line">  servers:</span><br><span class="line">   - vm1:6379:1</span><br><span class="line">   - vm3:6379:1</span><br></pre></td></tr></table></figure>
 <p>auto_eject_hosts: 是一个boolean值，用于控制twemproxy是否应该根据server的连接状态重建群集。这个连接状态是由server_failure_limit阀值来控制。默认是false。<br>server_retry_timeout: 单位是毫秒，控制服务器连接的时间间隔，在auto_eject_host被设置为true的时候产生作用。默认是30000 毫秒。<br>server_failure_limit: 控制连接服务器的次数，在auto_eject_host被设置为true的时候产生作用。默认是2。  </p>
-<h3 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h3><p>启动服务<br>  service nutcracker start  </p>
+<h3 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h3><p>启动服务<br><code>$ service nutcracker start</code>  </p>
 <p>连接到代理程序并测试</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ redis-cli -p 22121</span><br><span class="line">set pass mypassword</span><br><span class="line">set k1 mytestk1</span><br></pre></td></tr></table></figure>
 <p>set 多个key 后再分别到多台master上get 验证，由于算法原因，可能会连续很多key存到了同一台redis, 所以多set一些不同的key验证。</p>
