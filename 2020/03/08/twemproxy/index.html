@@ -5,20 +5,20 @@
   
 
   
-  <title>JVM - 类加载 &amp; 初始化 | 永远晴天的博客</title>
+  <title>twemproxy | 永远晴天的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
-<meta property="og:title" content="JVM - 类加载 &amp; 初始化">
-<meta property="og:url" content="https://github.com/casparthh/casparthh.github.io/2020/02/22/ClassLoader/index.html">
+  <meta name="description" content="title: Twemproxy(Nutcracker)toc: truecategories:  技术笔记date: 2020-03-08 00:45:46tags: Redis   Twtter 开源的一个 Redis 和 Memcache 代理服务器，主要用于管理 Redis 和 Memcached 集群。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="twemproxy">
+<meta property="og:url" content="https://github.com/casparthh/casparthh.github.io/2020/03/08/twemproxy/index.html">
 <meta property="og:site_name" content="永远晴天的博客">
+<meta property="og:description" content="title: Twemproxy(Nutcracker)toc: truecategories:  技术笔记date: 2020-03-08 00:45:46tags: Redis   Twtter 开源的一个 Redis 和 Memcache 代理服务器，主要用于管理 Redis 和 Memcached 集群。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://casparthh.github.io/2020/02/22/ClassLoader/ClassLoader.png">
-<meta property="article:published_time" content="2020-02-22T06:22:56.000Z">
-<meta property="article:modified_time" content="2020-02-23T08:47:14.978Z">
+<meta property="article:published_time" content="2020-03-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-07T17:18:39.938Z">
 <meta property="article:author" content="Caspar Tan">
-<meta property="article:tag" content="JVM">
+<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://casparthh.github.io/2020/02/22/ClassLoader/ClassLoader.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -63,16 +63,12 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-ClassLoader" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-twemproxy" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/02/22/ClassLoader/" class="article-date">
-  <time datetime="2020-02-22T06:22:56.000Z" itemprop="datePublished">2020-02-22</time>
+    <a href="/2020/03/08/twemproxy/" class="article-date">
+  <time datetime="2020-03-07T16:00:00.000Z" itemprop="datePublished">2020-03-08</time>
 </a>
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/">技术笔记</a>
-  </div>
-
   </div>
   <div class="article-inner">
     
@@ -81,7 +77,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      JVM - 类加载 &amp; 初始化
+      twemproxy
     </h1>
   
 
@@ -91,35 +87,48 @@
       
           <!-- Table of Contents -->
           
-        <p><img src="https://casparthh.github.io/2020/02/22/ClassLoader/ClassLoader.png" alt="JVM ClassLoader"></p>
+        <hr>
+<p>title: Twemproxy(Nutcracker)<br>toc: true<br>categories:</p>
+<ul>
+<li>技术笔记<br>date: 2020-03-08 00:45:46<br>tags:</li>
+<li>Redis</li>
+</ul>
+<hr>
+<p>Twtter 开源的一个 Redis 和 Memcache 代理服务器，主要用于管理 Redis 和 Memcached 集群。</p>
+<a id="more"></a>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>git :<a href="https://github.com/twitter/twemproxy">https://github.com/twitter/twemproxy</a><br>下载源码<br>安装依赖工具<br><code>$ yum install automake libtool</code></p>
+<p>添加阿里云epel repository<br>$ wget -O /etc/yum.repos.d/epel.repo <a href="http://mirrors.aliyun.com/repo/epel-6.repo" target="_blank" rel="noopener">http://mirrors.aliyun.com/repo/epel-6.repo</a><br>$ yum clean all</p>
+<p>查找新版本的autoconf<br>$ yum search autoconf<br>$ yum install autoconf268</p>
+<p> 从源码编译<br>$ makereconf -fvi<br>$ ./configure<br>$ make</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>编译完成后进入script目录下，可以找到nutcracker.init文件，这是个脚本文件可以打开看下。<br>里面有指定了<br>a. chkconfig<br>b. 执行程序：<br>    prog=”nutcracker”<br>c. 配置文件nutcracker.yml：<br>  OPTIONS=”-d -c /etc/nutcracker/nutcracker.yml”</p>
+<p>接下来需要做的就是：<br>1.将这个脚本文件复制到 /etc/init.d/<br>$ cp nutcracker.init /etc/init.d/nutcracker<br>$ chmod +x /etc/init.d/nutcracker</p>
+<p>2.回到编译目录下找到nutcracker.yml配置文件并复制到/tec/nutcracker/目录下<br>$ mkdir /etc/nutcracker<br>$ cp ./conf/nutcracker.* /etc/nutcracker/</p>
+<p>3.在编译文件的src目录下找到程序nutcracker,并复制到/usr/bin/下<br><code>$ cp ./src/nutcracker /usr/bin/</code></p>
+<p>4.修改nutcracker<br>文件中有配置好了几个参考模版。我们只需保留任意一个，然后修改services部分指向redis master就行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">alpha:</span><br><span class="line">  listen: 127.0.0.1:22121</span><br><span class="line">  hash: fnv1a_64</span><br><span class="line">  distribution: ketama</span><br><span class="line">  auto_eject_hosts: true</span><br><span class="line">  redis: true</span><br><span class="line">  server_retry_timeout: 2000</span><br><span class="line">  server_failure_limit: 1</span><br><span class="line">  servers:</span><br><span class="line">   - vm1:6379:1</span><br><span class="line">   - vm3:6379:1</span><br></pre></td></tr></table></figure>
+<p>auto_eject_hosts: 是一个boolean值，用于控制twemproxy是否应该根据server的连接状态重建群集。这个连接状态是由server_failure_limit阀值来控制。默认是false。<br>server_retry_timeout: 单位是毫秒，控制服务器连接的时间间隔，在auto_eject_host被设置为true的时候产生作用。默认是30000 毫秒。<br>server_failure_limit: 控制连接服务器的次数，在auto_eject_host被设置为true的时候产生作用。默认是2。  </p>
+<h3 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h3><p>启动服务<br>  service nutcracker start  </p>
+<p>连接到代理程序并测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ redis-cli -p 22121</span><br><span class="line">set pass mypassword</span><br><span class="line">set k1 mytestk1</span><br></pre></td></tr></table></figure>
+<p>set 多个key 后再分别到多台master上get 验证，由于算法原因，可能会连续很多key存到了同一台redis, 所以多set一些不同的key验证。</p>
+<p>其缺点：<br>不支持Redis的事务操作。<br>不支持针对多个值的操作，比如取sets的子交并补等。  </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/02/22/ClassLoader/" data-id="ck6ztaqub00075xc942v45u7d" class="article-share-link">Share</a>
+      <a data-url="https://github.com/casparthh/casparthh.github.io/2020/03/08/twemproxy/" data-id="ck7huekuy0000twc95e5u1rr1" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
-
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2020/02/22/jmm/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          JVM - JMM内存模型
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/02/16/container/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/03/03/keepalivedlvs/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">多线程 - Java容器</div>
+      <div class="article-nav-title">高并发 - 基于Keepalived的LVS实验</div>
     </a>
   
 </nav>
