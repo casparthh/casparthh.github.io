@@ -15,7 +15,7 @@
 <p>3.在编译文件的src目录下找到程序nutcracker,并复制到/usr/bin/下<br><code>$ cp ./src/nutcracker /usr/bin/</code></p>
 <p>4.修改nutcracker<br>文件中有配置好了几个参考模版。我们只需保留任意一个，然后修改services部分指向redis master就行。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alpha:</span><br><span class="line">  listen: 127.0.0.1:22121</span><br><span class="line">  hash: fnv1a_64</span><br><span class="line">  distribution: ketama</span><br><span class="line">  auto_eject_hosts: true</span><br><span class="line">  redis: true</span><br><span class="line">  server_retry_timeout: 2000</span><br><span class="line">  server_failure_limit: 1</span><br><span class="line">  servers:</span><br><span class="line">   - vm1:6379:1</span><br><span class="line">   - vm3:6379:1</span><br></pre></td></tr></table></figure>
-<p>auto_eject_hosts: 是一个boolean值，用于控制twemproxy是否应该根据server的连接状态重建群集。这个连接状态是由server_failure_limit阀值来控制。默认是false。<br>server_retry_timeout: 单位是毫秒，控制服务器连接的时间间隔，在auto_eject_host被设置为true的时候产生作用。默认是30000 毫秒。<br>server_failure_limit: 控制连接服务器的次数，在auto_eject_host被设置为true的时候产生作用。默认是2。  </p>
+<p>auto_eject_host: 当连接一个server失败次数超过server_failure_limit值时，是否把这个server驱逐出集群，默认是false<br>server_retry_timeout:单位毫秒，当auto_eject_host打开后，重试被临时驱逐的server之前的等待时间<br>server_failure_limit: 当auto_eject_host打开后，驱逐一个server之前重试次数  </p>
 <h3 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h3><p>启动服务<br><code>$ service nutcracker start</code>  </p>
 <p>连接到代理程序并测试</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ redis-cli -p 22121</span><br><span class="line">set pass mypassword</span><br><span class="line">set k1 mytestk1</span><br></pre></td></tr></table></figure>
