@@ -11,7 +11,7 @@
 <p> 从源码编译<br><code>$ makereconf -fvi</code><br><code>$ ./configure</code><br><code>$ make</code></p>
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>编译完成后进入script目录下，可以找到nutcracker.init文件，这是个脚本文件可以打开看下。<br>里面有指定了<br>a. chkconfig<br>b. 执行程序：<br>    prog=”nutcracker”<br>c. 配置文件nutcracker.yml：<br>  OPTIONS=”-d -c /etc/nutcracker/nutcracker.yml”</p>
 <p>接下来需要做的就是：<br>1.将这个脚本文件复制到 /etc/init.d/<br><code>$ cp nutcracker.init /etc/init.d/nutcracker</code><br><code>$ chmod +x /etc/init.d/nutcracker</code></p>
-<p>2.回到编译目录下找到nutcracker.yml配置文件并复制到/tec/nutcracker/目录下<br><code>$ mkdir /etc/nutcracker</code><br><code>$ cp ./conf/nutcracker.* /etc/nutcracker/</code></p>
+<p>2.回到编译目录下找到nutcracker.yml配置文件并复制到/etc/nutcracker/目录下<br><code>$ mkdir /etc/nutcracker</code><br><code>$ cp ./conf/nutcracker.* /etc/nutcracker/</code></p>
 <p>3.在编译文件的src目录下找到程序nutcracker,并复制到/usr/bin/下<br><code>$ cp ./src/nutcracker /usr/bin/</code></p>
 <p>4.修改nutcracker<br>文件中有配置好了几个参考模版。我们只需保留任意一个，然后修改services部分指向redis master就行。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alpha:</span><br><span class="line">  listen: 127.0.0.1:22121</span><br><span class="line">  hash: fnv1a_64</span><br><span class="line">  distribution: ketama</span><br><span class="line">  auto_eject_hosts: true</span><br><span class="line">  redis: true</span><br><span class="line">  server_retry_timeout: 2000</span><br><span class="line">  server_failure_limit: 1</span><br><span class="line">  servers:</span><br><span class="line">   - vm1:6379:1</span><br><span class="line">   - vm3:6379:1</span><br></pre></td></tr></table></figure>
